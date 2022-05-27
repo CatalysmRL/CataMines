@@ -1,0 +1,301 @@
+Time:
+  Seconds: "seconds"
+  Second: "second"
+  Minutes: "minutes"
+  Minute: "minute"
+  Hours: "hours"
+  Hour: "hour"
+
+GUI:
+  Universal:
+    Previous-Page:
+      Name: "&6&lPrevious Page"
+      Lore:
+        - ""
+        - "&7Opens the previous page if there is one"
+    Next-Page:
+      Name: "&6&lNext Page"
+      Lore:
+        - ""
+        - "&7Opens the next page if there is one"
+    Close:
+      Name: "&4&lClose"
+      Lore:
+        - ""
+        - "&7Closes the menu"
+    Back-To-Mine-Menu:
+      Name: "&6&lBack"
+      Lore:
+        - ""
+        - "&7Goes back to mine menu"
+    Back-To-Composition-Menu:
+      Name: "&6&lBack"
+      Lore:
+        - ""
+        - "&7Goes back to composition menu"
+    Back-To-Block-Menu:
+      Name: "&6&lBack"
+      Lore:
+        - ""
+        - "&7Goes back to block menu"
+    Increase-By: "&aIncrease by %number%"
+    Decrease-By: "&cDecrease by %number%"
+  Mine-List-Menu:
+    Title: "&bMines"
+  Mine-Menu:
+    Title: "&b%mine%"
+    Items:
+      Configure-Composition:
+        Name: "&6Configure composition"
+        Lore:
+          - "&bComposition: &c%chance%%"
+      Configure-Delay:
+        Name: "&6Configure reset delay"
+        Lore:
+          - "&bReset delay: &c%delay%"
+      Warn:
+        Active:
+          Name: "&aWarns on reset"
+        Inactive:
+          Name: "&7Doesn't warn on reset"
+        Lore:
+          - "&bSelect if mine should warn of resets"
+      Warn-Global:
+        Active:
+          Name: "&aWarns globally"
+        Inactive:
+          Name: "&7Doesn't warn globally"
+        Lore:
+          - "&bSelect if mine should warn globally"
+      Warn-Hotbar:
+        Active:
+          Name: "&aDisplays seconds in hotbar"
+        Inactive:
+          Name: "&7Doesn't display seconds in hotbar"
+        Lore:
+          - "&bSelect if mine should display remaining seconds in the hotbar"
+      Teleport-Players:
+        Active:
+          Name: "&aTeleports players on reset"
+        Inactive:
+          Name: "&7Doesn't teleport players on reset"
+        Lore:
+          - "&bSelect if mine should teleport players"
+          - "&bin the mine on reset"
+      Teleport-Players-To-Reset-Location:
+        Active:
+          Name: "&aTeleports players to reset location"
+        Inactive:
+          Name: "&7Teleports players on top of the mine"
+        Lore:
+          - "&bSelect if mine should teleport players"
+          - "&bto reset location instead of just on top"
+          - "&6&lNOTES: &7Make sure you have a reset location"
+          - "&7by using /cm setresettp. Teleport players has"
+          - "&7to be activated for this to take effect"
+      Replace-Mode:
+        Active:
+          Name: "&aReplace mode on"
+        Inactive:
+          Name: "&7Replace mode off"
+        Lore:
+          - "&bSelect if mine should only replace &lAIR"
+      Efficiency-Lvl:
+        Name: "&6Configure min. efficiency lvl"
+        Lore:
+          - "&bMinimum efficiency level to break blocks: &c%level%"
+          - ""
+          - "&6&lNOTE: &bAdmins or having the permission"
+          - "&bcatamines.break bypass this!"
+      Warn-Distance:
+        Name: "&6Configure warn distance"
+        Lore:
+          - "&bWarn distance: &c%distance%"
+      Reset-Mine:
+        Name: "&cReset mine"
+      Teleport:
+        Name: "&5Teleport to mine"
+        Lore:
+          - "&bTeleports you to the mine"
+      Delete:
+        Name: "&4&lDelete mine"
+      Start-Stop:
+        Active:
+          Name: "&aMine turned on"
+        Inactive:
+          Name: "&7Mine turned off"
+        Lore:
+          - "&bSelect if mine should reset automatically"
+      Back:
+        Name: "&4&lBack"
+        Lore:
+          - ""
+          - "&7Goes back to the mine menu"
+      Running:
+        Active:
+          Name: "&aMine is currently running"
+          Lore:
+            - "&7Displays if the mine is currently running."
+            - "&7If its not, then it will display why not."
+        Inactive:
+          Name: "&7Mine is not running because:"
+          Reasons:
+            Invalid-Region: "&cIts region is invalid"
+            Stopped: "&cIt is stopped"
+            No-Composition: "&cIt has no composition"
+            Invalid-Delay: "&cIts reset delay is %delay%"
+  Composition-Menu:
+    Title: "&bComposition: &c%chance%%"
+    Items:
+      Composition-Block:
+        Name: "%!unchangeable! internal material name%"
+        Lore:
+          - "&bSpawning chance: &c%chance%%"
+          - ""
+          - "&aLeft click me to configure"
+      Info:
+        Name: "&6Info:"
+        Lore:
+          - "&aAdd items by left/right"
+          - "&aclicking them in your inventory."
+          - ""
+          - "&cRemove items by right clicking"
+          - "&cthem in the composition list"
+  Composition-Block-Menu:
+    Title: "&bBlock chance: &c%blockChance%% / %compChance%%"
+    Items:
+      Current-Block:
+        Name: "%!unchangeable! internal material name%"
+        Lore:
+          - ""
+          - "&bBlock chance: &c%blockChance%%"
+          - "&bComposition chance: &c%compChance%%"
+      Change-Table:
+        Name: "&6Change loot table"
+      Configure-Table:
+        Name: "&6Configure drop chances of loot table"
+      Add-Loot-Table:
+        Active:
+          Name: "&aLoot table is added on top of default drops"
+        Inactive:
+          Name: "&7Loot table overrides default drops"
+        Lore:
+          - "&bSelect if you want to override the drops"
+          - "&bof this block, or if you want to add certain"
+          - "&bdrops on top of its default drops."
+          - "&6&lNote: &bIf the loot table is empty, this"
+          - "&bis ignored."
+  Change-Loot-Table-Menu:
+    Title: "&bInsert items into loot table"
+    Items:
+      Save-Table:
+        Name: "&aSave loot table"
+        Message: "&aSaved loot table."
+  Loot-Table-List-Menu:
+    Title: "&bConfigure item drop chances"
+    Items:
+      Drop-Item:
+        Name: "!unchangeable! internal material name"
+        Lore:
+          - ""
+          - "&bDrop chance: &c%chance%%"
+  Configure-Item-Drop-Chances-Menu:
+    Title: "&bDrop chance: &c%itemChance%/100%"
+    Items:
+      Current-Item: "!unchangeable! internal item"
+  Reset-Delay-Menu:
+    Title: "&bConfigure reset delay: &c%delay%"
+    Items:
+      Current-Delay:
+        Name: "&bCurrent delay: &c%delay%"
+  Efficiency-Menu:
+    Title: "&bMinimum efficiency lvl: &c%level%"
+    Items:
+      Current-Level:
+        Name: "&bMinimum efficiency level to break mine: &c%level%"
+        Lore:
+          - "&bMinimum efficiency level to break blocks: &c%level%"
+          - ""
+          - "&6&lNOTE: &bAdmins or having the permission"
+          - "&bcatamines.break bypass this!"
+  Warn-Distance-Menu:
+    Title: "&bWarn distance: &c%distance%"
+    Items:
+      Current-Distance:
+        Name: "&bCurrent distance: &c%distance%"
+
+Commands:
+  Create: "Mine &b%mine% &7has been created."
+  Delete: "Mine &b%mine% &7has been deleted."
+  Reset-Mode: "Set reset mode of &b%mine% &7to &a%mode%&7."
+  Delay: "Set reset delay to &a%seconds% &7seconds."
+  Reset-Percentage: "&b%mine% &7now resets when there is &a%percentage%% &7of blocks left"
+  Set:
+    Success: "&b%material% &7set for &a%mine%&7. You have &6%remainingChance%% &7left over."
+    Error: "%chance-over-100%. You have &6%remainingChance%% &7left over."
+  Unset:
+    Clear: "Composition of &a%mine% &7has been cleared"
+    Remove:
+      Success: "&b%material% &7was removed. You have &a%remainingChance%% &7left over."
+      Error: "&b%material% &7was not in the composition of %mine%&7. You have &a%remainingChance%% &7left over."
+  Reset: "Mine has been reset."
+  Teleport:
+    Self: "Teleported to &b%mine%."
+    Other: "Teleported &6%player% &7to &b%mine%"
+  Set-Teleport: "Set teleport of &b%mine%."
+  Set-Reset-Teleport: "Set reset teleport of &b%mine%. &7Also set teleportPlayersToResetLocation to &atrue"
+  Flag:
+    Move-Region: "Moved region of &c%mine%."
+    Rename: "Renamed &b%oldmine% &7to &a%newmine%."
+    Replace-Mode: "Set replace mode of &b%mine% &7to &a%arg%."
+    Teleport-Players: "Teleport players of &b%mine% &7set to &a%arg%."
+    Warn:
+      Warn-Hotbar: "Warns of &b%mine% &7set to &a%arg%."
+      Warn-Enable: "Warns of &b%mine% &7set to &a%arg%."
+      Warn-Global: "Global warns of &b%mine% &7set to &a%arg%."
+      Warn-Message: "&aUpdated warn message."
+      Reset-Message: "&aUpdated reset message."
+      Warn-Distance: "Warn distance of &b%mine% &7set to &a%arg%."
+      Warn-Seconds: "&aUpdated warn seconds."
+  Start: "&aStarted %mine%."
+  Stop: "&cStopped %mine%."
+  Start-Tasks: "&aStarted all mine tasks"
+  Stop-Tasks: "&cStopped all mine tasks"
+  Reload:
+    All: "&aPlugin has been reloaded."
+    Mines: "&aMines have been reloaded."
+    Config: "&aConfig has been reloaded."
+    Messages: "&aMessages have been reloaded."
+    Properties: "&aProperties have been reloaded."
+
+Error-Messages:
+  No-Permission: "&cYou do not have the permissions to do that!"
+  Only-Players: "&cOnly players may execute this command!"
+  Unknown-Command: "Unknown command."
+  Unknown-Flag: "Unknown flag."
+  Player-Not-Found: "Player &6%player% &7not found!"
+  Mine:
+    Incomplete-Region: "You must select a region!"
+    Not-Exist: "Mine does not exist!"
+    Exist: "Mine already exists!"
+    Cant-Reset: "Can't reset mine!"
+    Material-Not-Found: "Material not found!"
+    Not-Number: "Your chance must be a number!"
+    Not-Percentage: "Your chance must be a percentage!"
+    Invalid-Chance: "Your chance must be between 0 and 100%!"
+    Invalid-Range: "Your input must be between %start%-%end%!"
+    Material-Not-Solid: "Material must be a solid block!"
+    Invalid-Block-Configuration: "Invalid block configuration!"
+    Invalid-Boolean: "Your last argument must be either true or false!"
+    Teleport-Error: "Location does not exist!"
+    Block-Not-In-Composition: "Block is not in composition"
+    Invalid-Region: "&cRegion is invalid!"
+    Material-In-Composition: "Material is already in composition!"
+    Chance-Over-100: "Chance would be over 100%"
+  GUI:
+    Mine-Deleted: "Kicked out of mine menu!"
+    Block-Deleted: "Kicked out of block menu!"
+    Loot-Table-Change: "Loot table changed!"
+    First-Page: "You are already on the first page"
+    Last-Page: "You are on the last page"
+    Mine-Doesnt-Exist: "&cThe mine you tried to open doesn't exist anymore!"

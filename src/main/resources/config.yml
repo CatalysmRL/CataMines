@@ -1,0 +1,10 @@
+# Customize the prefix of the plugin
+prefix: "&6[&bCata&aMines&6] &7"
+
+# Should the plugin update you about newer versions?
+announceUpdate: true
+
+# Current supported languages: EN, CUSTOM
+# You should only use the CUSTOM file or
+# newly created files to customize messages! test
+language: EN

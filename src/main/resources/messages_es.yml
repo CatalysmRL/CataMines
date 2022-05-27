@@ -1,0 +1,298 @@
+Time:
+  Seconds: "segundos"
+  Second: "ségundo"
+  Minutes: "minutos"
+  Minute: "minuto"
+  Hours: "horas"
+  Hour: "hora"
+
+GUI:
+  Universal:
+    Previous-Page:
+      Name: "&6&lPágina anterior"
+      Lore:
+        - ""
+        - "&7Abre la página anterior si existe una"
+    Next-Page:
+      Name: "&6&lSiguente página"
+      Lore:
+        - ""
+        - "&7Abre la siguiente página si existe una"
+    Close:
+      Name: "&4&lCerrar"
+      Lore:
+        - ""
+        - "&7Cierra el menú"
+    Back-To-Mine-Menu:
+      Name: "&6&lVolver"
+      Lore:
+        - ""
+        - "&7Vuelve al menú de mina"
+    Back-To-Composition-Menu:
+      Name: "&6&lVolver"
+      Lore:
+        - ""
+        - "&7Vuelve al menú de composición"
+    Back-To-Block-Menu:
+      Name: "&6&lVolver"
+      Lore:
+        - ""
+        - "&7Volver al menú de bloque"
+    Increase-By: "&aAumentar por %number%"
+    Decrease-By: "&cReducir por %number%"
+  Mine-List-Menu:
+    Title: "&bMinas"
+  Mine-Menu:
+    Title: "&b%mine%"
+    Items:
+      Configure-Composition:
+        Name: "&6Configurar composición"
+        Lore:
+          - "&bComposición: &c%chance%%"
+      Configure-Delay:
+        Name: "&6Configurar el temporizador de reinicio"
+        Lore:
+          - "&bReiniciar temporizador: &c%delay%"
+      Warn:
+        Active:
+          Name: "&aAvisa sobre el reinicio"
+        Inactive:
+          Name: "&7No avisa al reiniciar"
+        Lore:
+          - "&bSeleccione si la mina debería avisar durante el reinicio"
+      Warn-Global:
+        Active:
+          Name: "&aAvisa globalmente"
+        Inactive:
+          Name: "&7No avisa globalmente"
+        Lore:
+          - "&bSeleccione si la mina debería avisar globalmente"
+      Warn-Hotbar:
+        Active:
+          Name: "&aMuestra los segundos en la barra de acceso directo"
+        Inactive:
+          Name: "&7No muestra los segundos en la barra de acceso directo"
+        Lore:
+          - "&bSeleccione si la mina debe mostrar los segundos restantes en la barra de acceso directo"
+      Teleport-Players:
+        Active:
+          Name: "&aTeletransportar a los jugadores al reiniciarse"
+        Inactive:
+          Name: "&7No teletransportar a los jugadores al reiniciarse"
+        Lore:
+          - "&bSeleccione si la mina debería de teletransportar a los jugadores"
+          - "&bque se encuentren dentro de la mina durante el reinicio"
+      Teleport-Players-To-Reset-Location:
+        Active:
+          Name: "&aTeletransporta a los jugadores a un punto de reinicio"
+        Inactive:
+          Name: "&7Teletransporta a los jugadores encima de la mina"
+        Lore:
+          - "&bSeleccione si la mina debería de teletransportar a los jugadores"
+          - "&ba un punto de reinicio en lugar de sólo encima de la mina"
+          - "&6&lNOTAS: &7Asegúrate de que tienes un punto de reinicio"
+          - "&7usando /cm setresettp. Teletransportar jugadores"
+          - "&7debe estar activado para que esto surta efecto"
+      Replace-Mode:
+        Active:
+          Name: "&aModo de reemplazo activado"
+        Inactive:
+          Name: "&7Modo de reemplazo desactivado"
+        Lore:
+          - "&bSeleccione si la mina sólo debe remplazar &lAIRE"
+      Efficiency-Lvl:
+        Name: "&6Configure el min. nivel de eficiencia"
+        Lore:
+          - "&bNivel mínimo de eficiencia para romper los bloques: &c%level%"
+          - ""
+          - "&6&lNOTA: &bDebe ser Admin o tener el permiso"
+          - "&bcatamines.break evitar esto!"
+      Warn-Distance:
+        Name: "&6Configurar la distancia de aviso"
+        Lore:
+          - "&bDistancia de aviso: &c%distance%"
+      Reset-Mine:
+        Name: "&cReiniciar mina"
+      Teleport:
+        Name: "&5Teletransportar a mina"
+        Lore:
+          - "&bTe teletransporta a la mina"
+      Delete:
+        Name: "&4&lEliminar mina"
+      Start-Stop:
+        Active:
+          Name: "&aMina activada"
+        Inactive:
+          Name: "&7Mina desactivada"
+        Lore:
+          - "&bSeleccione si la mina debería de reiniciarse automáticamente"
+      Back:
+        Name: "&4&lVolver"
+        Lore:
+          - ""
+          - "&7Vuelve al menú de mina"
+      Running:
+        Active:
+          Name: "&aLa mina está funcionando actualmente"
+          Lore:
+            - "&7Muestra si la mina está funcionando actualmente."
+            - "&7Por lo contrario, mostrará el por qué no."
+        Inactive:
+          Name: "&7La mina no está funcionando debido a:"
+          Reasons:
+            Invalid-Region: "&cSu región es inválida"
+            Stopped: "&cEstá parada"
+            No-Composition: "&cNo tiene ninguna composición"
+            Invalid-Delay: "&cSu temporizador de reinicio es %delay%"
+  Composition-Menu:
+    Title: "&bComposición: &c%chance%%"
+    Items:
+      Composition-Block:
+        Name: "%!unchangeable! internal material name%"
+        Lore:
+          - "&bPorcentaje de aparición: &c%chance%%"
+          - ""
+          - "&aPresioname usando clic izquierdo para configurar"
+      Info:
+        Name: "&6Información:"
+        Lore:
+          - "&aAñadir elementos mediante izquierda/derecha"
+          - "&aHaciendo clic en ellos en tu inventario."
+          - ""
+          - "&cEliminar elementos haciendo clic derecho"
+          - "&csobre ellos en la lista de composición"
+  Composition-Block-Menu:
+    Title: "&bPorcentaje de aparición: &c%blockChance%% / %compChance%%"
+    Items:
+      Current-Block:
+        Name: "%!unchangeable! internal material name%"
+        Lore:
+          - ""
+          - "&bPorcentaje de aparición: &c%blockChance%%"
+          - "&bPorcentaje de composición: &c%compChance%%"
+      Change-Table:
+        Name: "&6Modificar tabla de botín"
+      Configure-Table:
+        Name: "&6Configurar porcentaje de drops de la tabla de botín"
+      Add-Loot-Table:
+        Active:
+          Name: "&aLa tabla de botín es añadida encima de los drop default"
+        Inactive:
+          Name: "&7La tabla de botín anula los drops predeterminados"
+        Lore:
+          - "&bSeleccione si desea anular los drops predeterminados"
+          - "&bde este bloque, o si quiere añadir un drop en concreto"
+          - "&bpor encima de su drop predeterminado."
+          - "&6&lNOTA: &bSi la tabla de botín está vacía, esto"
+          - "&bes ignorado."
+  Change-Loot-Table-Menu:
+    Title: "&bInsertar elementos en la tabla de botín"
+    Items:
+      Save-Table:
+        Name: "&aGuardar tabla de botín"
+        Message: "&aTabla de botín guardada."
+  Loot-Table-List-Menu:
+    Title: "&bConfigurar probabilidad de soltar objetos"
+    Items:
+      Drop-Item:
+        Name: "!unchangeable! internal material name"
+        Lore:
+          - ""
+          - "&bProbabilidad de soltar objeto: &c%chance%%"
+  Configure-Item-Drop-Chances-Menu:
+    Title: "&bProbabilidad de soltar objeto: &c%itemChance%/100%"
+    Items:
+      Current-Item: "!unchangeable! internal item"
+  Reset-Delay-Menu:
+    Title: "&bConfigurar temporizador de reinicio: &c%delay%"
+    Items:
+      Current-Delay:
+        Name: "&bTemporizador actual: &c%delay%"
+  Efficiency-Menu:
+    Title: "&bNivel de eficiencia mínimo: &c%level%"
+    Items:
+      Current-Level:
+        Name: "&bMínimo nivel de eficiencia picar en la mina: &c%level%"
+        Lore:
+          - "&bMínimo nivel de eficiencia para romper bloques: &c%level%"
+          - ""
+          - "&6&lNOTA: &bDebe ser Admin o tener el permiso"
+          - "&bcatamines.break evitar esto!"
+  Warn-Distance-Menu:
+    Title: "&bDistancia de aviso: &c%distance%"
+    Items:
+      Current-Distance:
+        Name: "&bDistancia actual: &c%distance%"
+
+Commands:
+  Create: "La mina &b%mine% &7ha sido creada."
+  Delete: "La mina &b%mine% &7ha sido eliminada."
+  Delay: "Asignar temporizador de reinicio a &a%seconds% &7segundos."
+  Set:
+    Success: "&b%material% &7asignado a la mina &a%mine%&7. Tienes un &6%remainingChance%% &7restante para asignar."
+    Error: "%chance-over-100%. Tienes un &6%remainingChance%% &7sobrante."
+  Unset:
+    Clear: "La composición de la mina &a%mine% &7ha sido despejada"
+    Remove:
+      Success: "&b%material% &7ha sido eliminado. Tienes un &a%remainingChance%% &7sobrante."
+      Error: "&b%material% &7no estaba en la composición de la mina %mine%&7. Tienes un &a%remainingChance%% &7sobrante."
+  Reset: "La mina ha sido reiniciada."
+  Teleport:
+    Self: "Teletransportado a la mina &b%mine%."
+    Other: "Jugador &6%player% teletransportado &7a mina &b%mine%"
+  Set-Teleport: "Colocar punto de teletransporte para mina &b%mine%."
+  Set-Reset-Teleport: "Colocar teletransporte de reinicio para mina &b%mine%. &7También cambia teleportPlayersToResetLocation a &atrue"
+  Flag:
+    Move-Region: "Región movida de mina &c%mine%."
+    Rename: "Renombrada &b%oldmine% &7a &a%newmine%."
+    Replace-Mode: "Establecer el modo de reemplazo de &b%mine% &7a &a%arg%."
+    Teleport-Players: "Teletransporte de jugadores de mina &b%mine% &7asignado a &a%arg%."
+    Warn:
+      Warn-Hotbar: "Avisos de mina &b%mine% &7asignados a &a%arg%."
+      Warn-Enable: "Avisos de mina &b%mine% &7asignados a &a%arg%."
+      Warn-Global: "Avisos globales de mina &b%mine% &7asignados a &a%arg%."
+      Warn-Message: "&aMensaje de aviso actualizado."
+      Reset-Message: "&aMensaje de reinicio actualizado."
+      Warn-Distance: "Distancia de aviso mina &b%mine% &7asignado a &a%arg%."
+      Warn-Seconds: "&aSegundos de aviso actualizados."
+  Start: "&aIniciada %mine%."
+  Stop: "&cDetenida %mine%."
+  Start-Tasks: "&aIniciadas todas las tareas de la mina"
+  Stop-Tasks: "&cDetenidas todas las tareas de la mina"
+  Reload:
+    All: "&aEl plugin ha sido recargado."
+    Mines: "&aLas minas han sido recargadas."
+    Config: "&aLa configuración ha sido recargada."
+    Messages: "&aLos mensajes han sido recargados."
+    Properties: "&aLas propiedades han sido recargadas."
+
+Error-Messages:
+  No-Permission: "&cNo tienes permis opara hacer eso!"
+  Only-Players: "&cSolo jugadores puden ejecutar este comando!"
+  Unknown-Command: "Comando desconocido."
+  Unknown-Flag: "Propiedad desconocida."
+  Player-Not-Found: "el jugador &6%player% &7no ha sido encontrado!"
+  Mine:
+    Incomplete-Region: "Debes seleccionar una región primero!"
+    Not-Exist: "La mina no existe!"
+    Exist: "La mina ya existe actualmente!"
+    Cant-Reset: "No se puede reiniciar la mina!"
+    Material-Not-Found: "Material no encontrado!"
+    Not-Number: "Tu probabilidad debe ser un numero!"
+    Not-Percentage: "Tu probabilidad debe ser un porcentaje!"
+    Invalid-Chance: "Tu probabilidad debe estar entre 0 y 100%!"
+    Material-Not-Solid: "El material debe ser un bloque sólido!"
+    Invalid-Block-Configuration: "Configuración inválida de bloque!"
+    Invalid-Boolean: "Tu último argumento debe ser true o false!"
+    Teleport-Error: "La localización no existe!"
+    Block-Not-In-Composition: "El bloque no está en la composición"
+    Invalid-Region: "&cLa región es inválida!"
+    Material-In-Composition: "Este material ya está en la composición!"
+    Chance-Over-100: "El porcentaje deseado superaría el 100%"
+  GUI:
+    Mine-Deleted: "Expulsado del menú de mina!"
+    Block-Deleted: "Expulsado del menú de bloque!"
+    Loot-Table-Change: "Tabla de botín cambiada!"
+    First-Page: "Ya te encuentras en la primera página"
+    Last-Page: "Ya te encuentras en la última página"
+    Mine-Doesnt-Exist: "&cLa mina a la que intentaste acceder ya no existe!"
