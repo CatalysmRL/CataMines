@@ -477,7 +477,9 @@ public abstract class AbstractCataMine implements Cloneable {
     }
 
     public void setResetPercentage(double resetPercentage) {
-        this.resetPercentage = resetPercentage;
+        if (resetPercentage < 0) resetPercentage = 0;
+        if (resetPercentage > 100) resetPercentage = 100;
+        this.resetPercentage = Math.round(resetPercentage * 100) / 100d;
     }
 
     public boolean isReplaceMode() {

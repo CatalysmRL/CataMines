@@ -5,6 +5,7 @@ import de.c4t4lysm.catamines.utils.ItemStackBuilder;
 import de.c4t4lysm.catamines.utils.menusystem.Menu;
 import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
 import de.c4t4lysm.catamines.utils.menusystem.menus.MineMenu;
+import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -53,6 +54,11 @@ public class ResetDelayMenu extends Menu {
                 new MineMenu(playerMenuUtility).open();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 return;
+            case 6:
+                mine.setResetMode(CataMineResetMode.PERCENTAGE);
+                new ResetPercentageMenu(playerMenuUtility).open();
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
+                return;
             case 3 * 9 - 6:
                 addResetDelay = 1;
                 break;
@@ -87,7 +93,10 @@ public class ResetDelayMenu extends Menu {
 
     @Override
     public void setMenuItems() {
+
         inventory.setItem(13, ItemStackBuilder.buildItem(Material.CLOCK, plugin.getLangString("GUI.Reset-Delay-Menu.Items.Current-Delay.Name").replaceAll("%delay%", String.valueOf(mine.getResetDelay()))));
+
+        inventory.setItem(6, ItemStackBuilder.buildItem(Material.LEVER, plugin.getLangString("GUI.Reset-Delay-Menu.Items.Switch.Name"), plugin.getLangStringList("GUI.Reset-Delay-Menu.Items.Switch.Lore")));
 
         String increaseBy = plugin.getLangString("GUI.Universal.Increase-By");
         String decreaseBy = plugin.getLangString("GUI.Universal.Decrease-By");

@@ -52,7 +52,13 @@ GUI:
       Configure-Delay:
         Name: "&6Configure reset delay"
         Lore:
-          - "&bReset delay: &c%delay%"
+          - "&bReset delay: &c%delay%s"
+          - "&bReset percentage: &c%percentage%%"
+      Configure-Percentage:
+        Name: "&6Configure reset percentage"
+        Lore:
+          - "&bReset percentage: &c%percentage%%"
+          - "&bReset delay: &c%delay%s"
       Warn:
         Active:
           Name: "&aWarns on reset"
@@ -208,6 +214,21 @@ GUI:
     Items:
       Current-Delay:
         Name: "&bCurrent delay: &c%delay%"
+      Switch:
+        Name: "&6Switch mode"
+        Lore:
+          - ""
+          - "&bSwitch current mode to &6TIME"
+  Reset-Percentage-Menu:
+    Title: "&bConfigure reset percentage: &c%percentage%%"
+    Items:
+      Current-Percentage:
+        Name: "&bCurrent percentage: &c%percentage%"
+      Switch:
+        Name: "&6Switch mode"
+        Lore:
+          - ""
+          - "&bSwitch current mode to &6DELAY"
   Efficiency-Menu:
     Title: "&bMinimum efficiency lvl: &c%level%"
     Items:

@@ -4,11 +4,9 @@ import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.utils.ItemStackBuilder;
 import de.c4t4lysm.catamines.utils.menusystem.Menu;
 import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
-import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.DeleteConfirmMenu;
-import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.PickaxeEfficiencyMenu;
-import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.ResetDelayMenu;
-import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.WarnDistanceMenu;
+import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.*;
 import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu.CompositionMenu;
+import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,25 +21,25 @@ import java.util.Objects;
 
 public class MineMenu extends Menu {
 
-    private final CuboidCataMine cuboidCataMine;
+    private final CuboidCataMine mine;
     private final CataMines plugin = CataMines.getInstance();
 
     public MineMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
         playerMenuUtility.setMenu(this);
-        this.cuboidCataMine = playerMenuUtility.getMine();
+        this.mine = playerMenuUtility.getMine();
     }
 
-    public MineMenu(PlayerMenuUtility playerMenuUtility, CuboidCataMine cuboidCataMine) {
+    public MineMenu(PlayerMenuUtility playerMenuUtility, CuboidCataMine mine) {
         super(playerMenuUtility);
         playerMenuUtility.setMenu(this);
-        playerMenuUtility.setMine(cuboidCataMine);
-        this.cuboidCataMine = cuboidCataMine;
+        playerMenuUtility.setMine(mine);
+        this.mine = mine;
     }
 
     @Override
     public String getMenuName() {
-        return CataMines.getInstance().getLangString("GUI.Mine-Menu.Title").replaceAll("%mine%", cuboidCataMine.getName());
+        return CataMines.getInstance().getLangString("GUI.Mine-Menu.Title").replaceAll("%mine%", mine.getName());
     }
 
     @Override
@@ -65,37 +63,52 @@ public class MineMenu extends Menu {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 break;
             case 12:
-                new ResetDelayMenu(playerMenuUtility).open();
+                if (mine.getResetMode().equals(CataMineResetMode.TIME)) {
+                    if (event.isRightClick()) {
+                        mine.setResetMode(CataMineResetMode.PERCENTAGE);
+                        updateMenus();
+                        break;
+                    } else {
+                        new ResetDelayMenu(playerMenuUtility).open();
+                    }
+                } else {
+                    if (event.isRightClick()) {
+                        mine.setResetMode(CataMineResetMode.TIME);
+                        updateMenus();
+                    } else {
+                        new ResetPercentageMenu(playerMenuUtility).open();
+                    }
+                }
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 break;
             case 5:
-                cuboidCataMine.setWarn(!cuboidCataMine.isWarn());
-                cuboidCataMine.save();
+                mine.setWarn(!mine.isWarn());
+                mine.save();
                 updateMenus();
                 break;
             case 6:
-                cuboidCataMine.setWarnGlobal(!cuboidCataMine.isWarnGlobal());
-                cuboidCataMine.save();
+                mine.setWarnGlobal(!mine.isWarnGlobal());
+                mine.save();
                 updateMenus();
                 break;
             case 7:
-                cuboidCataMine.setWarnHotbar(!cuboidCataMine.isWarnHotbar());
-                cuboidCataMine.save();
+                mine.setWarnHotbar(!mine.isWarnHotbar());
+                mine.save();
                 updateMenus();
                 break;
             case 14:
-                cuboidCataMine.setTeleportPlayers(!cuboidCataMine.isTeleportPlayers());
-                cuboidCataMine.save();
+                mine.setTeleportPlayers(!mine.isTeleportPlayers());
+                mine.save();
                 updateMenus();
                 break;
             case 15:
-                cuboidCataMine.setTeleportPlayersToResetLocation(!cuboidCataMine.isTeleportPlayersToResetLocation());
-                cuboidCataMine.save();
+                mine.setTeleportPlayersToResetLocation(!mine.isTeleportPlayersToResetLocation());
+                mine.save();
                 updateMenus();
                 break;
             case 16:
-                cuboidCataMine.setReplaceMode(!cuboidCataMine.isReplaceMode());
-                cuboidCataMine.save();
+                mine.setReplaceMode(!mine.isReplaceMode());
+                mine.save();
                 updateMenus();
                 break;
             case 17:
@@ -107,16 +120,16 @@ public class MineMenu extends Menu {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 break;
             case 29:
-                player.performCommand("cm reset " + cuboidCataMine.getName());
+                player.performCommand("cm reset " + mine.getName());
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 break;
             case 31:
                 player.closeInventory();
-                if (cuboidCataMine.getTeleportLocation() == null) {
-                    player.sendMessage(CataMines.PREFIX + plugin.getLangString("Error-Messages.Mine.Teleport-Error").replaceAll("%mine%", cuboidCataMine.getName()));
+                if (mine.getTeleportLocation() == null) {
+                    player.sendMessage(CataMines.PREFIX + plugin.getLangString("Error-Messages.Mine.Teleport-Error").replaceAll("%mine%", mine.getName()));
                     return;
                 }
-                player.teleport(cuboidCataMine.getTeleportLocation());
+                player.teleport(mine.getTeleportLocation());
                 player.playSound(player.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.3F, 1F);
                 break;
             case 33:
@@ -124,12 +137,12 @@ public class MineMenu extends Menu {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 break;
             case 45:
-                if (cuboidCataMine.getRegion() == null) {
+                if (mine.getRegion() == null) {
                     player.sendMessage(CataMines.PREFIX + plugin.getLangString("Error-Messages.Mine.Invalid-Region"));
                     break;
                 }
-                cuboidCataMine.setStopped(!cuboidCataMine.isStopped());
-                cuboidCataMine.save();
+                mine.setStopped(!mine.isStopped());
+                mine.save();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 updateMenus();
                 break;
@@ -146,36 +159,43 @@ public class MineMenu extends Menu {
 
         // ItemStack for configuring the composition
         List<String> compLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Configure-Composition.Lore");
-        compLore.replaceAll(s -> s.replaceAll("%chance%", String.valueOf(cuboidCataMine.getCompositionChance())));
+        compLore.replaceAll(s -> s.replaceAll("%chance%", String.valueOf(mine.getCompositionChance())));
         inventory.setItem(10, ItemStackBuilder.buildItem(Material.STONE, plugin.getLangString("GUI.Mine-Menu.Items.Configure-Composition.Name"), compLore));
 
-        // ItemStack for configuring the reset delay
-        List<String> delayLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Configure-Delay.Lore");
-        delayLore.replaceAll(s -> s.replaceAll("%delay%", String.valueOf(cuboidCataMine.getResetDelay())));
-        inventory.setItem(12, ItemStackBuilder.buildItem(Material.CLOCK, plugin.getLangString("GUI.Mine-Menu.Items.Configure-Delay.Name"), delayLore));
+        if (mine.getResetMode().equals(CataMineResetMode.TIME)) {
+            // ItemStack for configuring the reset delay
+            List<String> delayLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Configure-Delay.Lore");
+            delayLore.replaceAll(s -> s.replaceAll("%delay%", String.valueOf(mine.getResetDelay())).replaceAll("%percentage%", String.valueOf(mine.getResetPercentage())));
+            inventory.setItem(12, ItemStackBuilder.buildItem(Material.CLOCK, plugin.getLangString("GUI.Mine-Menu.Items.Configure-Delay.Name"), delayLore));
+        } else {
+            // ItemStack for configuring the reset percentage
+            List<String> percentageLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Configure-Percentage.Lore");
+            percentageLore.replaceAll(s -> s.replaceAll("%percentage%", String.valueOf(mine.getResetPercentage())).replaceAll("%delay%", String.valueOf(mine.getResetDelay())));
+            inventory.setItem(12, ItemStackBuilder.buildItem(Material.CLOCK, plugin.getLangString("GUI.Mine-Menu.Items.Configure-Percentage.Name"), percentageLore));
+        }
 
         // Configure Attributes
         // Select warn
-        inventory.setItem(5, ItemStackBuilder.buildItem(cuboidCataMine.isWarn() ? Material.LIME_DYE : Material.GRAY_DYE, cuboidCataMine.isWarn() ? plugin.getLangString("GUI.Mine-Menu.Items.Warn.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Warn.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Warn.Lore")));
+        inventory.setItem(5, ItemStackBuilder.buildItem(mine.isWarn() ? Material.LIME_DYE : Material.GRAY_DYE, mine.isWarn() ? plugin.getLangString("GUI.Mine-Menu.Items.Warn.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Warn.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Warn.Lore")));
         // Select global warn
-        inventory.setItem(6, ItemStackBuilder.buildItem(cuboidCataMine.isWarnGlobal() ? Material.LIME_DYE : Material.GRAY_DYE, cuboidCataMine.isWarnGlobal() ? plugin.getLangString("GUI.Mine-Menu.Items.Warn-Global.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Warn-Global.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Warn-Global.Lore")));
+        inventory.setItem(6, ItemStackBuilder.buildItem(mine.isWarnGlobal() ? Material.LIME_DYE : Material.GRAY_DYE, mine.isWarnGlobal() ? plugin.getLangString("GUI.Mine-Menu.Items.Warn-Global.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Warn-Global.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Warn-Global.Lore")));
         // Select warn HotBar
-        inventory.setItem(7, ItemStackBuilder.buildItem(cuboidCataMine.isWarnHotbar() ? Material.LIME_DYE : Material.GRAY_DYE, cuboidCataMine.isWarnHotbar() ? plugin.getLangString("GUI.Mine-Menu.Items.Warn-Hotbar.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Warn-Hotbar.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Warn-Hotbar.Lore")));
+        inventory.setItem(7, ItemStackBuilder.buildItem(mine.isWarnHotbar() ? Material.LIME_DYE : Material.GRAY_DYE, mine.isWarnHotbar() ? plugin.getLangString("GUI.Mine-Menu.Items.Warn-Hotbar.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Warn-Hotbar.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Warn-Hotbar.Lore")));
         // Select teleport players
-        inventory.setItem(14, ItemStackBuilder.buildItem(cuboidCataMine.isTeleportPlayers() ? Material.LIME_DYE : Material.GRAY_DYE, cuboidCataMine.isTeleportPlayers() ? plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Teleport-Players.Lore")));
+        inventory.setItem(14, ItemStackBuilder.buildItem(mine.isTeleportPlayers() ? Material.LIME_DYE : Material.GRAY_DYE, mine.isTeleportPlayers() ? plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Teleport-Players.Lore")));
         // Select teleport players to reset location
-        inventory.setItem(15, ItemStackBuilder.buildItem(cuboidCataMine.isTeleportPlayersToResetLocation() ? Material.LIME_DYE : Material.GRAY_DYE, cuboidCataMine.isTeleportPlayersToResetLocation() ? plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players-To-Reset-Location.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players-To-Reset-Location.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Teleport-Players-To-Reset-Location.Lore")));
+        inventory.setItem(15, ItemStackBuilder.buildItem(mine.isTeleportPlayersToResetLocation() ? Material.LIME_DYE : Material.GRAY_DYE, mine.isTeleportPlayersToResetLocation() ? plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players-To-Reset-Location.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Teleport-Players-To-Reset-Location.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Teleport-Players-To-Reset-Location.Lore")));
         // Select replace mode
-        inventory.setItem(16, ItemStackBuilder.buildItem(cuboidCataMine.isReplaceMode() ? Material.LIME_DYE : Material.GRAY_DYE, cuboidCataMine.isReplaceMode() ? plugin.getLangString("GUI.Mine-Menu.Items.Replace-Mode.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Replace-Mode.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Replace-Mode.Lore")));
+        inventory.setItem(16, ItemStackBuilder.buildItem(mine.isReplaceMode() ? Material.LIME_DYE : Material.GRAY_DYE, mine.isReplaceMode() ? plugin.getLangString("GUI.Mine-Menu.Items.Replace-Mode.Active.Name") : plugin.getLangString("GUI.Mine-Menu.Items.Replace-Mode.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Replace-Mode.Lore")));
 
         // ItemStack for configuring warn distance
         List<String> warnDistanceLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Warn-Distance.Lore");
-        warnDistanceLore.replaceAll(s -> s.replaceAll("%distance%", String.valueOf(cuboidCataMine.getWarnDistance())));
+        warnDistanceLore.replaceAll(s -> s.replaceAll("%distance%", String.valueOf(mine.getWarnDistance())));
         inventory.setItem(17, ItemStackBuilder.buildItem(Material.STICK, plugin.getLangString("GUI.Mine-Menu.Items.Warn-Distance.Name"), warnDistanceLore));
 
         // ItemStack for configuring min. efficiency level
         List<String> efficiencyLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Efficiency-Lvl.Lore");
-        efficiencyLore.replaceAll(s -> s.replaceAll("%level%", String.valueOf(cuboidCataMine.getMinEfficiencyLvl())));
+        efficiencyLore.replaceAll(s -> s.replaceAll("%level%", String.valueOf(mine.getMinEfficiencyLvl())));
         inventory.setItem(8, ItemStackBuilder.buildItem(Material.DIAMOND_PICKAXE, plugin.getLangString("GUI.Mine-Menu.Items.Efficiency-Lvl.Name"), efficiencyLore));
 
         // Reset mine
@@ -186,29 +206,29 @@ public class MineMenu extends Menu {
         inventory.setItem(33, ItemStackBuilder.buildItem(Material.REDSTONE_BLOCK, plugin.getLangString("GUI.Mine-Menu.Items.Delete.Name")));
 
         // De-/Activate
-        inventory.setItem(45, ItemStackBuilder.buildItem(!cuboidCataMine.isStopped() ? Material.REDSTONE_TORCH : Material.LEVER, !cuboidCataMine.isStopped() ? plugin.getLangString("GUI.Mine-Menu.Items.Start-Stop.Active.Name") : ChatColor.GRAY + plugin.getLangString("GUI.Mine-Menu.Items.Start-Stop.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Start-Stop.Lore")));
+        inventory.setItem(45, ItemStackBuilder.buildItem(!mine.isStopped() ? Material.REDSTONE_TORCH : Material.LEVER, !mine.isStopped() ? plugin.getLangString("GUI.Mine-Menu.Items.Start-Stop.Active.Name") : ChatColor.GRAY + plugin.getLangString("GUI.Mine-Menu.Items.Start-Stop.Inactive.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Start-Stop.Lore")));
 
         // Go back to mine list
         inventory.setItem(49, ItemStackBuilder.buildItem(Material.BARRIER, plugin.getLangString("GUI.Mine-Menu.Items.Back.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Back.Lore")));
 
         // Displays if the mine could run
-        if (cuboidCataMine.checkRunnable() && !cuboidCataMine.isStopped()) {
+        if (mine.checkRunnable() && !mine.isStopped()) {
             inventory.setItem(53, ItemStackBuilder.buildItem(Material.LIME_DYE, plugin.getLangString("GUI.Mine-Menu.Items.Running.Active.Name"), plugin.getLangStringList("GUI.Mine-Menu.Items.Running.Active.Lore")));
         } else {
 
             ArrayList<String> reasons = new ArrayList<>();
 
-            if (cuboidCataMine.getRegion() == null) {
+            if (mine.getRegion() == null) {
                 reasons.add(plugin.getLangString("GUI.Mine-Menu.Items.Running.Inactive.Reasons.Invalid-Region"));
             }
-            if (cuboidCataMine.isStopped()) {
+            if (mine.isStopped()) {
                 reasons.add(plugin.getLangString("GUI.Mine-Menu.Items.Running.Inactive.Reasons.Stopped"));
             }
-            if (cuboidCataMine.getRandomPattern() == null) {
+            if (mine.getRandomPattern() == null) {
                 reasons.add(plugin.getLangString("GUI.Mine-Menu.Items.Running.Inactive.Reasons.No-Composition"));
             }
-            if (!(cuboidCataMine.getResetDelay() > 0 && cuboidCataMine.getResetDelay() <= 100000)) {
-                reasons.add(plugin.getLangString("GUI.Mine-Menu.Items.Running.Inactive.Reasons.Invalid-Delay").replaceAll("%delay%", String.valueOf(cuboidCataMine.getResetDelay())));
+            if (!(mine.getResetDelay() > 0 && mine.getResetDelay() <= 100000)) {
+                reasons.add(plugin.getLangString("GUI.Mine-Menu.Items.Running.Inactive.Reasons.Invalid-Delay").replaceAll("%delay%", String.valueOf(mine.getResetDelay())));
             }
 
             inventory.setItem(53, ItemStackBuilder.buildItem(Material.GRAY_DYE, plugin.getLangString("GUI.Mine-Menu.Items.Running.Inactive.Name"), reasons));

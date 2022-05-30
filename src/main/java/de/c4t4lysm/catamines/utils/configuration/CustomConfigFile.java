@@ -2,12 +2,12 @@ package de.c4t4lysm.catamines.utils.configuration;
 
 import de.c4t4lysm.catamines.CataMines;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CustomConfigFile extends YamlConfiguration {
@@ -40,6 +40,15 @@ public class CustomConfigFile extends YamlConfiguration {
             this.load(this.file);
 
             for (Map.Entry<String, Object> entry : mappedConfig.entrySet()) {
+                this.set(entry.getKey(), entry.getValue());
+            }
+
+            Map<String, Object> defaultMap = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getClass().getResourceAsStream("/" + resourceName))).getValues(true);
+            for (Map.Entry<String, Object> entry : defaultMap.entrySet()) {
+                if (this.contains(entry.getKey())) {
+                    continue;
+                }
+
                 this.set(entry.getKey(), entry.getValue());
             }
 
