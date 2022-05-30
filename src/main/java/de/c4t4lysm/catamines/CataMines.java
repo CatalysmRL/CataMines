@@ -9,7 +9,7 @@ import de.c4t4lysm.catamines.listeners.BlockBreakListener;
 import de.c4t4lysm.catamines.listeners.PlayerJoinListener;
 import de.c4t4lysm.catamines.schedulers.MineManager;
 import de.c4t4lysm.catamines.tabcompleters.CataMinesTabCompleter;
-import de.c4t4lysm.catamines.utils.FileManager;
+import de.c4t4lysm.catamines.utils.configuration.FileManager;
 import de.c4t4lysm.catamines.utils.Metrics;
 import de.c4t4lysm.catamines.utils.UpdateChecker;
 import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
@@ -18,14 +18,11 @@ import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import de.c4t4lysm.catamines.utils.mine.placeholders.CataMinePlaceHolders;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,9 +36,6 @@ public final class CataMines extends JavaPlugin {
     public boolean placeholderAPI = false;
     private FileManager fileManager;
     private WorldEditPlugin worldEditPlugin;
-
-    private File customConfigFile = null;
-    private YamlConfiguration customConfig = null;
 
     public static CataMines getInstance() {
         return plugin;
@@ -99,36 +93,6 @@ public final class CataMines extends JavaPlugin {
             placeholderAPI = true;
         }
 
-    }
-
-    public void reloadCustomConfig() {
-        if (customConfigFile == null) {
-            customConfigFile = new File(getDataFolder(), "customConfig.yml");
-        }
-        customConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("default_properties.yml")));
-
-        // Look for defaults in the jar
-        Reader defConfigStream = null;
-        defConfigStream = new InputStreamReader(this.getResource("default_properties.yml"));
-        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-        customConfig.setDefaults(defConfig);
-    }
-
-    public FileConfiguration getCustomConfig() {
-        if (customConfig == null) {
-            reloadCustomConfig();
-        }
-        return customConfig;
-    }
-
-    public void saveCustomConfig() {
-        if (customConfig == null || customConfigFile == null) {
-            return;
-        }
-        try {
-            getCustomConfig().save(customConfigFile);
-        } catch (IOException ignored) {
-        }
     }
 
     @Override

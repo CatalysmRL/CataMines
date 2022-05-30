@@ -7,7 +7,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.CataMines;
-import de.c4t4lysm.catamines.utils.FileConfig;
+import de.c4t4lysm.catamines.utils.configuration.FileConfig;
 import de.c4t4lysm.catamines.utils.mine.AbstractCataMine;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineLootItem;
@@ -19,8 +19,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnull;
 import java.util.*;

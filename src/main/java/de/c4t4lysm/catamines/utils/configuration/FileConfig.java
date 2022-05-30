@@ -1,4 +1,4 @@
-package de.c4t4lysm.catamines.utils;
+package de.c4t4lysm.catamines.utils.configuration;
 
 import de.c4t4lysm.catamines.CataMines;
 import org.bukkit.configuration.InvalidConfigurationException;

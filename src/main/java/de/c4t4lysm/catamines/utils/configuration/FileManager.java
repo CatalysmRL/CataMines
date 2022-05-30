@@ -1,12 +1,10 @@
-package de.c4t4lysm.catamines.utils;
+package de.c4t4lysm.catamines.utils.configuration;
 
 import de.c4t4lysm.catamines.CataMines;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ public class FileManager {
     private final CataMines plugin;
     private final File dataFolder;
     private FileConfig langCfg;
-    private FileConfig propertiesCfg;
+    private CustomConfigFile propertiesCfg;
 
     public FileManager(CataMines plugin) {
         this.plugin = plugin;
@@ -68,8 +66,7 @@ public class FileManager {
 
 
         plugin.getLogger().info("Loading config file");
-        plugin.getConfig().options().copyDefaults(true);
-        plugin.saveConfig();
+        new CustomConfigFile(plugin, new File(dataFolder, "config.yml"), "config.yml");
 
         CataMines.PREFIX = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix"));
     }
@@ -84,17 +81,16 @@ public class FileManager {
 
     public void setupCustomFiles() {
 
-        this.propertiesCfg = new FileConfig(new File(dataFolder, "default_properties.yml"));
-        setupCustomFile(propertiesCfg, "default_properties.yml");
-
+        this.propertiesCfg = new CustomConfigFile(plugin, new File(dataFolder, "default_properties.yml"), "default_properties.yml");
+        this.propertiesCfg.saveConfig();
 
     }
 
     public void setupLanguageFiles() {
 
-        setupCustomFile(new FileConfig(new File(dataFolder + "/languages", "messages_en.yml")), "messages_en.yml");
-        setupCustomFile(new FileConfig(new File(dataFolder + "/languages", "messages_custom.yml")), "messages_custom.yml");
-        setupCustomFile(new FileConfig(new File(dataFolder + "/languages", "messages_es.yml")), "messages_es.yml");
+        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_en.yml"), "messages_en.yml");
+        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_custom.yml"), "messages_custom.yml");
+        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_es.yml"), "messages_es.yml");
 
         File langFile = new File(dataFolder + "/languages", "messages_" + plugin.getConfig().getString("language").toLowerCase() + ".yml");
         if (!langFile.exists()) {
@@ -127,15 +123,6 @@ public class FileManager {
             }
         }
 
-    }
-
-    private void setupCustomFile(FileConfig customConfig, String resourceName) {
-
-        InputStreamReader defConfigStream = new InputStreamReader(plugin.getResource(resourceName), StandardCharsets.UTF_8);
-        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-        customConfig.setDefaults(defConfig);
-        customConfig.reloadConfig();
-        customConfig.saveConfig();
     }
 
 }

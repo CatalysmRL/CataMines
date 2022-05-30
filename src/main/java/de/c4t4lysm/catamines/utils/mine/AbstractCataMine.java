@@ -10,7 +10,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.CataMines;
-import de.c4t4lysm.catamines.utils.FileConfig;
+import de.c4t4lysm.catamines.utils.configuration.FileConfig;
 import de.c4t4lysm.catamines.utils.Utils;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
@@ -101,12 +101,9 @@ public abstract class AbstractCataMine implements Cloneable {
             return;
         }
 
-        if (warnHotbar) {
-            broadcastHotbar();
-        }
-
         switch (resetMode) {
             case TIME:
+                if (resetDelay < 0) return;
                 if (!firstCycle) {
                     --countdown;
                 } else {
@@ -130,17 +127,21 @@ public abstract class AbstractCataMine implements Cloneable {
                 }
                 break;
         }
+
+        if (warnHotbar) {
+            broadcastHotbar();
+        }
     }
 
     public void reset() {
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
+            if (warn) {
+                broadcastResetMessage();
+            }
             if (!replaceMode) {
                 editSession.setBlocks(region, randomPattern);
             } else {
                 editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
-            }
-            if (warn) {
-                broadcastResetMessage();
             }
             if (teleportPlayers) {
                 teleportPlayers();
