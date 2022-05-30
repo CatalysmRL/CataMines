@@ -15,6 +15,7 @@ A mines management plugins
 
 ## 🔗 Links
 - [Spigot Page](https://www.spigotmc.org/resources/96457)
+- [bStats](https://bstats.org/plugin/bukkit/CataMines/12889)
 
 ## 📜 License
 CataMines is licensed under GNU General Public License v3.0. Please see [LICENSE.md](https://github.com/CatalysmRL/CataMines/blob/main/LICENCE.md) for more info.
