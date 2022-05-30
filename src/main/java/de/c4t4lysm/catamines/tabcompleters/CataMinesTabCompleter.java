@@ -4,6 +4,7 @@ import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.commands.commandhandler.CommandHandler;
 import de.c4t4lysm.catamines.commands.commandhandler.FlagCommandsHandler;
 import de.c4t4lysm.catamines.schedulers.MineManager;
+import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CataMinesTabCompleter implements TabCompleter {
     @Override
@@ -23,91 +25,70 @@ public class CataMinesTabCompleter implements TabCompleter {
             return Collections.emptyList();
         }
 
-        if (args.length == 1) {
-            final List<String> completions = new ArrayList<>();
-            return StringUtil.copyPartialMatches(args[0], new ArrayList<>(CommandHandler.getCommandNames()), completions);
-
-        } else if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("info")
-                    || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("unset")
-                    || args[0].equalsIgnoreCase("start") || args[0].equalsIgnoreCase("stop")
-                    || args[0].equalsIgnoreCase("setdelay") || args[0].equalsIgnoreCase("flag")
-                    || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("tp")
-                    || args[0].equalsIgnoreCase("settp") || args[0].equalsIgnoreCase("setresettp")
-                    || args[0].equalsIgnoreCase("gui")) {
-                final List<String> completions = new ArrayList<>();
-                return StringUtil.copyPartialMatches(args[1], MineManager.getInstance().getMineListNames(), completions);
+        switch (args.length) {
+            case 1: {
+                return StringUtil.copyPartialMatches(args[0], new ArrayList<>(CommandHandler.getCommandNames()), new ArrayList<>());
             }
+            case 2:
+                List<String> correctArgs = Arrays.asList("delete", "info", "set", "unset", "start", "stop", "setdelay", "flag",
+                        "reset", "tp", "settp", "setresettp", "gui", "resetmode", "resetpercentage");
+                if (correctArgs.contains(args[0].toLowerCase())) {
+                    return StringUtil.copyPartialMatches(args[1], MineManager.getInstance().getMineListNames(), new ArrayList<>());
+                } else if (args[0].equalsIgnoreCase("reload")) {
+                    return StringUtil.copyPartialMatches(args[1], Arrays.asList("mines", "config", "messages", "properties"), new ArrayList<>());
+                }
+                break;
+            case 3: {
+                if (!MineManager.getInstance().getMineListNames().contains(args[1])) {
+                    return Collections.emptyList();
+                }
 
-            if (args[0].equalsIgnoreCase("reload")) {
-                final List<String> completions = new ArrayList<>();
-                return StringUtil.copyPartialMatches(args[1], Arrays.asList("mines", "config", "messages", "properties"), completions);
-            }
-        } else if (args.length == 3) {
+                List<String> completions = new ArrayList<>();
+                switch (args[0].toLowerCase()) {
+                    case "set":
+                        List<String> allBlocks = new ArrayList<>();
 
-            if (!MineManager.getInstance().getMineListNames().contains(args[1])) {
-                return Collections.emptyList();
-            }
-
-            if (args[0].equalsIgnoreCase("set")) {
-                if (MineManager.getInstance().getMineListNames().contains(args[1])) {
-                    final List<String> completions = new ArrayList<>();
-                    List<String> blockList = new ArrayList<>();
-
-                    for (Material material : Material.values()) {
-                        if (material.isBlock()) {
-                            blockList.add(material.toString().toLowerCase());
+                        for (Material material : Material.values()) {
+                            if (material.isBlock()) {
+                                allBlocks.add(material.toString().toLowerCase());
+                            }
                         }
-                    }
-                    return StringUtil.copyPartialMatches(args[2], blockList, completions);
+                        return StringUtil.copyPartialMatches(args[2], allBlocks, completions);
+                    case "unset":
+                        List<String> blockList = new ArrayList<>();
+                        MineManager.getInstance().getMine(args[1]).getBlocks().forEach(block -> blockList.add(block.getMaterial().name()));
+                        return StringUtil.copyPartialMatches(args[2], blockList, completions);
+                    case "setdelay":
+                        return StringUtil.copyPartialMatches(args[2], Collections.singletonList("seconds"), completions);
+                    case "flag":
+                        return StringUtil.copyPartialMatches(args[2], FlagCommandsHandler.getFlagCommandNames(), completions);
+                    case "tp":
+                        return null;
+                    case "resetmode":
+                        return StringUtil.copyPartialMatches(args[2], Arrays.stream(CataMineResetMode.values()).map(Enum::name).collect(Collectors.toList()), completions);
                 }
+                break;
             }
+            case 4:
 
-            if (args[0].equalsIgnoreCase("unset")) {
-                if (MineManager.getInstance().getMineListNames().contains(args[1])) {
-                    final List<String> completions = new ArrayList<>();
-                    List<String> blockList = new ArrayList<>();
-                    MineManager.getInstance().getMine(args[1]).getBlocks().forEach(block -> blockList.add(block.getMaterial().name()));
-                    return StringUtil.copyPartialMatches(args[2], blockList, completions);
+                if (!MineManager.getInstance().getMineListNames().contains(args[1])) {
+                    return Collections.emptyList();
                 }
-            }
 
-            if (args[0].equalsIgnoreCase("setDelay")) {
-                if (MineManager.getInstance().getMineListNames().contains(args[1])) {
-                    return StringUtil.copyPartialMatches(args[2], Collections.singletonList("seconds"), new ArrayList<>());
+                switch (args[0].toLowerCase()) {
+                    case "set":
+                        if (BlockTypes.get(args[2]) != null) {
+                            return StringUtil.copyPartialMatches(args[3], Collections.singletonList("e.g 50%"), new ArrayList<>());
+                        }
+                        break;
+                    case "replacemode":
+                    case "warn":
+                    case "warnglobal":
+                    case "teleportplayers":
+                    case "teleportplayerstoresetlocation":
+                        return StringUtil.copyPartialMatches(args[3], Arrays.asList("true", "false"), new ArrayList<>());
                 }
-            }
-
-            if (args[0].equalsIgnoreCase("flag")) {
-                return StringUtil.copyPartialMatches(args[2], FlagCommandsHandler.getFlagCommandNames(), new ArrayList<>());
-            }
-
-            if (args[0].equalsIgnoreCase("tp")) {
-                return null;
-            }
-
-        } else if (args.length == 4) {
-
-            if (!MineManager.getInstance().getMineListNames().contains(args[1])) {
-                return Collections.emptyList();
-            }
-
-            if (args[0].equalsIgnoreCase("set")) {
-                if (MineManager.getInstance().getMineListNames().contains(args[1])) {
-                    if (BlockTypes.get(args[2]) != null) {
-                        return StringUtil.copyPartialMatches(args[3], Collections.singletonList("e.g 50%"), new ArrayList<>());
-                    }
-                }
-            }
-
-            if (args[2].equalsIgnoreCase("replacemode") || args[2].equalsIgnoreCase("warn")
-                    || args[2].equalsIgnoreCase("warnglobal") || args[2].equalsIgnoreCase("teleportplayers")
-                    || args[2].equalsIgnoreCase("teleportplayerstoresetlocation")) {
-                if (MineManager.getInstance().getMineListNames().contains(args[1])) {
-                    final List<String> completions = new ArrayList<>();
-                    return StringUtil.copyPartialMatches(args[3], Arrays.asList("true", "false"), completions);
-                }
-            }
+                break;
         }
 
         return Collections.emptyList();
