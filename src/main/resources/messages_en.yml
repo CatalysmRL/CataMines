@@ -54,11 +54,15 @@ GUI:
         Lore:
           - "&bReset delay: &c%delay%s"
           - "&bReset percentage: &c%percentage%%"
+          - ""
+          - "&fRight click to switch modes"
       Configure-Percentage:
         Name: "&6Configure reset percentage"
         Lore:
           - "&bReset percentage: &c%percentage%%"
           - "&bReset delay: &c%delay%s"
+          - ""
+          - "&fRight click to switch modes"
       Warn:
         Active:
           Name: "&aWarns on reset"

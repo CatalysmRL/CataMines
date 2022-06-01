@@ -53,6 +53,12 @@ GUI:
         Name: "&6Configurar el temporizador de reinicio"
         Lore:
           - "&bReiniciar temporizador: &c%delay%"
+          - "&bReniciar porcentaje: &c%percentage%"
+      Configure-Percentage:
+        Name: "&6Configurar porcentaje de reinicio"
+        Lore:
+          - "&bReniciar porcentaje: &c%percentage%"
+          - "&bReiniciar temporizador: &c%delay%"
       Warn:
         Active:
           Name: "&aAvisa sobre el reinicio"
@@ -208,6 +214,21 @@ GUI:
     Items:
       Current-Delay:
         Name: "&bTemporizador actual: &c%delay%"
+      Switch:
+        Name: "&6Cambia modos"
+        Lore:
+          - ""
+          - "&bCambia el modo actual a &6porcentaje"
+  Reset-Percentage-Menu:
+    Title: "&bConfigurar porcentaje de reinicio: &c%percentage%%"
+    Items:
+      Current-Percentage:
+        Name: "&bPorcentaje actual: &c%percentage%"
+      Switch:
+        Name: "&6Cambia modos"
+        Lore:
+          - ""
+          - "&bCambia el modo actual a &6temporizador"
   Efficiency-Menu:
     Title: "&bNivel de eficiencia mínimo: &c%level%"
     Items:
