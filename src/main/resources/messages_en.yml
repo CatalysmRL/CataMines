@@ -214,7 +214,7 @@ GUI:
     Items:
       Current-Item: "!unchangeable! internal item"
   Reset-Delay-Menu:
-    Title: "&bConfigure reset delay: &c%delay%"
+    Title: "&Current delay: &c%delay%"
     Items:
       Current-Delay:
         Name: "&bCurrent delay: &c%delay%"
@@ -224,7 +224,7 @@ GUI:
           - ""
           - "&bSwitch current mode to &6TIME"
   Reset-Percentage-Menu:
-    Title: "&bConfigure reset percentage: &c%percentage%%"
+    Title: "&bCurrent percentage: &c%percentage%%"
     Items:
       Current-Percentage:
         Name: "&bCurrent percentage: &c%percentage%"
