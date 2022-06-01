@@ -62,7 +62,7 @@ public class InfoCommand implements CommandInterface {
 
             sender.sendMessage("§7--------------------------------");
             sender.sendMessage("§bComposition:");
-            cuboidCataMine.getBlocks().forEach(block -> sender.sendMessage("  " + ChatColor.GOLD + block.getMaterial().name() + ChatColor.AQUA + " , " + ChatColor.RED + block.getChance() + "%"));
+            cuboidCataMine.getBlocks().forEach(block -> sender.sendMessage("  " + ChatColor.GOLD + block.getBlockData().getMaterial().name() + ChatColor.AQUA + " , " + ChatColor.RED + block.getChance() + "%"));
 
             sender.sendMessage("§7--------------------------------");
             sender.sendMessage("§bReset delay: §c" + cuboidCataMine.getResetDelay() + " §7seconds." +

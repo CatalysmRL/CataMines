@@ -1,6 +1,5 @@
 package de.c4t4lysm.catamines.tabcompleters;
 
-import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.commands.commandhandler.CommandHandler;
 import de.c4t4lysm.catamines.commands.commandhandler.FlagCommandsHandler;
 import de.c4t4lysm.catamines.schedulers.MineManager;
@@ -46,17 +45,18 @@ public class CataMinesTabCompleter implements TabCompleter {
                 List<String> completions = new ArrayList<>();
                 switch (args[0].toLowerCase()) {
                     case "set":
-                        List<String> allBlocks = new ArrayList<>();
-
+                        ArrayList<String> blocks = new ArrayList<>();
                         for (Material material : Material.values()) {
-                            if (material.isBlock()) {
-                                allBlocks.add(material.toString().toLowerCase());
+                            if (material.isBlock() && material.isSolid()) {
+                                blocks.add(material.toString().toLowerCase());
                             }
                         }
-                        return StringUtil.copyPartialMatches(args[2], allBlocks, completions);
+
+
+                        return StringUtil.copyPartialMatches(args[2], blocks, completions);
                     case "unset":
                         List<String> blockList = new ArrayList<>();
-                        MineManager.getInstance().getMine(args[1]).getBlocks().forEach(block -> blockList.add(block.getMaterial().name()));
+                        MineManager.getInstance().getMine(args[1]).getBlocks().forEach(block -> blockList.add(block.getBlockData().getMaterial().name()));
                         return StringUtil.copyPartialMatches(args[2], blockList, completions);
                     case "setdelay":
                         return StringUtil.copyPartialMatches(args[2], Collections.singletonList("seconds"), completions);
@@ -76,11 +76,6 @@ public class CataMinesTabCompleter implements TabCompleter {
                 }
 
                 switch (args[0].toLowerCase()) {
-                    case "set":
-                        if (BlockTypes.get(args[2]) != null) {
-                            return StringUtil.copyPartialMatches(args[3], Collections.singletonList("e.g 50%"), new ArrayList<>());
-                        }
-                        break;
                     case "replacemode":
                     case "warn":
                     case "warnglobal":

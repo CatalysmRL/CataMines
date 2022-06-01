@@ -6,7 +6,9 @@ import de.c4t4lysm.catamines.schedulers.MineManager;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -30,18 +32,13 @@ public class SetCommand implements CommandInterface {
             return true;
         }
 
-        if (Material.getMaterial(args[2].toUpperCase()) == null) {
-            sender.sendMessage(CataMines.PREFIX + CataMines.getInstance().getLangString("Error-Messages.Mine.Material-Not-Found"));
-            return true;
-        }
-
-        Material material = Material.getMaterial(args[2].toUpperCase());
+        BlockData blockData = Bukkit.createBlockData(args[2].toLowerCase());
         CuboidCataMine cuboidCataMine = MineManager.getInstance().getMine(args[1]);
 
         if (args.length == 3) {
 
             try {
-                cuboidCataMine.addBlock(new CataMineBlock(material, 100));
+                cuboidCataMine.addBlock(new CataMineBlock(blockData, 100 - cuboidCataMine.getCompositionChance()));
             } catch (IllegalArgumentException ex) {
                 sender.sendMessage(CataMines.PREFIX + CataMines.getInstance().getLangString("Commands.Set.Error")
                         .replaceAll("%chance-over-100%", ex.getMessage())
@@ -50,7 +47,7 @@ public class SetCommand implements CommandInterface {
             }
 
             sender.sendMessage(CataMines.PREFIX + CataMines.getInstance().getLangString("Commands.Set.Success")
-                    .replaceAll("%material%", material.name())
+                    .replaceAll("%material%", blockData.getAsString(true))
                     .replaceAll("%mine%", args[1])
                     .replaceAll("%remainingChance%", String.valueOf(100 - cuboidCataMine.getCompositionChance())));
             cuboidCataMine.save();
@@ -73,7 +70,7 @@ public class SetCommand implements CommandInterface {
                 }
 
                 try {
-                    cuboidCataMine.addBlock(new CataMineBlock(material, percentInput));
+                    cuboidCataMine.addBlock(new CataMineBlock(blockData, percentInput));
                 } catch (IllegalArgumentException ex) {
                     sender.sendMessage(CataMines.PREFIX + CataMines.getInstance().getLangString("Commands.Set.Error")
                             .replaceAll("%chance-over-100%", ex.getMessage())
@@ -82,7 +79,7 @@ public class SetCommand implements CommandInterface {
                 }
 
                 sender.sendMessage(CataMines.PREFIX + CataMines.getInstance().getLangString("Commands.Set.Success")
-                        .replaceAll("%material%", material.name())
+                        .replaceAll("%material%", blockData.getAsString(true))
                         .replaceAll("%mine%", args[1])
                         .replaceAll("%remainingChance%", String.valueOf(100 - cuboidCataMine.getCompositionChance())));
                 cuboidCataMine.save();

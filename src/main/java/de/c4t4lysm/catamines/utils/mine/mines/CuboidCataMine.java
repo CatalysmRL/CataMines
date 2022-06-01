@@ -192,7 +192,7 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
         if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
 
         for (CataMineBlock block : blocks) {
-            if (block.getLootTable().isEmpty() || !block.getMaterial().equals(event.getBlock().getType())) {
+            if (block.getLootTable().isEmpty() || !block.getBlockData().equals(event.getBlock().getBlockData())) {
                 continue;
             }
 

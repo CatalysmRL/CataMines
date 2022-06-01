@@ -1,9 +1,12 @@
 package de.c4t4lysm.catamines.utils.mine.components;
 
 import de.c4t4lysm.catamines.CataMines;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,58 +17,54 @@ import java.util.Map;
 
 public class CataMineBlock implements Cloneable, ConfigurationSerializable {
 
-    private Material material;
+    private BlockData blockData;
     private double chance;
     private boolean addLootTable;
 
     private List<CataMineLootItem> lootTable = new ArrayList<>();
 
-    public CataMineBlock(Material material, double chance) {
-        if (!(material.isBlock() || material.isSolid() || chance < 0 || chance > 100)) {
+    public CataMineBlock(BlockData blockData, double chance) {
+        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
-        this.material = material;
+        this.blockData = blockData;
         this.chance = Math.round(chance * 100) / 100d;
     }
 
-    public CataMineBlock(Material material, double chance, boolean addLootTable) {
-        if (!(material.isBlock() || material.isSolid() || chance < 0 || chance > 100)) {
+    public CataMineBlock(BlockData blockData, double chance, boolean addLootTable) {
+        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
-        this.material = material;
+        this.blockData = blockData;
         this.chance = Math.round(chance * 100) / 100d;
         this.addLootTable = addLootTable;
     }
 
-    public CataMineBlock(Material material, double chance, List<CataMineLootItem> lootTable) {
-        if (!(material.isBlock() || material.isSolid() || chance < 0 || chance > 100)) {
+    public CataMineBlock(BlockData blockData, double chance, List<CataMineLootItem> lootTable) {
+        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
-        this.material = material;
+        this.blockData = blockData;
         this.chance = Math.round(chance * 100) / 100d;
         this.lootTable = lootTable;
     }
 
-    public CataMineBlock(Material material, double chance, boolean addLootTable, List<CataMineLootItem> lootTable) {
-        if (!(material.isBlock() || material.isSolid() || chance < 0 || chance > 100)) {
+    public CataMineBlock(BlockData blockData, double chance, boolean addLootTable, List<CataMineLootItem> lootTable) {
+        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
-        this.material = material;
+        this.blockData = blockData;
         this.chance = Math.round(chance * 100) / 100d;
         this.addLootTable = addLootTable;
         this.lootTable = lootTable;
     }
 
-    @Nullable
     public static CataMineBlock deserialize(Map<String, Object> map) {
-        Material material = Material.getMaterial((String) map.get("block"));
-        if (material == null) {
-            return null;
-        }
+        BlockData blockData = Bukkit.createBlockData(((String) map.get("block")).toLowerCase());
         double chance = 0d;
         if (map.containsKey("chance")) {
             chance = (double) map.get("chance");
@@ -80,7 +79,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
             serializedLootTable = (ArrayList<Map<String, Object>>) map.get("lootTable");
         }
         if (serializedLootTable.isEmpty()) {
-            return new CataMineBlock(material, chance, addLootTable);
+            return new CataMineBlock(blockData, chance, addLootTable);
         }
 
         List<CataMineLootItem> lootTable = new ArrayList<>();
@@ -88,14 +87,14 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
             lootTable.add(new CataMineLootItem(ItemStack.deserialize((Map<String, Object>) loot.get("item")), (Double) loot.get("chance")));
         }
 
-        return new CataMineBlock(material, chance, addLootTable, lootTable);
+        return new CataMineBlock(blockData, chance, addLootTable, lootTable);
     }
 
     @Nonnull
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("block", material.name());
+        result.put("block", blockData.getAsString(false));
         result.put("chance", chance);
         result.put("addLootTable", addLootTable);
 
@@ -115,15 +114,15 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
         return result;
     }
 
-    public Material getMaterial() {
-        return material;
+    public BlockData getBlockData() {
+        return blockData;
     }
 
-    public void setMaterial(Material material) {
-        if (!material.isBlock() || !material.isSolid()) {
+    public void setBlockData(BlockData blockData) {
+        if (!blockData.getMaterial().isBlock() || !blockData.getMaterial().isSolid()) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Material-Not-Solid"));
         }
-        this.material = material;
+        this.blockData = blockData;
     }
 
     public double getChance() {

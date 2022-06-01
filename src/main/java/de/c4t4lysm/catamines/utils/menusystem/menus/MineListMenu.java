@@ -113,7 +113,7 @@ public class MineListMenu extends PaginatedMenu {
                     Material material = Material.STICK;
                     if (!cuboidCataMine.getBlocks().isEmpty()) {
                         CataMineBlock highestBlock = cuboidCataMine.getBlocks().stream().max(Comparator.comparingDouble(CataMineBlock::getChance)).get();
-                        material = highestBlock.getMaterial();
+                        material = highestBlock.getBlockData().getMaterial();
                     }
 
                     if (material.equals(Material.AIR)) {
@@ -125,10 +125,11 @@ public class MineListMenu extends PaginatedMenu {
                     lore.add(ChatColor.AQUA + "Composition:");
                     int miniIndex = 1;
                     for (CataMineBlock block : cuboidCataMine.getBlocks()) {
-                        lore.add(ChatColor.RED + "  " + miniIndex + ". " + ChatColor.GOLD + block.getMaterial().name() + ": " + ChatColor.RED + block.getChance() + "%");
+                        lore.add(ChatColor.RED + "  " + miniIndex + ". " + ChatColor.GOLD + block.getBlockData().getMaterial().name() + ": " + ChatColor.RED + block.getChance() + "%");
                         miniIndex++;
                     }
                     lore.add(ChatColor.AQUA + "Delay: " + ChatColor.RED + cuboidCataMine.getResetDelay());
+                    lore.add(ChatColor.AQUA + "Delay: " + ChatColor.RED + cuboidCataMine.getResetPercentage() + "%");
                     lore.add(ChatColor.AQUA + "Replace mode: " + ChatColor.RED + cuboidCataMine.isReplaceMode());
                     lore.add(ChatColor.AQUA + "Warns: " + ChatColor.RED + cuboidCataMine.isWarn());
                     lore.add(ChatColor.AQUA + "  Warns hotbar: " + ChatColor.RED + cuboidCataMine.isWarnHotbar());

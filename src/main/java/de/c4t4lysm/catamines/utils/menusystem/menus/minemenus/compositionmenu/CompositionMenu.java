@@ -7,8 +7,11 @@ import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
 import de.c4t4lysm.catamines.utils.menusystem.menus.MineMenu;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -19,19 +22,19 @@ import java.util.Objects;
 
 public class CompositionMenu extends PaginatedMenu {
 
-    private final CuboidCataMine cuboidCataMine;
+    private final CuboidCataMine mine;
     private final CataMines plugin;
 
     public CompositionMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
         playerMenuUtility.setMenu(this);
-        cuboidCataMine = playerMenuUtility.getMine();
+        mine = playerMenuUtility.getMine();
         plugin = CataMines.getInstance();
     }
 
     @Override
     public String getMenuName() {
-        return plugin.getLangString("GUI.Composition-Menu.Title").replaceAll("%chance%", String.valueOf(cuboidCataMine.getCompositionChance()));
+        return plugin.getLangString("GUI.Composition-Menu.Title").replaceAll("%chance%", String.valueOf(mine.getCompositionChance()));
     }
 
     @Override
@@ -48,28 +51,28 @@ public class CompositionMenu extends PaginatedMenu {
         }
 
         ArrayList<Material> materials = new ArrayList<>();
-        cuboidCataMine.getBlocks().forEach(block -> materials.add(block.getMaterial()));
+        mine.getBlocks().forEach(block -> materials.add(block.getBlockData().getMaterial()));
 
         Player player = (Player) event.getWhoClicked();
         if (Objects.equals(event.getClickedInventory(), player.getInventory())) {
 
-            ItemStack clickedItem = event.getCurrentItem();
+            BlockData blockData = event.getCurrentItem().getType().createBlockData();
 
-            if (clickedItem.getType().equals(Material.BONE_MEAL)) {
-                clickedItem.setType(Material.AIR);
+            if (blockData.getMaterial().equals(Material.BONE_MEAL)) {
+                blockData = Material.AIR.createBlockData();
             }
 
-            if (materials.contains(clickedItem.getType())) {
+            if (mine.containsBlockData(blockData)) {
                 player.sendMessage(CataMines.PREFIX + plugin.getLangString("Error-Messages.Mine.Material-In-Composition"));
                 return;
             }
 
-            if (!clickedItem.getType().isBlock()) {
+            if (!blockData.getMaterial().isBlock()) {
                 player.sendMessage(CataMines.PREFIX + plugin.getLangString("Error-Messages.Mine.Material-Not-Solid"));
                 return;
             }
 
-            player.performCommand("cm set " + cuboidCataMine.getName() + " " + clickedItem.getType().name() + " 0%");
+            player.performCommand("cm set " + mine.getName() + " " + blockData.getAsString() + " 0%");
             updateMenus();
             return;
         }
@@ -104,20 +107,20 @@ public class CompositionMenu extends PaginatedMenu {
             return;
         }
 
-        Material material = event.getCurrentItem().getType();
+        BlockData blockData = Bukkit.createBlockData(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getLore().get(0)));
 
-        if (material.equals(Material.BONE_MEAL)) {
-            material = Material.AIR;
+        if (blockData.getMaterial().equals(Material.BONE_MEAL)) {
+            blockData = Bukkit.createBlockData(Material.AIR);
         }
 
         if (event.isRightClick()) {
-            player.performCommand("cm unset " + cuboidCataMine.getName() + " " + material.name());
+            player.performCommand("cm unset " + mine.getName() + " " + blockData.getAsString());
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
             updateMenus();
             return;
         }
 
-        CataMineBlock clickedBlock = cuboidCataMine.getBlock(material);
+        CataMineBlock clickedBlock = mine.getBlock(blockData);
         playerMenuUtility.setBlock(clickedBlock);
 
         new CompositionBlockMenu(playerMenuUtility).open();
@@ -128,7 +131,7 @@ public class CompositionMenu extends PaginatedMenu {
     public void setMenuItems() {
         addMenuBorder();
 
-        ArrayList<CataMineBlock> blocks = new ArrayList<>(cuboidCataMine.getBlocks());
+        ArrayList<CataMineBlock> blocks = new ArrayList<>(mine.getBlocks());
 
         if (!blocks.isEmpty()) {
             for (int i = 0; i < getMaxItemsPerPage(); i++) {
@@ -136,11 +139,14 @@ public class CompositionMenu extends PaginatedMenu {
                 if (index >= blocks.size()) break;
                 if (blocks.get(index) != null) {
 
-                    Material material = blocks.get(index).getMaterial();
+                    BlockData blockData = blocks.get(index).getBlockData();
+                    Material material = blockData.getMaterial();
+                    List<String> finalCompBlockLore = new ArrayList<>();
+                    finalCompBlockLore.add(ChatColor.WHITE + blockData.getAsString(true));
                     List<String> compBlockLore = plugin.getLangStringList("GUI.Composition-Menu.Items.Composition-Block.Lore");
-                    compBlockLore.replaceAll(s -> s.replaceAll("%chance%", String.valueOf(blocks.get(index).getChance())));
+                    compBlockLore.forEach(s -> finalCompBlockLore.add(s.replaceAll("%chance%", String.valueOf(blocks.get(index).getChance()))));
                     inventory.addItem(ItemStackBuilder.buildItem(!material.equals(Material.AIR) ? material : Material.BONE_MEAL, "",
-                            compBlockLore));
+                            finalCompBlockLore));
 
                 }
             }

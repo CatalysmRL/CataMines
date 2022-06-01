@@ -148,7 +148,7 @@ public class CompositionBlockMenu extends Menu {
         List<String> blockLore = plugin.getLangStringList("GUI.Composition-Block-Menu.Items.Current-Block.Lore");
         blockLore.replaceAll(s -> s.replaceAll("%blockChance%", String.valueOf(block.getChance()))
                 .replaceAll("%compChance%", String.valueOf(cuboidCataMine.getCompositionChance())));
-        inventory.setItem(13, ItemStackBuilder.buildItem(block.getMaterial(), "",
+        inventory.setItem(13, ItemStackBuilder.buildItem(block.getBlockData().getMaterial(), "",
                 blockLore));
 
         String increaseBy = plugin.getLangString("GUI.Universal.Increase-By");

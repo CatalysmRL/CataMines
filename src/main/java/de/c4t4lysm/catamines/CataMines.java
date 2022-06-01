@@ -72,11 +72,13 @@ public final class CataMines extends JavaPlugin {
 
         this.fileManager = new FileManager(this);
 
-        registerListeners();
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+
         Bukkit.getScheduler().runTaskLater(this, () -> {
             new MineManager();
             registerCommands();
-        }, 6 * 20L);
+            registerListeners();
+        }, 5 * 20L);
 
         new UpdateChecker(getInstance(), 96457).getVersion(version -> {
             if (!getInstance().getDescription().getVersion().equalsIgnoreCase(version)) {
@@ -140,7 +142,6 @@ public final class CataMines extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new BlockBreakListener(), this);
         pm.registerEvents(new MenuListener(), this);
-        pm.registerEvents(new PlayerJoinListener(), this);
     }
 
     public FileManager getFileManager() {

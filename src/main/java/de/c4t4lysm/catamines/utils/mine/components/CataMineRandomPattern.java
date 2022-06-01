@@ -38,7 +38,7 @@ public class CataMineRandomPattern {
 
         for (CataMineBlock block : mineBlocks) {
             if (r <= (offset + block.getChance()) / maxWeight) {
-                return block.getMaterial();
+                return block.getBlockData().getMaterial();
             }
             offset += block.getChance();
         }

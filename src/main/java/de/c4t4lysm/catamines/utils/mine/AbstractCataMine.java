@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.util.BoundingBox;
@@ -197,7 +198,7 @@ public abstract class AbstractCataMine implements Cloneable {
     public void addBlock(CataMineBlock cataMineBlock) {
         double chanceSum = 0;
         for (CataMineBlock block : blocks) {
-            if (block.getMaterial().equals(cataMineBlock.getMaterial())) {
+            if (block.getBlockData().equals(cataMineBlock.getBlockData())) {
                 continue;
             }
 
@@ -209,7 +210,7 @@ public abstract class AbstractCataMine implements Cloneable {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Chance-Over-100"));
 
         for (int i = 0; i < blocks.size(); i++) {
-            if (blocks.get(i).getMaterial().equals(cataMineBlock.getMaterial())) {
+            if (blocks.get(i).getBlockData().equals(cataMineBlock.getBlockData())) {
                 blocks.set(i, cataMineBlock);
                 blocksToRandomPattern();
                 return;
@@ -225,11 +226,11 @@ public abstract class AbstractCataMine implements Cloneable {
         blocksToRandomPattern();
     }
 
-    public void removeBlock(Material material) {
-        if (!containsBlockMaterial(material)) {
+    public void removeBlock(BlockData blockData) {
+        if (!containsBlockData(blockData)) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Block-Not-In-Composition"));
         }
-        blocks.remove(getBlock(material));
+        blocks.remove(getBlock(blockData));
         blocksToRandomPattern();
     }
 
@@ -248,7 +249,7 @@ public abstract class AbstractCataMine implements Cloneable {
         double chance = 0;
 
         for (CataMineBlock block : blocks) {
-            if (block.getMaterial().equals(material)) {
+            if (block.getBlockData().equals(material)) {
                 chance = block.getChance();
             }
         }
@@ -275,13 +276,13 @@ public abstract class AbstractCataMine implements Cloneable {
         blocksToRandomPattern();
     }
 
-    public void setBlockChance(Material material, double chance) {
-        setBlockChance(getBlock(material), chance);
+    public void setBlockChance(BlockData blockData, double chance) {
+        setBlockChance(getBlock(blockData), chance);
     }
 
-    public CataMineBlock getBlock(Material material) {
+    public CataMineBlock getBlock(BlockData blockData) {
         for (CataMineBlock block : blocks) {
-            if (block.getMaterial().equals(material)) {
+            if (block.getBlockData().equals(blockData)) {
                 return block;
             }
         }
@@ -293,9 +294,17 @@ public abstract class AbstractCataMine implements Cloneable {
         return blocks.contains(block);
     }
 
+    public boolean containsBlockData(BlockData blockData) {
+        for (CataMineBlock block : blocks) {
+            if (block.getBlockData().equals(blockData)) return true;
+        }
+
+        return false;
+    }
+
     public boolean containsBlockMaterial(Material material) {
         for (CataMineBlock block : blocks) {
-            if (block.getMaterial().equals(material)) return true;
+            if (block.getBlockData().getMaterial().equals(material)) return true;
         }
 
         return false;
@@ -311,8 +320,7 @@ public abstract class AbstractCataMine implements Cloneable {
         this.randomPattern = new RandomPattern();
 
         blocks.stream().filter(cataMineBlock -> !(cataMineBlock.getChance() == 0))
-                .forEach(cataMineBlock -> randomPattern.add(BukkitAdapter.asBlockType(cataMineBlock.getMaterial())
-                        .getDefaultState().toBaseBlock(), cataMineBlock.getChance()));
+                .forEach(cataMineBlock -> randomPattern.add(BukkitAdapter.adapt(cataMineBlock.getBlockData()), cataMineBlock.getChance()));
     }
 
     public String getTranslatedWarnMessage() {
@@ -340,22 +348,22 @@ public abstract class AbstractCataMine implements Cloneable {
     }
 
     public void broadcastHotbar() {
+        String finalMessage = Utils.setPlaceholders(getWarnHotbarMessage(resetMode), this);
         getPlayersInDistance().forEach(player -> {
-            String finalMessage = Utils.setPlaceholders(getWarnHotbarMessage(resetMode), this);
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(finalMessage));
         });
     }
 
     public void broadcastWarnMessage() {
+        String finalWarnMessage = Utils.setPlaceholders(getWarnMessage(), this);
         getPlayersToWarn().forEach(player -> {
-            String finalWarnMessage = Utils.setPlaceholders(getWarnMessage(), this);
             Arrays.stream(finalWarnMessage.split("/n")).forEach(player::sendMessage);
         });
     }
 
     public void broadcastResetMessage() {
+        String finalResetMessage = Utils.setPlaceholders(getResetMessage(), this);
         getPlayersToWarn().forEach(player -> {
-            String finalResetMessage = Utils.setPlaceholders(getResetMessage(), this);
             Arrays.stream(finalResetMessage.split("/n")).forEach(player::sendMessage);
         });
     }

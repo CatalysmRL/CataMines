@@ -171,7 +171,7 @@ public class MineMenu extends Menu {
             // ItemStack for configuring the reset percentage
             List<String> percentageLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Configure-Percentage.Lore");
             percentageLore.replaceAll(s -> s.replaceAll("%percentage%", String.valueOf(mine.getResetPercentage())).replaceAll("%delay%", String.valueOf(mine.getResetDelay())));
-            inventory.setItem(12, ItemStackBuilder.buildItem(Material.CLOCK, plugin.getLangString("GUI.Mine-Menu.Items.Configure-Percentage.Name"), percentageLore));
+            inventory.setItem(12, ItemStackBuilder.buildItem(Material.STONE_PICKAXE, plugin.getLangString("GUI.Mine-Menu.Items.Configure-Percentage.Name"), percentageLore));
         }
 
         // Configure Attributes
