@@ -214,7 +214,7 @@ GUI:
     Items:
       Current-Item: "!unchangeable! internal item"
   Reset-Delay-Menu:
-    Title: "&Current delay: &c%delay%"
+    Title: "&bCurrent delay: &c%delay%"
     Items:
       Current-Delay:
         Name: "&bCurrent delay: &c%delay%"
