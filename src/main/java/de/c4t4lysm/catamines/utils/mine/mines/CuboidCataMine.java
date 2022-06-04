@@ -7,11 +7,14 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.CataMines;
+import de.c4t4lysm.catamines.utils.Utils;
 import de.c4t4lysm.catamines.utils.configuration.FileConfig;
 import de.c4t4lysm.catamines.utils.mine.AbstractCataMine;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineLootItem;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -184,9 +187,11 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
 
     public void handleBlockBreak(BlockBreakEvent event) {
 
-        //TODO: Might want to change that to save resources
+        //TODO - Refactor | Cleanup
         if (resetMode == CataMineResetMode.PERCENTAGE) {
-            broadcastHotbar();
+            String finalMessage = Utils.setPlaceholdersAfterEvent(getWarnHotbarMessage(resetMode), this);
+            getPlayersInDistance().forEach(player -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                    TextComponent.fromLegacyText(finalMessage)));
         }
 
         if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
