@@ -44,58 +44,41 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         int mineIndex = 1;
 
-        if (identifier.equals("prefix")) {
-            return plugin.getConfig().getString("prefix", "&6[&bCata&aMines&6] &7");
-        } else if (identifier.startsWith("countdown")) {
-            String[] strs = identifier.split("_");
-            AbstractCataMine cataMine = MineManager.getInstance().getMine(strs[mineIndex]);
-            if (cataMine != null) {
-                return cataMine.checkRunnable() ? Utils.secondsToTimeFormat(cataMine.getCountdown()) : "inactive";
+        String[] args = identifier.split("_");
+        if (args.length <= 1) {
+            if (args[0].equalsIgnoreCase("prefix")) {
+                return plugin.getConfig().getString("prefix", "&6[&bCata&aMines&6] &7");
+            } else {
+                return null;
             }
-            return plugin.getLangString("Error-Messages.Mine.Not-Exist");
-        } else if (identifier.startsWith("remainingseconds")) {
-            String[] strs = identifier.split("_");
-            AbstractCataMine cataMine = MineManager.getInstance().getMine(strs[mineIndex]);
-            if (cataMine != null) {
-                return cataMine.checkRunnable() ? String.valueOf(cataMine.getCountdown()) : "inactive";
-            }
+        }
 
+        AbstractCataMine cataMine = MineManager.getInstance().getMine(args[mineIndex]);
+        if (cataMine == null) {
             return plugin.getLangString("Error-Messages.Mine.Not-Exist");
-        } else if (identifier.startsWith("totalblocks")) {
-            String[] strs = identifier.split("_");
-            AbstractCataMine cataMine = MineManager.getInstance().getMine(strs[mineIndex]);
-            if (cataMine != null) {
+        }
+
+        if (!cataMine.isRunnable()) {
+            return "inactive";
+        }
+
+        switch (args[0].toLowerCase()) {
+            case "countdown":
+            case "time":
+                return Utils.secondsToTimeFormat(cataMine.getCountdown());
+            case "remainingseconds":
+                return String.valueOf(cataMine.getCountdown());
+            case "totalblocks":
                 return String.valueOf(cataMine.getTotalBlocks());
-            }
-            return plugin.getLangString("Error-Messages.Mine.Not-Exist");
-        } else if (identifier.startsWith("minedblocks")) {
-            String[] strs = identifier.split("_");
-            AbstractCataMine cataMine = MineManager.getInstance().getMine(strs[mineIndex]);
-            if (cataMine != null) {
-                return String.valueOf(cataMine.getMinedBlocks());
-            }
-            return plugin.getLangString("Error-Messages.Mine.Not-Exist");
-        } else if (identifier.startsWith("remainingblocks")) {
-            String[] strs = identifier.split("_");
-            AbstractCataMine cataMine = MineManager.getInstance().getMine(strs[mineIndex]);
-            if (cataMine != null) {
+            case "remainingblocks":
                 return String.valueOf(cataMine.getRemainingBlocks());
-            }
-            return plugin.getLangString("Error-Messages.Mine.Not-Exist");
-        } else if (identifier.startsWith("remainingblockspercentage")){
-            String[] strs = identifier.split("_");
-            AbstractCataMine cataMine = MineManager.getInstance().getMine(strs[mineIndex]);
-            if (cataMine != null) {
+            case "minedblocks":
+                return String.valueOf(cataMine.getMinedBlocks());
+            case "remainingblockspercentage":
+            case "remainingblocksper":
                 return String.valueOf(cataMine.getRemainingBlocksPer());
-            }
-            return plugin.getLangString("Error-Messages.Mine.Not-Exist");
-        } else if (identifier.startsWith("resetpercentage")) {
-            String[] strs = identifier.split("_");
-            AbstractCataMine cataMine = MineManager.getInstance().getMine(strs[mineIndex]);
-            if (cataMine != null) {
+            case "resetpercentage":
                 return String.valueOf(cataMine.getResetPercentage());
-            }
-            return plugin.getLangString("Error-Messages.Mine.Not-Exist");
         }
 
         return null;
