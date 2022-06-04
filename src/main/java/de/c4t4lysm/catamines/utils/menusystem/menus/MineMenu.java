@@ -63,18 +63,17 @@ public class MineMenu extends Menu {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 break;
             case 12:
-                if (mine.getResetMode().equals(CataMineResetMode.TIME)) {
-                    if (event.isRightClick()) {
+                if (event.isRightClick()) {
+                    if (mine.getResetMode().equals(CataMineResetMode.TIME)) {
                         mine.setResetMode(CataMineResetMode.PERCENTAGE);
-                        updateMenus();
-                        break;
                     } else {
-                        new ResetDelayMenu(playerMenuUtility).open();
-                    }
-                } else {
-                    if (event.isRightClick()) {
                         mine.setResetMode(CataMineResetMode.TIME);
-                        updateMenus();
+                    }
+                    mine.save();
+                    updateMenus();
+                } else {
+                    if (mine.getResetMode().equals(CataMineResetMode.TIME)) {
+                        new ResetDelayMenu(playerMenuUtility).open();
                     } else {
                         new ResetPercentageMenu(playerMenuUtility).open();
                     }
