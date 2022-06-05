@@ -56,6 +56,11 @@ public abstract class AbstractCataMine implements Cloneable {
     protected boolean teleportPlayersToResetLocation;
     protected Location teleportResetLocation;
 
+    // Block count
+    protected long blockCount;
+    protected byte countdownForCalculatingBlockCount;
+
+
     protected boolean runnable;
     protected boolean firstCycle;
     protected int countdown;
@@ -123,6 +128,11 @@ public abstract class AbstractCataMine implements Cloneable {
                 }
                 break;
             case PERCENTAGE:
+                --countdownForCalculatingBlockCount;
+                if (countdownForCalculatingBlockCount <= 0) {
+                    calculateRemainingBlocks();
+                    countdownForCalculatingBlockCount = 100;
+                }
                 if (getRemainingBlocksPer() <= resetPercentage) {
                     reset();
                 }
@@ -136,6 +146,9 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void reset() {
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
+
+            blockCount = getTotalBlocks();
+
             if (warn) {
                 broadcastResetMessage();
             }
@@ -635,10 +648,18 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public abstract long getTotalBlocks();
 
-    public abstract long getRemainingBlocks();
+    public long getBlockCount() {
+        return blockCount;
+    }
+
+    public void setBlockCount(long blockCount) {
+        this.blockCount = blockCount;
+    }
+
+    public abstract void calculateRemainingBlocks();
 
     public long getMinedBlocks() {
-        return getTotalBlocks() - getRemainingBlocks();
+        return getTotalBlocks() - getBlockCount();
     }
 
     public abstract double getRemainingBlocksPer();

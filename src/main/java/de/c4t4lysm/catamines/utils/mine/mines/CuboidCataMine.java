@@ -187,11 +187,11 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
 
     public void handleBlockBreak(BlockBreakEvent event) {
 
+        blockCount--;
+
         //TODO - Refactor | Cleanup
         if (resetMode == CataMineResetMode.PERCENTAGE) {
-            String finalMessage = Utils.setPlaceholdersAfterEvent(getWarnHotbarMessage(resetMode), this);
-            getPlayersInDistance().forEach(player -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                    TextComponent.fromLegacyText(finalMessage)));
+            broadcastHotbar();
         }
 
         if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
@@ -309,18 +309,23 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
     }
 
     @Override
-    public long getRemainingBlocks() {
-        long remaining = 0;
-        for (BlockVector3 vector3 : region) {
-            if (!region.getWorld().getBlock(vector3).getBlockType().equals(BlockTypes.AIR)) {
-                remaining++;
+    public void calculateRemainingBlocks() {
+        Bukkit.getScheduler().runTaskAsynchronously(CataMines.getInstance(), () -> {
+            long remaining = 0;
+            for (BlockVector3 vector3 : region) {
+                if (!region.getWorld().getBlock(vector3).getBlockType().equals(BlockTypes.AIR)) {
+                    remaining++;
+                }
             }
-        }
-        return remaining;
+            if (blockCount == remaining) {
+                return;
+            }
+            blockCount = remaining;
+        });
     }
 
     @Override
     public double getRemainingBlocksPer() {
-        return Math.round(((double) getRemainingBlocks() / (double) getTotalBlocks()) * 10000d) / 100d;
+        return Math.round(((double) getBlockCount() / (double) getTotalBlocks()) * 10000d) / 100d;
     }
 }

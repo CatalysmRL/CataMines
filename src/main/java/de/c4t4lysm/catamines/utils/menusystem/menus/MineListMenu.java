@@ -129,7 +129,7 @@ public class MineListMenu extends PaginatedMenu {
                         miniIndex++;
                     }
                     lore.add(ChatColor.AQUA + "Delay: " + ChatColor.RED + cuboidCataMine.getResetDelay());
-                    lore.add(ChatColor.AQUA + "Delay: " + ChatColor.RED + cuboidCataMine.getResetPercentage() + "%");
+                    lore.add(ChatColor.AQUA + "Reset percentage: " + ChatColor.RED + cuboidCataMine.getResetPercentage() + "%");
                     lore.add(ChatColor.AQUA + "Replace mode: " + ChatColor.RED + cuboidCataMine.isReplaceMode());
                     lore.add(ChatColor.AQUA + "Warns: " + ChatColor.RED + cuboidCataMine.isWarn());
                     lore.add(ChatColor.AQUA + "  Warns hotbar: " + ChatColor.RED + cuboidCataMine.isWarnHotbar());

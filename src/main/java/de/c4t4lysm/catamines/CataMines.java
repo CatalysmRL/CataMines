@@ -5,7 +5,7 @@ import de.c4t4lysm.catamines.commands.CataMinesHelpCommand;
 import de.c4t4lysm.catamines.commands.cmcommands.*;
 import de.c4t4lysm.catamines.commands.commandhandler.CommandHandler;
 import de.c4t4lysm.catamines.commands.commandhandler.FlagCommandsHandler;
-import de.c4t4lysm.catamines.listeners.BlockBreakListener;
+import de.c4t4lysm.catamines.listeners.BlockListeners;
 import de.c4t4lysm.catamines.listeners.PlayerJoinListener;
 import de.c4t4lysm.catamines.schedulers.MineManager;
 import de.c4t4lysm.catamines.tabcompleters.CataMinesTabCompleter;
@@ -140,7 +140,7 @@ public final class CataMines extends JavaPlugin {
     private void registerListeners() {
         getLogger().info("Registering listeners");
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new BlockBreakListener(), this);
+        pm.registerEvents(new BlockListeners(), this);
         pm.registerEvents(new MenuListener(), this);
     }
 

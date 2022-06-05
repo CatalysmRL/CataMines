@@ -71,7 +71,7 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
             case "totalblocks":
                 return String.valueOf(cataMine.getTotalBlocks());
             case "remainingblocks":
-                return String.valueOf(cataMine.getRemainingBlocks());
+                return String.valueOf(cataMine.getBlockCount());
             case "minedblocks":
                 return String.valueOf(cataMine.getMinedBlocks());
             case "remainingblockspercentage":

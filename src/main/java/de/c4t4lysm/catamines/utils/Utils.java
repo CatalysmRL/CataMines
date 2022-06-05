@@ -50,27 +50,6 @@ public class Utils {
         return translatedText;
     }
 
-    public static String setPlaceholdersAfterEvent(String input, AbstractCataMine mine) {
-        String translatedText = input
-                .replaceAll("%cm%", StringUtils.chop(CataMines.PREFIX))
-                .replaceAll("%mine%", mine.getName())
-                .replaceAll("%seconds%", String.valueOf(mine.getCountdown()))
-                .replaceAll("%formattedseconds%", secondsToTimeFormat(mine.getCountdown()))
-                .replaceAll("%formattedtime%", mine.getFormattedTimeString())
-                .replaceAll("%time%", mine.getCountdown() / 60 == 1 ?
-                        CataMines.getInstance().getLangString("Time.Second") :
-                        CataMines.getInstance().getLangString("Time.Seconds"))
-                .replaceAll("%resetpercentage%", String.valueOf(mine.getResetPercentage()))
-                .replaceAll("%remainingblocksper%", String.valueOf(Math.round(((double) (mine.getRemainingBlocks() - 1) / (double) mine.getTotalBlocks()) * 10000d) / 100d));
-        if (CataMines.getInstance().placeholderAPI) {
-            translatedText = PlaceholderAPI.setPlaceholders(null, translatedText);
-        } else {
-            translatedText = ChatColor.translateAlternateColorCodes('&', translatedText);
-        }
-
-        return translatedText;
-    }
-
     public static String secondsToTimeFormat(int seconds) {
         if (seconds >= 60) {
             if (seconds >= 3600) {
