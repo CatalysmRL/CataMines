@@ -22,6 +22,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -310,18 +312,21 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
 
     @Override
     public void calculateRemainingBlocks() {
-        Bukkit.getScheduler().runTaskAsynchronously(CataMines.getInstance(), () -> {
-            long remaining = 0;
-            for (BlockVector3 vector3 : region) {
-                if (!region.getWorld().getBlock(vector3).getBlockType().equals(BlockTypes.AIR)) {
-                    remaining++;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                long remaining = 0;
+                for (BlockVector3 vector3 : region) {
+                    if (!region.getWorld().getBlock(vector3).getBlockType().equals(BlockTypes.AIR)) {
+                        remaining++;
+                    }
                 }
+                if (blockCount != remaining) {
+                    blockCount = remaining;
+                }
+                this.cancel();
             }
-            if (blockCount == remaining) {
-                return;
-            }
-            blockCount = remaining;
-        });
+        }.runTaskAsynchronously(CataMines.getInstance());
     }
 
     @Override
