@@ -1,326 +1,325 @@
 Time:
-  Seconds: "seconds"
-  Second: "second"
-  Minutes: "minutes"
-  Minute: "minute"
-  Hours: "hours"
-  Hour: "hour"
+  Seconds: "秒"
+  Second: "秒"
+  Minutes: "分钟"
+  Minute: "分钟"
+  Hours: "小时"
+  Hour: "小时"
 
 GUI:
   Universal:
     Previous-Page:
-      Name: "&6&lPrevious Page"
+      Name: "&6&l上一个页"
       Lore:
         - ""
-        - "&7Opens the previous page if there is one"
+        - "&7打开上一页"
     Next-Page:
-      Name: "&6&lNext Page"
+      Name: "&6&l下一页"
       Lore:
         - ""
-        - "&7Opens the next page if there is one"
+        - "&7打开下一页"
     Close:
-      Name: "&4&lClose"
+      Name: "&4&l关闭"
       Lore:
         - ""
-        - "&7Closes the menu"
+        - "&7关闭菜单"
     Back-To-Mine-Menu:
-      Name: "&6&lBack"
+      Name: "&6&l返回"
       Lore:
         - ""
-        - "&7Goes back to mine menu"
+        - "&7返回菜单"
     Back-To-Composition-Menu:
-      Name: "&6&lBack"
+      Name: "&6&l返回"
       Lore:
         - ""
-        - "&7Goes back to composition menu"
+        - "&7返回菜单"
     Back-To-Block-Menu:
-      Name: "&6&lBack"
+      Name: "&6&l返回"
       Lore:
         - ""
-        - "&7Goes back to block menu"
-    Increase-By: "&aIncrease by %number%"
-    Decrease-By: "&cDecrease by %number%"
+        - "&7返回方块菜单"
+    Increase-By: "&a增加 %number%"
+    Decrease-By: "&c减少 %number%"
   Mine-List-Menu:
-    Title: "&bMines"
+    Title: "&b矿场"
   Mine-Menu:
     Title: "&b%mine%"
     Items:
       Configure-Composition:
-        Name: "&6Configure composition"
+        Name: "&6配置组合"
         Lore:
-          - "&bComposition: &c%chance%%"
+          - "&b配置组合: &c%chance%%"
       Configure-Delay:
-        Name: "&6Configure reset delay"
+        Name: "&6配置重置延迟"
         Lore:
-          - "&bReset delay: &c%delay%s"
-          - "&bReset percentage: &c%percentage%%"
+          - "&b重置延迟: &c%delay%s"
+          - "&b重置百分比: &c%percentage%%"
           - ""
-          - "&fRight click to switch modes"
+          - "&f右键单击以切换模式"
       Configure-Percentage:
-        Name: "&6Configure reset percentage"
+        Name: "&6配置重置百分比"
         Lore:
-          - "&bReset percentage: &c%percentage%%"
-          - "&bReset delay: &c%delay%s"
+          - "&b重置百分比: &c%percentage%%"
+          - "&b重置延迟: &c%delay%s"
           - ""
-          - "&fRight click to switch modes"
+          - "&f右键单击以切换模式"
       Warn:
         Active:
-          Name: "&aWarns on reset"
+          Name: "&a重置时警告"
         Inactive:
-          Name: "&7Doesn't warn on reset"
+          Name: "&7不会在重置时发出警告"
         Lore:
-          - "&bSelect if mine should warn of resets"
+          - "&b如果启用警告重置，则选中"
       Warn-Global:
         Active:
-          Name: "&aWarns globally"
+          Name: "&a全局警告"
         Inactive:
-          Name: "&7Doesn't warn globally"
+          Name: "&7不会全局发出警告"
         Lore:
-          - "&bSelect if mine should warn globally"
+          - "&b如果启用全局警告，则选中"
       Warn-Hotbar:
         Active:
-          Name: "&aDisplays seconds in hotbar"
+          Name: "&a在血条中显示秒数"
         Inactive:
-          Name: "&7Doesn't display seconds in hotbar"
+          Name: "&7不会血条中显示秒数"
         Lore:
-          - "&bSelect if mine should display remaining seconds in the hotbar"
+          - "&b如果启用血条中显示秒数，则选中"
       Teleport-Players:
         Active:
-          Name: "&aTeleports players on reset"
+          Name: "&a将玩家传送到重置状态"
         Inactive:
-          Name: "&7Doesn't teleport players on reset"
+          Name: "&7不会在重置时传送玩家"
         Lore:
-          - "&bSelect if mine should teleport players"
-          - "&bin the mine on reset"
+          - "&b如果启用重置时传送玩家，则选中"
       Teleport-Players-To-Reset-Location:
         Active:
-          Name: "&aTeleports players to reset location"
+          Name: "&a将玩家传送到重置位置"
         Inactive:
-          Name: "&7Teleports players on top of the mine"
+          Name: "&7将玩家传送到矿区上"
         Lore:
-          - "&bSelect if mine should teleport players"
-          - "&bto reset location instead of just on top"
-          - "&6&lNOTES: &7Make sure you have a reset location"
-          - "&7by using /cm setresettp. Teleport players has"
-          - "&7to be activated for this to take effect"
+          - "&b选择矿区玩家是否应该传送"
+          - "&b重置位置而不是仅仅在顶部"
+          - "&6&7确保您有一个重置位置"
+          - "&7使用 /cm setresettp"
+          - "&7激活，传送玩家才能生效"
       Replace-Mode:
         Active:
-          Name: "&aReplace mode on"
+          Name: "&a更换模式开启"
         Inactive:
-          Name: "&7Replace mode off"
+          Name: "&7替换模式关闭"
         Lore:
-          - "&bSelect if mine should only replace &lAIR"
+          - "&b如果矿区只替换 &a空气 &b为矿物，则选中"
       Efficiency-Lvl:
-        Name: "&6Configure min. efficiency lvl"
+        Name: "&6配置最小效率 l"
         Lore:
-          - "&bMinimum efficiency level to break blocks: &c%level%"
+          - "&b打破区块的最低效率水平: &c%level%"
           - ""
-          - "&6&lNOTE: &bAdmins or having the permission"
-          - "&bcatamines.break bypass this!"
+          - "&6&l注意: &b管理员获得权限的许可"
+          - "&bcatamines.break 可以绕开这个"
       Warn-Distance:
-        Name: "&6Configure warn distance"
+        Name: "&6配置警告距离"
         Lore:
-          - "&bWarn distance: &c%distance%"
+          - "&b警告距离: &c%distance%"
       Reset-Mine:
-        Name: "&cReset mine"
+        Name: "&c重置矿场"
       Teleport:
-        Name: "&5Teleport to mine"
+        Name: "&5传送到矿场"
         Lore:
-          - "&bTeleports you to the mine"
+          - "&b把你传送到矿场"
       Delete:
-        Name: "&4&lDelete mine"
+        Name: "&4&l删除矿场"
       Start-Stop:
         Active:
-          Name: "&aMine turned on"
+          Name: "&a矿场开启"
         Inactive:
-          Name: "&7Mine turned off"
+          Name: "&7矿场关闭"
         Lore:
-          - "&bSelect if mine should reset automatically"
+          - "&b如果应该自动重置，则选中开启"
       Back:
-        Name: "&4&lBack"
+        Name: "&4&l返回"
         Lore:
           - ""
-          - "&7Goes back to the mine menu"
+          - "&7返回矿场菜单。"
       Running:
         Active:
-          Name: "&aMine is currently running"
+          Name: "&a矿场目前正在运行"
           Lore:
-            - "&7Displays if the mine is currently running."
-            - "&7If its not, then it will display why not."
+            - "&7如果矿场当前正在运行，则显示"
+            - "&7如果它不是，那么它将显示关闭。"
         Inactive:
-          Name: "&7Mine is not running because:"
+          Name: "&7我的没有运行是因为:"
           Reasons:
-            Invalid-Region: "&cIts region is invalid"
-            Stopped: "&cIt is stopped"
-            No-Composition: "&cIt has no composition"
-            Invalid-Delay: "&cIts reset delay is %delay%"
+            Invalid-Region: "&c它的区域无效"
+            Stopped: "&c它被停止了"
+            No-Composition: "&c它没有成分"
+            Invalid-Delay: "&c它的重置延迟是: %delay%"
   Composition-Menu:
-    Title: "&bComposition: &c%chance%%"
+    Title: "&b地图: &c%chance%%"
     Items:
       Composition-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
-          - "&bSpawning chance: &c%chance%%"
+          - "&b生成概率: &c%chance%%"
           - ""
-          - "&aLeft click me to configure"
+          - "&a左键来配置哦"
       Info:
-        Name: "&6Info:"
+        Name: "&6信息:"
         Lore:
-          - "&aAdd items by left/right"
-          - "&aclicking them in your inventory."
+          - "&a添加物品 右键/左键"
+          - "&a在你的库存中点击它们。"
           - ""
-          - "&cRemove items by right clicking"
-          - "&cthem in the composition list"
+          - "&c右键移除物品"
+          - "&c移除全部"
   Composition-Block-Menu:
-    Title: "&bBlock chance: &c%blockChance%% / %compChance%%"
+    Title: "&b方块概率: &c%blockChance%% / %compChance%%"
     Items:
       Current-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
           - ""
-          - "&bBlock chance: &c%blockChance%%"
-          - "&bComposition chance: &c%compChance%%"
+          - "&b方块概率: &c%blockChance%%"
+          - "&b合成概率: &c%compChance%%"
       Change-Table:
-        Name: "&6Change loot table"
+        Name: "&6更换战利品表"
       Configure-Table:
-        Name: "&6Configure drop chances of loot table"
+        Name: "&6配置战利品表的掉落概率"
       Add-Loot-Table:
         Active:
-          Name: "&aLoot table is added on top of default drops"
+          Name: "&a战利品表将添加到默认下列表的顶部"
         Inactive:
-          Name: "&7Loot table overrides default drops"
+          Name: "&7战利品表覆盖默认列表。"
         Lore:
-          - "&bSelect if you want to override the drops"
-          - "&bof this block, or if you want to add certain"
-          - "&bdrops on top of its default drops."
-          - "&6&lNote: &bIf the loot table is empty, this"
-          - "&bis ignored."
+          - "&b选择如果您想要覆盖掉落概率。"
+          - "&b此块，或如果您想添加某些。"
+          - "&b掉落在其默认下降的基础上。"
+          - "&6&l注意: &b战利品桌是空的，这个会变为"
+          - "&b忽视"
   Change-Loot-Table-Menu:
-    Title: "&bInsert items into loot table"
+    Title: "&b将物品插入战利品表"
     Items:
       Save-Table:
-        Name: "&aSave loot table"
-        Message: "&aSaved loot table."
+        Name: "&a保存战利品表"
+        Message: "&a保存了战利品表。"
   Loot-Table-List-Menu:
-    Title: "&bConfigure item drop chances"
+    Title: "&b配置物品丢弃概率"
     Items:
       Drop-Item:
-        Name: "!unchangeable! internal material name"
+        Name: "%!unchangeable! internal material name%"
         Lore:
           - ""
-          - "&bDrop chance: &c%chance%%"
+          - "&b丢弃概率: &c%chance%%"
   Configure-Item-Drop-Chances-Menu:
-    Title: "&bDrop chance: &c%itemChance%/100%"
+    Title: "&b丢弃概率: &c%itemChance%/100%"
     Items:
-      Current-Item: "!unchangeable! internal item"
+      Current-Item: "%！不可改变！内部材料名称%"
   Reset-Delay-Menu:
-    Title: "&bCurrent delay: &c%delay%"
+    Title: "&b当前延迟: &c%delay%"
     Items:
       Current-Delay:
-        Name: "&bCurrent delay: &c%delay%"
+        Name: "&b当前延迟 &c%delay%"
       Switch:
-        Name: "&6Switch mode"
+        Name: "&6开/关模式"
         Lore:
           - ""
-          - "&bSwitch current mode to &6TIME"
+          - "&b将电流模式切换到 &6TIME"
   Reset-Percentage-Menu:
-    Title: "&bCurrent percentage: &c%percentage%%"
+    Title: "&b当前百分比: &c%percentage%%"
     Items:
       Current-Percentage:
-        Name: "&bCurrent percentage: &c%percentage%"
+        Name: "&b当前百分比: &c%percentage%"
       Switch:
-        Name: "&6Switch mode"
+        Name: "&6开/关模式"
         Lore:
           - ""
-          - "&bSwitch current mode to &6DELAY"
+          - "&b将电流模式切换到 &6延迟"
   Efficiency-Menu:
-    Title: "&bMinimum efficiency lvl: &c%level%"
+    Title: "&b最小效率等级: &c%level%"
     Items:
       Current-Level:
-        Name: "&bMinimum efficiency level to break mine: &c%level%"
+        Name: "&b最低挖矿效率等级: &c%level%"
         Lore:
-          - "&bMinimum efficiency level to break blocks: &c%level%"
+          - "&b挖掘矿物的最低效率等级: &c%level%"
           - ""
-          - "&6&lNOTE: &bAdmins or having the permission"
-          - "&bcatamines.break bypass this!"
+          - "&6&l注意: &b你需要获得管理员的许可"
+          - "&bcatamines.break 可以绕开这个!"
   Warn-Distance-Menu:
-    Title: "&bWarn distance: &c%distance%"
+    Title: "&b警告距离: &c%distance%"
     Items:
       Current-Distance:
-        Name: "&bCurrent distance: &c%distance%"
+        Name: "&a电流距离: &c%distance%"
 
 Commands:
-  Create: "Mine &b%mine% &7has been created."
-  Delete: "Mine &b%mine% &7has been deleted."
-  Reset-Mode: "Set reset mode of &b%mine% &7to &a%mode%&7."
-  Delay: "Set reset delay to &a%seconds% &7seconds."
-  Reset-Percentage: "&b%mine% &7now resets when there is &a%percentage%% &7of blocks left"
+  Create: "矿场 &b%mine% &7创建."
+  Delete: "矿场 &b%mine% &7删除."
+  Reset-Mode: "重置 &b%mine% 于 &a%mode%&7."
+  Delay: "将重置延迟设置为 &a%seconds% &7秒."
+  Reset-Percentage: "&b%mine% &7现在重设有 &a%percentage%% &7方块左键"
   Set:
-    Success: "&b%material% &7set for &a%mine%&7. You have &6%remainingChance%% &7left over."
-    Error: "%chance-over-100%. You have &6%remainingChance%% &7left over."
+    Success: "&b%material% &7设为 &a%mine%&7. 你有 &6%remainingChance%% &7剩下的。"
+    Error: "%chance-over-100%. 你有 &6%remainingChance%% &7剩下的。"
   Unset:
-    Clear: "Composition of &a%mine% &7has been cleared"
+    Clear: "矿区 &a%mine% &7已被清除"
     Remove:
-      Success: "&b%material% &7was removed. You have &a%remainingChance%% &7left over."
-      Error: "&b%material% &7was not in the composition of %mine%&7. You have &a%remainingChance%% &7left over."
-  Reset: "Mine has been reset."
+      Success: "&b%material% &7被移除了。你有 &a%remainingChance%% &7剩下的。"
+      Error: "&b%material% &7不在...组成中 %mine%&7. 你有 &a%remainingChance%% &7剩下的。"
+  Reset: "矿区已经被重置了。"
   Teleport:
-    Self: "Teleported to &b%mine%."
-    Other: "Teleported &6%player% &7to &b%mine%"
-  Set-Teleport: "Set teleport of &b%mine%."
-  Set-Reset-Teleport: "Set reset teleport of &b%mine%. &7Also set teleportPlayersToResetLocation to &atrue"
+    Self: "传送至 &b%mine%."
+    Other: "传送玩家 &6%player% &7至 &b%mine%"
+  Set-Teleport: "固定传送 &b%mine% 的传送位置."
+  Set-Reset-Teleport: "设置重置传送位置 &b%mine%. &7还将TelportPlayersToResetLocation设置为&a开启"
   Flag:
-    Move-Region: "Moved region of &c%mine%."
-    Rename: "Renamed &b%oldmine% &7to &a%newmine%."
-    Replace-Mode: "Set replace mode of &b%mine% &7to &a%arg%."
-    Teleport-Players: "Teleport players of &b%mine% &7set to &a%arg%."
+    Move-Region: "移动区域 &c%mine%."
+    Rename: "命名 &b%oldmine% &7为 &a%newmine%."
+    Replace-Mode: "设置模式 &b%mine% &7至 &a%arg%."
+    Teleport-Players: "传送玩家 &b%mine% &7至 &a%arg%."
     Warn:
-      Warn-Hotbar: "Warns of &b%mine% &7set to &a%arg%."
-      Warn-Enable: "Warns of &b%mine% &7set to &a%arg%."
-      Warn-Global: "Global warns of &b%mine% &7set to &a%arg%."
-      Warn-Message: "&aUpdated warn message."
-      Reset-Message: "&aUpdated reset message."
-      Warn-Distance: "Warn distance of &b%mine% &7set to &a%arg%."
-      Warn-Seconds: "&aUpdated warn seconds."
-  Start: "&aStarted %mine%."
-  Stop: "&cStopped %mine%."
-  Start-Tasks: "&aStarted all mine tasks"
-  Stop-Tasks: "&cStopped all mine tasks"
+      Warn-Hotbar: "警告血条 &b%mine% &7设置至 &a%arg%."
+      Warn-Enable: "警告开启 &b%mine% &7设置至 &a%arg%."
+      Warn-Global: "全局警告 &b%mine% &7设置至 &a%arg%."
+      Warn-Message: "&a更新的警告消息。"
+      Reset-Message: "&a更新的重置消息。"
+      Warn-Distance: "警告距离 &b%mine% &7设置至 &a%arg%."
+      Warn-Seconds: "&a更新的警告秒。"
+  Start: "&a开启矿区 %mine%."
+  Stop: "&c关闭矿区 %mine%."
+  Start-Tasks: "&a开启了全部的矿区"
+  Stop-Tasks: "&c关闭了全部的矿区"
   Reload:
-    All: "&aPlugin has been reloaded."
-    Mines: "&aMines have been reloaded."
-    Config: "&aConfig has been reloaded."
-    Messages: "&aMessages have been reloaded."
-    Properties: "&aProperties have been reloaded."
+    All: "&a插件重载成功."
+    Mines: "&a矿区重载成功."
+    Config: "&a配置重载成功."
+    Messages: "&a语言文件重载成功."
+    Properties: "&a属性已重载成功."
 
 Error-Messages:
-  No-Permission: "&cYou do not have the permissions to do that!"
-  Only-Players: "&cOnly players may execute this command!"
-  Unknown-Command: "Unknown command."
-  Unknown-Flag: "Unknown flag."
-  Player-Not-Found: "Player &6%player% &7not found!"
+  No-Permission: "&c你没有权限这样做哦!"
+  Only-Players: "&c只有玩家才能执行此命令。!"
+  Unknown-Command: "未知的命令."
+  Unknown-Flag: "未知的标志."
+  Player-Not-Found: "玩家 &6%player% &7找不到！"
   Mine:
-    Incomplete-Region: "You must select a region!"
-    Not-Exist: "Mine does not exist!"
-    Exist: "Mine already exists!"
-    Cant-Reset: "Can't reset mine!"
-    Material-Not-Found: "Material not found!"
-    Not-Number: "Your chance must be a number!"
-    Not-Percentage: "Your chance must be a percentage!"
-    Invalid-Chance: "Your chance must be between 0 and 100%!"
-    Invalid-Range: "Your input must be between %start%-%end%!"
-    Material-Not-Solid: "Material must be a solid block!"
-    Invalid-Block-Configuration: "Invalid block configuration!"
-    Invalid-Boolean: "Your last argument must be either true or false!"
-    Teleport-Error: "Location does not exist!"
-    Block-Not-In-Composition: "Block is not in composition"
-    Invalid-Region: "&cRegion is invalid!"
-    Material-In-Composition: "Material is already in composition!"
-    Chance-Over-100: "Chance would be over 100%"
+    Incomplete-Region: "你必须选择一个区域！"
+    Not-Exist: "工具不存在!"
+    Exist: "工具不存在！"
+    Cant-Reset: "不能重置矿场"
+    Material-Not-Found: "材料没找到！"
+    Not-Number: "你的概率一定是数字！"
+    Not-Percentage: "你的概率一定要是百分比！"
+    Invalid-Chance: "你的概率必须在0到100%之间！"
+    Invalid-Range: "您的输入必须在 %start%-%end%之间!"
+    Material-Not-Solid: "材料必须是实心的块！"
+    Invalid-Block-Configuration: "无效的方块配置！"
+    Invalid-Boolean: "你的最后一个论点必须是正确的还是错误的！"
+    Teleport-Error: "位置不存在！"
+    Block-Not-In-Composition: "方块不在地图中"
+    Invalid-Region: "&c区域无效！"
+    Material-In-Composition: "材料已经在合成成功了！"
+    Chance-Over-100: "概率超过了100%！"
   GUI:
-    Mine-Deleted: "Kicked out of mine menu!"
-    Block-Deleted: "Kicked out of block menu!"
-    Loot-Table-Change: "Loot table changed!"
-    First-Page: "You are already on the first page"
-    Last-Page: "You are on the last page"
-    Mine-Doesnt-Exist: "&cThe mine you tried to open doesn't exist anymore!"
+    Mine-Deleted: "从矿区工具菜单上踢出！"
+    Block-Deleted: "从方块菜单上踢出！"
+    Loot-Table-Change: "战利品改变了！"
+    First-Page: "你已经在第一页了"
+    Last-Page: "你在最后一页"
+    Mine-Doesnt-Exist: "&c你想打开的矿区已经不存在了！"
