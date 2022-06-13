@@ -79,6 +79,8 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
                 return String.valueOf(cataMine.getRemainingBlocksPer());
             case "resetpercentage":
                 return String.valueOf(cataMine.getResetPercentage());
+            case "timestring":
+                return cataMine.getFormattedTimeString();
         }
 
         return null;
