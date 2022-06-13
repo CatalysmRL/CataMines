@@ -147,15 +147,17 @@ public abstract class AbstractCataMine implements Cloneable {
     public void reset() {
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
 
-            blockCount = getTotalBlocks();
+            if (blockCount != getTotalBlocks()) {
+                blockCount = getTotalBlocks();
+                if (!replaceMode) {
+                    editSession.setBlocks(region, randomPattern);
+                } else {
+                    editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
+                }
+            }
 
             if (warn) {
                 broadcastResetMessage();
-            }
-            if (!replaceMode) {
-                editSession.setBlocks(region, randomPattern);
-            } else {
-                editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
             }
             if (teleportPlayers) {
                 teleportPlayers();
@@ -326,11 +328,11 @@ public abstract class AbstractCataMine implements Cloneable {
     public void blocksToRandomPattern() {
 
         if (blocks.stream().allMatch(cataMineBlock -> cataMineBlock.getChance() == 0) || blocks.isEmpty()) {
-            this.randomPattern = null;
+            randomPattern = null;
             return;
         }
 
-        this.randomPattern = new RandomPattern();
+        randomPattern = new RandomPattern();
 
         blocks.stream().filter(cataMineBlock -> !(cataMineBlock.getChance() == 0))
                 .forEach(cataMineBlock -> randomPattern.add(BukkitAdapter.adapt(cataMineBlock.getBlockData()), cataMineBlock.getChance()));
