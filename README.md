@@ -10,7 +10,7 @@ A mines management plugins
 - [WorldEdit](https://enginehub.org/worldedit/#downloads) / [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932)
 - [PlaceholdersAPI](https://www.spigotmc.org/resources/6245) (optional)
 ## Compatibility
-- Java 8 to 17
+- Java 8 to 18
 - Minecraft 1.13.2 - 1.18.2
 
 ## 🔗 Links
