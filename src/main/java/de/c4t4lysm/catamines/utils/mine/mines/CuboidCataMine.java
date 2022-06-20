@@ -234,13 +234,8 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
 
     public Location getTeleportLocation() {
         if (teleportLocation == null) {
-            FileConfig fileConfig = new FileConfig(CataMines.getInstance().getDataFolder() + "/mines", name + ".yml");
-            teleportLocation = (Location) fileConfig.get("Mine.teleportLocation");
-
-            if (teleportLocation == null) {
-                if (region != null && region.getWorld() != null) {
-                    teleportLocation = new Location(BukkitAdapter.adapt(region.getWorld()), region.getCenter().getX() + 0.5, region.getMaximumPoint().getY() + 1, region.getCenter().getZ() + 0.5);
-                }
+            if (region != null) {
+                return new Location(BukkitAdapter.adapt(region.getWorld()), region.getCenter().getX() + 0.5, region.getMaximumPoint().getY() + 1, region.getCenter().getZ() + 0.5);
             }
         }
 
