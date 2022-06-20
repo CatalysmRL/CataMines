@@ -97,7 +97,7 @@ public class CompositionMenu extends PaginatedMenu {
         }
 
         if (!event.getCurrentItem().getType().isBlock()) {
-            player.sendMessage(plugin.getLangString("GUI.Error-Messages.Mine.Material-Not-Solid"));
+            player.sendMessage(plugin.getLangString("Error-Messages.Mine.Material-Not-Solid"));
             return;
         }
 
