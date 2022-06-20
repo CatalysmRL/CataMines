@@ -48,79 +48,57 @@ GUI:
       Configure-Composition:
         Name: "&6Configure composition"
         Lore:
+          - ""
           - "&bComposition: &c%chance%%"
       Configure-Delay:
         Name: "&6Configure reset delay"
         Lore:
-          - "&bReset delay: &c%delay%s"
-          - "&bReset percentage: &c%percentage%%"
+          - "&fReset by delay"
           - ""
-          - "&fRight click to switch modes"
+          - "&bReset delay: &c%delay%"
+          - "&bReset percentage: &c%percentage%"
+          - ""
+          - "&a&lRight click to switch modes"
       Configure-Percentage:
         Name: "&6Configure reset percentage"
         Lore:
-          - "&bReset percentage: &c%percentage%%"
-          - "&bReset delay: &c%delay%s"
+          - "&fReset by percentage"
           - ""
-          - "&fRight click to switch modes"
-      Warn:
-        Active:
-          Name: "&aWarns on reset"
-        Inactive:
-          Name: "&7Doesn't warn on reset"
+          - "&bReset delay: &c%delay%"
+          - "&bReset percentage: &c%percentage%"
+          - ""
+          - "&a&lRight click to switch modes"
+      Configure-TimePercentage:
+        Name: "&6TIME-PERCENTAGE"
         Lore:
-          - "&bSelect if mine should warn of resets"
-      Warn-Global:
-        Active:
-          Name: "&aWarns globally"
-        Inactive:
-          Name: "&7Doesn't warn globally"
+          - "&fReset by delay and percentage"
+          - ""
+          - "&bReset delay: &c%delay%"
+          - "&bReset percentage: &c%percentage%"
+          - ""
+          - "&a&lRight click to switch modes"
+      Flag-Menu:
+        Name: "&6Configure flags"
         Lore:
-          - "&bSelect if mine should warn globally"
-      Warn-Hotbar:
-        Active:
-          Name: "&aDisplays seconds in hotbar"
-        Inactive:
-          Name: "&7Doesn't display seconds in hotbar"
-        Lore:
-          - "&bSelect if mine should display remaining seconds in the hotbar"
-      Teleport-Players:
-        Active:
-          Name: "&aTeleports players on reset"
-        Inactive:
-          Name: "&7Doesn't teleport players on reset"
-        Lore:
-          - "&bSelect if mine should teleport players"
-          - "&bin the mine on reset"
-      Teleport-Players-To-Reset-Location:
-        Active:
-          Name: "&aTeleports players to reset location"
-        Inactive:
-          Name: "&7Teleports players on top of the mine"
-        Lore:
-          - "&bSelect if mine should teleport players"
-          - "&bto reset location instead of just on top"
-          - "&6&lNOTES: &7Make sure you have a reset location"
-          - "&7by using /cm setresettp. Teleport players has"
-          - "&7to be activated for this to take effect"
-      Replace-Mode:
-        Active:
-          Name: "&aReplace mode on"
-        Inactive:
-          Name: "&7Replace mode off"
-        Lore:
-          - "&bSelect if mine should only replace &lAIR"
+          - ""
+          - "&eWarns: &f%warn%"
+          - "  &eGlobal: &f%global%"
+          - "  &eActionbar: &f%actionbar%"
+          - "  &eDistance: &c%warndistance%"
+          - "&eTeleports: &f%teleports%"
+          - "  &eTo resettp: &f%resettp%"
+          - "&eReplaces: &f%replacemode%"
       Efficiency-Lvl:
-        Name: "&6Configure min. efficiency lvl"
+        Name: "&6Efficiency Lvl"
         Lore:
-          - "&bMinimum efficiency level to break blocks: &c%level%"
           - ""
-          - "&6&lNOTE: &bAdmins or having the permission"
-          - "&bcatamines.break bypass this!"
-      Warn-Distance:
-        Name: "&6Configure warn distance"
-        Lore:
-          - "&bWarn distance: &c%distance%"
+          - "&bLevel: &c%level%"
+          - ""
+          - "&fEff. Lvl required to break"
+          - "&fmine blocks."
+          - ""
+          - "&fPermission &6catamines.break"
+          - "&fbypasses this check!"
       Reset-Mine:
         Name: "&cReset mine"
       Teleport:
@@ -186,15 +164,17 @@ GUI:
         Name: "&6Configure drop chances of loot table"
       Add-Loot-Table:
         Active:
-          Name: "&aLoot table is added on top of default drops"
+          Name: "&a&lCustom drops are added"
+          Lore:
+            - ""
+            - "&fCustom drops are added on top"
+            - "&fof the default drops"
         Inactive:
-          Name: "&7Loot table overrides default drops"
-        Lore:
-          - "&bSelect if you want to override the drops"
-          - "&bof this block, or if you want to add certain"
-          - "&bdrops on top of its default drops."
-          - "&6&lNote: &bIf the loot table is empty, this"
-          - "&bis ignored."
+          Name: "&7Custom drops override"
+          Lore:
+            - ""
+            - "&fDefault drops get cleared."
+            - "&fBlock only drops custom drops."
   Change-Loot-Table-Menu:
     Title: "&bInsert items into loot table"
     Items:
@@ -219,30 +199,113 @@ GUI:
       Current-Delay:
         Name: "&bCurrent delay: &c%delay%"
       Switch:
-        Name: "&6Switch mode"
+        Name: "&6Switch page"
         Lore:
           - ""
-          - "&bSwitch current mode to &6TIME"
+          - "&bSwitch page to &6PERCENTAGE"
   Reset-Percentage-Menu:
     Title: "&bCurrent percentage: &c%percentage%%"
     Items:
       Current-Percentage:
         Name: "&bCurrent percentage: &c%percentage%"
       Switch:
-        Name: "&6Switch mode"
+        Name: "&6Switch page"
         Lore:
           - ""
-          - "&bSwitch current mode to &6DELAY"
+          - "&bSwitch page to &6TIME"
+  Flags-Menu:
+    Title: "&6&lSetup mine flags"
+    Items:
+      Warn:
+        Active:
+          Name: "&a&lWarn"
+          Lore:
+            - ""
+            - "&fMine now warns on specified reset"
+            - "&fseconds and on reset"
+        Inactive:
+          Name: "&7Warn"
+          Lore:
+            - ""
+            - "&fMine does not warn"
+      Warn-Global:
+        Active:
+          Name: "&a&lWarn globally"
+          Lore:
+            - ""
+            - "&fIf &a&l'Warn' &fis enabled"
+            - "&fit now warns globally"
+        Inactive:
+          Name: "&7Warn globally"
+          Lore:
+            - ""
+            - "&fMine does not warn globally"
+      Warn-Hotbar:
+        Active:
+          Name: "&a&lBroadcast Actionbar"
+          Lore:
+            - ""
+            - "&fDisplay mine information in"
+            - "&fplayers actionbar"
+        Inactive:
+          Name: "&7Broadcast Actionbar"
+          Lore:
+            - ""
+            - "&fDisplay mine information in"
+            - "&fplayers actionbar"
+      Teleport-Players:
+        Active:
+          Name: "&a&lTeleport players"
+          Lore:
+            - ""
+            - "&fActivates teleports on reset"
+            - "&fYou can choose tp on top or"
+            - "&fto reset location of mine"
+        Inactive:
+          Name: "&7Teleport players"
+          Lore:
+            - ""
+            - "&fActivates teleports on reset"
+            - "&fYou can choose tp on top or"
+            - "&fto reset location of mine"
+      Teleport-Players-To-Reset-Location:
+        Active:
+          Name: "&aTeleport location"
+          Lore:
+            - ""
+            - "&fCurrently teleports to reset"
+            - "&flocation if specified by using"
+            - "&f/cm setresettp <mine>"
+        Inactive:
+          Name: "&2Teleport location"
+          Lore:
+            - ""
+            - "&fCurrently teleports to the"
+            - "&ftop of the mine on reset"
+      Replace-Mode:
+        Active:
+          Name: "&a&lReplaces air"
+          Lore:
+            - ""
+            - "&fOnly resets empty blocks of the mine"
+        Inactive:
+          Name: "&7Replaces all"
+          Lore:
+            - ""
+            - "&fResets all blocks of the mine"
+      Warn-Distance:
+        Name: "&6Configure warn distance"
+        Lore:
+          - "&bWarn distance: &c%distance%"
   Efficiency-Menu:
-    Title: "&bMinimum efficiency lvl: &c%level%"
+    Title: "&bLevel: &c%level%"
     Items:
       Current-Level:
-        Name: "&bMinimum efficiency level to break mine: &c%level%"
+        Name: "&bEfficiency Lvl: &c%level%"
         Lore:
-          - "&bMinimum efficiency level to break blocks: &c%level%"
           - ""
-          - "&6&lNOTE: &bAdmins or having the permission"
-          - "&bcatamines.break bypass this!"
+          - "&fPermission &6catamines.break"
+          - "&fbypasses this check!"
   Warn-Distance-Menu:
     Title: "&bWarn distance: &c%distance%"
     Items:

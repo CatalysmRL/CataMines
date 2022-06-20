@@ -30,7 +30,7 @@ public class CataMinesTabCompleter implements TabCompleter {
             }
             case 2:
                 List<String> correctArgs = Arrays.asList("delete", "info", "set", "unset", "start", "stop", "setdelay", "flag",
-                        "reset", "tp", "settp", "setresettp", "gui", "resetmode", "resetpercentage");
+                        "reset", "tp", "settp", "setresettp", "gui", "resetmode", "resetpercentage", "redefine");
                 if (correctArgs.contains(args[0].toLowerCase())) {
                     return StringUtil.copyPartialMatches(args[1], MineManager.getInstance().getMineListNames(), new ArrayList<>());
                 } else if (args[0].equalsIgnoreCase("reload")) {

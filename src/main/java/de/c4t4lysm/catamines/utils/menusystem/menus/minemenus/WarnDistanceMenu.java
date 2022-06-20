@@ -50,7 +50,7 @@ public class WarnDistanceMenu extends Menu {
 
         switch (event.getRawSlot()) {
             case 45:
-                new MineMenu(playerMenuUtility).open();
+                new FlagsMenu(playerMenuUtility).open();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 return;
             case 3 * 9 - 6:
@@ -84,7 +84,7 @@ public class WarnDistanceMenu extends Menu {
 
     @Override
     public void setMenuItems() {
-        inventory.setItem(13, ItemStackBuilder.buildItem(Material.SIGN, plugin.getLangString("GUI.Warn-Distance-Menu.Items.Current-Distance.Name").replaceAll("%distance%", String.valueOf(mine.getWarnDistance()))));
+        inventory.setItem(13, ItemStackBuilder.buildItem(Material.STICK, plugin.getLangString("GUI.Warn-Distance-Menu.Items.Current-Distance.Name").replaceAll("%distance%", String.valueOf(mine.getWarnDistance()))));
 
         String increaseBy = plugin.getLangString("GUI.Universal.Increase-By");
         String decreaseBy = plugin.getLangString("GUI.Universal.Decrease-By");

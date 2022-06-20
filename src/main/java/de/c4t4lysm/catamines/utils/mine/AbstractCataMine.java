@@ -109,7 +109,7 @@ public abstract class AbstractCataMine implements Cloneable {
 
         switch (resetMode) {
             case TIME:
-                if (resetDelay < 0) return;
+                if (resetDelay <= 0) return;
                 if (!firstCycle) {
                     --countdown;
                 } else {
@@ -135,6 +135,36 @@ public abstract class AbstractCataMine implements Cloneable {
                 }
                 if (getRemainingBlocksPer() <= resetPercentage) {
                     reset();
+                }
+                break;
+            case TIME_PERCENTAGE:
+                if (resetDelay <= 0) return;
+                if (!firstCycle) {
+                    --countdown;
+                } else {
+                    firstCycle = false;
+                    countdown = resetDelay;
+                }
+
+                if (warn) {
+                    if (warnSeconds.contains(countdown)) {
+                        broadcastWarnMessage();
+                    }
+                }
+
+                if (countdown <= 0) {
+                    reset();
+                    break;
+                }
+
+                --countdownForCalculatingBlockCount;
+                if (countdownForCalculatingBlockCount <= 0) {
+                    calculateRemainingBlocks();
+                    countdownForCalculatingBlockCount = 127;
+                }
+                if (getRemainingBlocksPer() <= resetPercentage) {
+                    reset();
+                    break;
                 }
                 break;
         }
@@ -169,6 +199,24 @@ public abstract class AbstractCataMine implements Cloneable {
         }
 
         firstCycle = true;
+    }
+
+    public void forceReset() {
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
+
+            editSession.setBlocks(region, randomPattern);
+
+            if (warn) {
+                broadcastResetMessage();
+            }
+            if (teleportPlayers) {
+                teleportPlayers();
+            }
+        } catch (MaxChangedBlocksException exception) {
+            throw new IllegalArgumentException(name + " tried to set too many blocks!");
+        } catch (NoSuchMethodError exception) {
+            throw new NoSuchMethodError("Could not reset " + name + " because your version of WorldEdit is too old!");
+        }
     }
 
     public boolean checkRunnable() {
@@ -246,6 +294,11 @@ public abstract class AbstractCataMine implements Cloneable {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Block-Not-In-Composition"));
         }
         blocks.remove(getBlock(blockData));
+        blocksToRandomPattern();
+    }
+
+    public void removeBlock(int index) {
+        blocks.remove(index);
         blocksToRandomPattern();
     }
 

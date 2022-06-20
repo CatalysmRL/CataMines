@@ -52,7 +52,6 @@ public class ResetPercentageMenu extends Menu {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 return;
             case 6:
-                mine.setResetMode(CataMineResetMode.TIME);
                 new ResetDelayMenu(playerMenuUtility).open();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
                 return;

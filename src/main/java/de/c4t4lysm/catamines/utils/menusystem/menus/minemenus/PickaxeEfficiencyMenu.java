@@ -85,9 +85,9 @@ public class PickaxeEfficiencyMenu extends Menu {
 
     @Override
     public void setMenuItems() {
-        List<String> efficiencyLore = plugin.getLangStringList("GUI.Mine-Menu.Items.Efficiency-Lvl.Lore");
+        List<String> efficiencyLore = plugin.getLangStringList("GUI.Efficiency-Menu.Items.Current-Level.Lore");
         efficiencyLore.replaceAll(s -> s.replaceAll("%level%", String.valueOf(mine.getMinEfficiencyLvl())));
-        inventory.setItem(13, ItemStackBuilder.buildItem(Material.DIAMOND_PICKAXE, plugin.getLangString("GUI.Mine-Menu.Items.Efficiency-Lvl.Name").replaceAll("%level%", String.valueOf(mine.getMinEfficiencyLvl())),
+        inventory.setItem(13, ItemStackBuilder.buildItem(Material.DIAMOND_PICKAXE, plugin.getLangString("GUI.Efficiency-Menu.Items.Current-Level.Name").replaceAll("%level%", String.valueOf(mine.getMinEfficiencyLvl())),
                 efficiencyLore));
 
         String increaseBy = plugin.getLangString("GUI.Universal.Increase-By");

@@ -31,15 +31,8 @@ public class ResetCommand implements CommandInterface {
                 return true;
             }
 
-            if (cuboidCataMine.isWarn()) {
-                cuboidCataMine.broadcastResetMessage();
-            }
-
             sender.sendMessage(CataMines.PREFIX + CataMines.getInstance().getLangString("Commands.Reset"));
-            cuboidCataMine.reset();
-            if (cuboidCataMine.isTeleportPlayers()) {
-                cuboidCataMine.teleportPlayers();
-            }
+            cuboidCataMine.forceReset();
         } else sender.sendMessage(CataMines.PREFIX + "§b/cm reset <mine>");
 
         return true;

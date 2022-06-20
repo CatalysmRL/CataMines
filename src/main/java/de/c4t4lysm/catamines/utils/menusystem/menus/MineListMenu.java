@@ -111,13 +111,14 @@ public class MineListMenu extends PaginatedMenu {
                     CuboidCataMine cuboidCataMine = cuboidCataMines.get(index);
 
                     Material material = Material.STICK;
+                    CataMineBlock cataBlock;
                     if (!cuboidCataMine.getBlocks().isEmpty()) {
-                        CataMineBlock highestBlock = cuboidCataMine.getBlocks().stream().max(Comparator.comparingDouble(CataMineBlock::getChance)).get();
-                        material = highestBlock.getBlockData().getMaterial();
+                        cataBlock = cuboidCataMine.getBlocks().stream().max(Comparator.comparingDouble(CataMineBlock::getChance)).get();
+                        material = cataBlock.getBlockData().getMaterial();
                     }
 
-                    if (material.equals(Material.AIR)) {
-                        material = Material.BONE_MEAL;
+                    if (!material.isSolid()) {
+                        material = Material.WRITTEN_BOOK;
                     }
 
                     ArrayList<String> lore = new ArrayList<>();
@@ -125,7 +126,7 @@ public class MineListMenu extends PaginatedMenu {
                     lore.add(ChatColor.AQUA + "Composition:");
                     int miniIndex = 1;
                     for (CataMineBlock block : cuboidCataMine.getBlocks()) {
-                        lore.add(ChatColor.RED + "  " + miniIndex + ". " + ChatColor.GOLD + block.getBlockData().getMaterial().name() + ": " + ChatColor.RED + block.getChance() + "%");
+                        lore.add(ChatColor.RED + "  " + miniIndex + ". " + ChatColor.GOLD + block.getBlockData().getMaterial() + ": " + ChatColor.RED + block.getChance() + "%");
                         miniIndex++;
                     }
                     lore.add(ChatColor.AQUA + "Delay: " + ChatColor.RED + cuboidCataMine.getResetDelay());

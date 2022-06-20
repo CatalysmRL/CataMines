@@ -113,6 +113,7 @@ public final class CataMines extends JavaPlugin {
 
         commandHandler.register("create", new CreateCommand());
         commandHandler.register("delete", new DeleteCommand());
+        commandHandler.register("redefine", new RedefineCommand());
         commandHandler.register("info", new InfoCommand());
         commandHandler.register("list", new ListCommand());
         commandHandler.register("resetmode", new ResetMode());
@@ -134,7 +135,7 @@ public final class CataMines extends JavaPlugin {
         commandHandler.register("gui", new GuiCommand());
         getCommand("catamines").setExecutor(commandHandler);
 
-        Bukkit.getPluginCommand("catamines").setTabCompleter(new CataMinesTabCompleter());
+        getCommand("catamines").setTabCompleter(new CataMinesTabCompleter());
     }
 
     private void registerListeners() {

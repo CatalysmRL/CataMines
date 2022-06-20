@@ -7,14 +7,11 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.CataMines;
-import de.c4t4lysm.catamines.utils.Utils;
 import de.c4t4lysm.catamines.utils.configuration.FileConfig;
 import de.c4t4lysm.catamines.utils.mine.AbstractCataMine;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineLootItem;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,7 +20,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -32,6 +28,7 @@ import java.util.logging.Logger;
 public class CuboidCataMine extends AbstractCataMine implements Cloneable, ConfigurationSerializable {
 
     private final Random random = new Random();
+    private FileConfig fileConfig;
 
     public CuboidCataMine(String name, Region region) {
         super(name, region);
@@ -192,7 +189,7 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
         blockCount--;
 
         //TODO - Refactor | Cleanup
-        if (resetMode == CataMineResetMode.PERCENTAGE) {
+        if (warnHotbar && (resetMode == CataMineResetMode.PERCENTAGE || resetMode == CataMineResetMode.TIME_PERCENTAGE)) {
             broadcastHotbar();
         }
 
@@ -223,7 +220,9 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
     }
 
     public void save() {
-        FileConfig fileConfig = new FileConfig(CataMines.getInstance().getDataFolder() + "/mines", name + ".yml");
+        if (fileConfig == null) {
+            fileConfig = new FileConfig(CataMines.getInstance().getDataFolder() + "/mines", name + ".yml");
+        }
         fileConfig.set("Mine", this);
         fileConfig.saveConfig();
     }

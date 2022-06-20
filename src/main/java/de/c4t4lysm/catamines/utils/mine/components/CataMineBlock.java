@@ -3,6 +3,7 @@ package de.c4t4lysm.catamines.utils.mine.components;
 import de.c4t4lysm.catamines.CataMines;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
     private List<CataMineLootItem> lootTable = new ArrayList<>();
 
     public CataMineBlock(BlockData blockData, double chance) {
-        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
+        if (!blockData.getMaterial().isBlock() || chance < 0 || chance > 100) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
@@ -33,7 +34,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
     }
 
     public CataMineBlock(BlockData blockData, double chance, boolean addLootTable) {
-        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
+        if (!blockData.getMaterial().isBlock() || chance < 0 || chance > 100) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
@@ -43,7 +44,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
     }
 
     public CataMineBlock(BlockData blockData, double chance, List<CataMineLootItem> lootTable) {
-        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
+        if (!blockData.getMaterial().isBlock() || chance < 0 || chance > 100) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
@@ -53,7 +54,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
     }
 
     public CataMineBlock(BlockData blockData, double chance, boolean addLootTable, List<CataMineLootItem> lootTable) {
-        if (!(blockData.getMaterial().isBlock() || blockData.getMaterial().isSolid() || chance < 0 || chance > 100)) {
+        if (!blockData.getMaterial().isBlock() || chance < 0 || chance > 100) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
         }
 
@@ -119,7 +120,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
     }
 
     public void setBlockData(BlockData blockData) {
-        if (!blockData.getMaterial().isBlock() || !blockData.getMaterial().isSolid()) {
+        if (!blockData.getMaterial().isBlock()) {
             throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Material-Not-Solid"));
         }
         this.blockData = blockData;

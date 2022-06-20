@@ -34,7 +34,7 @@ public class FileManager {
 
     public String getLangString(String str) {
         if (!langCfg.contains(str)) {
-            return "Could not load " + str + ", language you're using: " + plugin.getConfig().getString("language");
+            return "Error loading: " + str + ", " + plugin.getConfig().getString("language");
         }
         return ChatColor.translateAlternateColorCodes('&', langCfg.getString(str));
     }
@@ -48,7 +48,7 @@ public class FileManager {
 
     public List<String> getLangStringList(String str) {
         if (!langCfg.contains(str)) {
-            return Collections.singletonList("Could not load " + str + ", language you're using: " + plugin.getConfig().getString("language"));
+            return Arrays.asList("Could not load ",str ,"language: " + plugin.getConfig().getString("language"));
         }
         List<String> translatedList = new ArrayList<>();
         langCfg.getStringList(str).forEach(s -> translatedList.add(ChatColor.translateAlternateColorCodes('&', s)));
@@ -88,9 +88,10 @@ public class FileManager {
 
     public void setupLanguageFiles() {
 
-        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_en.yml"), "messages_en.yml");
+        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_en.yml"), "messages_en.yml", StandardCopyOption.REPLACE_EXISTING);
+        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_es.yml"), "messages_es.yml", StandardCopyOption.REPLACE_EXISTING);
+
         new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_custom.yml"), "messages_custom.yml");
-        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_es.yml"), "messages_es.yml");
 
         File langFile = new File(dataFolder + "/languages", "messages_" + plugin.getConfig().getString("language").toLowerCase() + ".yml");
         if (!langFile.exists()) {

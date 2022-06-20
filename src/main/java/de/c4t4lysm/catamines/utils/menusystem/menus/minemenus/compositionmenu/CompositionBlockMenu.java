@@ -8,6 +8,7 @@ import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu.bl
 import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu.blockloottable.LootItemListMenu;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -142,13 +143,21 @@ public class CompositionBlockMenu extends Menu {
                 block.isAddLootTable() ?
                         plugin.getLangString("GUI.Composition-Block-Menu.Items.Add-Loot-Table.Active.Name") :
                         plugin.getLangString("GUI.Composition-Block-Menu.Items.Add-Loot-Table.Inactive.Name"),
-                plugin.getLangStringList("GUI.Composition-Block-Menu.Items.Add-Loot-Table.Lore")));
+                block.isAddLootTable() ?
+                        plugin.getLangStringList("GUI.Composition-Block-Menu.Items.Add-Loot-Table.Active.Lore") :
+                        plugin.getLangStringList("GUI.Composition-Block-Menu.Items.Add-Loot-Table.Inactive.Lore")));
         inventory.setItem(8, ItemStackBuilder.buildItem(Material.DISPENSER, plugin.getLangString("GUI.Composition-Block-Menu.Items.Configure-Table.Name")));
 
         List<String> blockLore = plugin.getLangStringList("GUI.Composition-Block-Menu.Items.Current-Block.Lore");
         blockLore.replaceAll(s -> s.replaceAll("%blockChance%", String.valueOf(block.getChance()))
                 .replaceAll("%compChance%", String.valueOf(cuboidCataMine.getCompositionChance())));
-        inventory.setItem(13, ItemStackBuilder.buildItem(block.getBlockData().getMaterial(), "",
+
+        Material material = block.getBlockData().getMaterial();
+        if (!material.isSolid()) {
+            material = Material.WRITTEN_BOOK;
+        }
+
+        inventory.setItem(13, ItemStackBuilder.buildItem(material, !material.isSolid() ? ChatColor.WHITE + block.getBlockData().getMaterial().toString() : "",
                 blockLore));
 
         String increaseBy = plugin.getLangString("GUI.Universal.Increase-By");
