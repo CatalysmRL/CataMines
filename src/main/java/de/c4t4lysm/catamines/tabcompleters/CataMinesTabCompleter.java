@@ -17,6 +17,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CataMinesTabCompleter implements TabCompleter {
+
+    private final ArrayList<String> materials;
+
+    public CataMinesTabCompleter() {
+        materials = new ArrayList<>();
+        for (Material material : Material.values()) {
+            if (material.isBlock()) {
+                materials.add(material.toString().toLowerCase());
+            }
+        }
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
@@ -45,15 +57,7 @@ public class CataMinesTabCompleter implements TabCompleter {
                 List<String> completions = new ArrayList<>();
                 switch (args[0].toLowerCase()) {
                     case "set":
-                        ArrayList<String> blocks = new ArrayList<>();
-                        for (Material material : Material.values()) {
-                            if (material.isBlock() && material.isSolid()) {
-                                blocks.add(material.toString().toLowerCase());
-                            }
-                        }
-
-
-                        return StringUtil.copyPartialMatches(args[2], blocks, completions);
+                        return StringUtil.copyPartialMatches(args[2], materials, completions);
                     case "unset":
                         List<String> blockList = new ArrayList<>();
                         MineManager.getInstance().getMine(args[1]).getBlocks().forEach(block -> blockList.add(block.getBlockData().getMaterial().name()));
