@@ -193,6 +193,19 @@ GUI:
     Title: "&bDrop chance: &c%itemChance%/100%"
     Items:
       Current-Item: "!unchangeable! internal item"
+      Fortune:
+        Active:
+          Name: "&a&lFortune"
+          Lore:
+            - ""
+            - "&fFortune level will influence"
+            - "&fthe drop amount of this item"
+        Inactive:
+          Name: "&7Fortune"
+          Lore:
+            - ""
+            - "&fItem will not be"
+            - "&finfluenced by fortune"
   Reset-Delay-Menu:
     Title: "&bCurrent delay: &c%delay%"
     Items:

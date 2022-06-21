@@ -11,6 +11,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.List;
+
 public class LootItemMenu extends Menu {
 
     private final CuboidCataMine mine;
@@ -44,6 +46,11 @@ public class LootItemMenu extends Menu {
             case 45:
                 new LootItemListMenu(playerMenuUtility).open();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
+                return;
+            case 6:
+                item.setFortune(!item.isFortune());
+                mine.save();
+                updateMenus();
                 return;
             case 3 * 9 - 9:
                 addPercentage = 0.001;
@@ -121,6 +128,18 @@ public class LootItemMenu extends Menu {
     @Override
     public void setMenuItems() {
         inventory.setItem(13, item.getItem());
+
+        if (item.isFortune()) {
+            inventory.setItem(6, ItemStackBuilder.buildItem(
+                    Material.LIME_DYE,
+                    CataMines.getInstance().getLangString("GUI.Configure-Item-Drop-Chances-Menu.Items.Fortune.Active.Name"),
+                    CataMines.getInstance().getLangStringList("GUI.Configure-Item-Drop-Chances-Menu.Items.Fortune.Active.Lore")));
+        } else {
+            inventory.setItem(6, ItemStackBuilder.buildItem(
+                    Material.GRAY_DYE,
+                    CataMines.getInstance().getLangString("GUI.Configure-Item-Drop-Chances-Menu.Items.Fortune.Inactive.Name"),
+                    CataMines.getInstance().getLangStringList("GUI.Configure-Item-Drop-Chances-Menu.Items.Fortune.Inactive.Lore")));
+        }
 
         String increaseBy = CataMines.getInstance().getLangString("GUI.Universal.Increase-By");
         String decreaseBy = CataMines.getInstance().getLangString("GUI.Universal.Decrease-By");

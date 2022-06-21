@@ -17,6 +17,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -205,15 +206,21 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
             }
 
             for (CataMineLootItem lootItem : block.getLootTable()) {
-                ItemStack item = lootItem.getItem();
+                ItemStack item = lootItem.getItem().clone();
                 double chance = lootItem.getChance();
                 double r1 = random.nextDouble() * 100;
 
-                if (item == null || chance < r1) {
+                if (chance < r1) {
                     continue;
                 }
 
                 Location location = event.getBlock().getLocation();
+                if (lootItem.isFortune()) {
+                    ItemStack usedTool = event.getPlayer().getInventory().getItemInMainHand();
+                    if (usedTool.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
+                        item.setAmount(lootItem.getDropCount(usedTool.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS)));
+                    }
+                }
                 location.getWorld().dropItemNaturally(location, item);
             }
         }

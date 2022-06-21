@@ -85,7 +85,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
 
         List<CataMineLootItem> lootTable = new ArrayList<>();
         for (Map<String, Object> loot : serializedLootTable) {
-            lootTable.add(new CataMineLootItem(ItemStack.deserialize((Map<String, Object>) loot.get("item")), (Double) loot.get("chance")));
+            lootTable.add(CataMineLootItem.deserialize(loot));
         }
 
         return new CataMineBlock(blockData, chance, addLootTable, lootTable);
@@ -102,12 +102,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
         ArrayList<Map<String, Object>> mappedLootTable = new ArrayList<>();
 
         for (CataMineLootItem lootItem : lootTable) {
-            Map<String, Object> mappedLoot = new LinkedHashMap<>();
-            ItemStack itemStack = lootItem.getItem();
-            double chance = lootItem.getChance();
-            mappedLoot.put("item", itemStack.serialize());
-            mappedLoot.put("chance", chance);
-            mappedLootTable.add(mappedLoot);
+            mappedLootTable.add(lootItem.serialize());
         }
 
         result.put("lootTable", mappedLootTable);
