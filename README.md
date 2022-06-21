@@ -12,7 +12,7 @@ A mines management plugins
 - [PlaceholdersAPI](https://www.spigotmc.org/resources/6245) (optional)
 ## Compatibility
 - Java 8 to 18
-- Minecraft 1.13.2 - 1.18.2
+- Minecraft 1.13.2 - 1.19
 
 ## 🔗 Links
 - [Spigot Page](https://www.spigotmc.org/resources/96457)
