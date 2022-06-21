@@ -5,6 +5,7 @@ A mines management plugins
 - Fast and stable
 - Custom drop tables
 - Great features for SkyMining servers
+- Fortune support
 
 ## Dependency
 - [WorldEdit](https://enginehub.org/worldedit/#downloads) / [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932)
