@@ -99,6 +99,7 @@ public abstract class AbstractCataMine implements Cloneable {
         this.teleportPlayersToResetLocation = teleportPlayersToResetLocation;
         this.teleportResetLocation = teleportResetLocation;
         blocksToRandomPattern();
+        reset();
     }
 
     public void run() {
@@ -203,6 +204,8 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void forceReset() {
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
+
+            blockCount = getTotalBlocks();
 
             editSession.setBlocks(region, randomPattern);
 
