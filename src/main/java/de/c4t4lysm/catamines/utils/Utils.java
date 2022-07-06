@@ -18,6 +18,7 @@ import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu.bl
 import de.c4t4lysm.catamines.utils.mine.AbstractCataMine;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -25,29 +26,33 @@ import org.bukkit.inventory.InventoryHolder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Utils {
 
     public static String setPlaceholders(String input, AbstractCataMine mine) {
-        String translatedText = input
-                .replaceAll("%cm%", StringUtils.chop(CataMines.PREFIX))
-                .replaceAll("%mine%", mine.getName())
-                .replaceAll("%seconds%", String.valueOf(mine.getCountdown()))
-                .replaceAll("%formattedseconds%", secondsToTimeFormat(mine.getCountdown()))
-                .replaceAll("%formattedtime%", mine.getFormattedTimeString())
-                .replaceAll("%time%", mine.getCountdown() / 60 == 1 ?
-                        CataMines.getInstance().getLangString("Time.Second") :
-                        CataMines.getInstance().getLangString("Time.Seconds"))
-                .replaceAll("%resetpercentage%", String.valueOf(mine.getResetPercentage()))
-                .replaceAll("%remainingblocksper%", String.valueOf(mine.getRemainingBlocksPer()));
+
+        Map<String, String> replacements = new HashMap<>();
+        replacements.put("cm", StringUtils.chop(CataMines.PREFIX));
+        replacements.put("mine", mine.getName());
+        replacements.put("seconds", String.valueOf(mine.getCountdown()));
+        replacements.put("formattedseconds", secondsToTimeFormat(mine.getCountdown()));
+        replacements.put("formattedtime", mine.getFormattedTimeString());
+        replacements.put("time", mine.getCountdown() / 60 == 1 ?
+                CataMines.getInstance().getLangString("Time.Second") :
+                CataMines.getInstance().getLangString("Time.Seconds"));
+        replacements.put("resetpercentage", String.valueOf(mine.getResetPercentage()));
+        replacements.put("remainingblocksper", String.valueOf(mine.getRemainingBlocksPer()));
+
+        StrSubstitutor strSubstitutor = new StrSubstitutor(replacements, "%", "%");
+        String translatedText = strSubstitutor.replace(input);
+
         if (CataMines.getInstance().placeholderAPI) {
             translatedText = PlaceholderAPI.setPlaceholders(null, translatedText);
-        } else {
-            translatedText = ChatColor.translateAlternateColorCodes('&', translatedText);
         }
 
-        return translatedText;
+        return ChatColor.translateAlternateColorCodes('&', translatedText);
     }
 
     public static String secondsToTimeFormat(int seconds) {

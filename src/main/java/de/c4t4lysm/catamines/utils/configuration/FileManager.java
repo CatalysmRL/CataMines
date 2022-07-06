@@ -64,9 +64,10 @@ public class FileManager {
 
     public void setupConfig() {
 
-
         plugin.getLogger().info("Loading config file");
         new CustomConfigFile(plugin, new File(dataFolder, "config.yml"), "config.yml");
+
+        plugin.reloadConfig();
 
         CataMines.PREFIX = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix"));
     }
