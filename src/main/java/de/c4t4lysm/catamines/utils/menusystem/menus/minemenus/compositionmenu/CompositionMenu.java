@@ -1,5 +1,8 @@
 package de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu;
 
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.block.BlockState;
 import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.utils.ItemStackBuilder;
 import de.c4t4lysm.catamines.utils.menusystem.PaginatedMenu;
@@ -7,18 +10,15 @@ import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
 import de.c4t4lysm.catamines.utils.menusystem.menus.MineMenu;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CompositionMenu extends PaginatedMenu {
 
@@ -77,9 +77,8 @@ public class CompositionMenu extends PaginatedMenu {
                 return;
         }
 
-        List<CataMineBlock> cataBlocks = mine.getBlocks();
         if (event.getClickedInventory() == player.getOpenInventory().getTopInventory()) {
-            if (!(slot >= 10 && slot <= 34) || (slot - 1) % 8 == 0 || slot % 9 == 0) return;
+            if (!(slot >= 10 && slot <= 34) || (slot + 1) % 9 == 0 || slot % 9 == 0) return;
 
             int row = slot / 9;
             int index = getMaxItemsPerPage() * page + (slot - (8 + 2 * row));
@@ -101,7 +100,17 @@ public class CompositionMenu extends PaginatedMenu {
             return;
         }
 
-        BlockData blockData = event.getCurrentItem().getType().createBlockData();
+        Material mat = event.getCurrentItem().getType();
+        switch (mat) {
+            case WATER_BUCKET:
+                mat = Material.WATER;
+                break;
+            case LAVA_BUCKET:
+                mat = Material.LAVA;
+                break;
+        }
+
+        BlockData blockData = mat.createBlockData();
         mine.addBlock(new CataMineBlock(blockData, 0));
         mine.save();
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, 1F);
@@ -123,13 +132,14 @@ public class CompositionMenu extends PaginatedMenu {
                     CataMineBlock cataBlock = blocks.get(index);
                     BlockData blockData = cataBlock.getBlockData();
                     Material material = blockData.getMaterial();
-                    if (!material.isSolid()) {
+                    if (!material.isItem()) {
                         material = Material.WRITTEN_BOOK;
                     }
 
+                    Material finalMaterial = material;
                     List<String> lore = new ArrayList<>();
                     plugin.getLangStringList("GUI.Composition-Menu.Items.Composition-Block.Lore")
-                            .forEach(s -> lore.add(s.replaceAll("%blockdata%", blockData.getAsString(true))
+                            .forEach(s -> lore.add(s.replaceAll("%blockdata%", blockData.getAsString(true).substring(10 + finalMaterial.name().length()))
                                     .replaceAll("%chance%", String.valueOf(cataBlock.getChance()))));
                     inventory.addItem(ItemStackBuilder.buildItem(material, material == Material.WRITTEN_BOOK ? ChatColor.WHITE + blockData.getMaterial().name() : "", lore));
 

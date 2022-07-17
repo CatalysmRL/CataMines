@@ -10,17 +10,18 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.CataMines;
-import de.c4t4lysm.catamines.utils.configuration.FileConfig;
 import de.c4t4lysm.catamines.utils.Utils;
+import de.c4t4lysm.catamines.utils.configuration.FileConfig;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -57,9 +58,9 @@ public abstract class AbstractCataMine implements Cloneable {
     protected Location teleportResetLocation;
 
     // Block count
+    Random random = new Random();
     protected long blockCount;
-    protected byte countdownForCalculatingBlockCount;
-
+    protected int countdownForAutoReset = random.nextInt(200) + 500;
 
     protected boolean runnable;
     protected boolean firstCycle;
@@ -99,6 +100,7 @@ public abstract class AbstractCataMine implements Cloneable {
         this.teleportPlayersToResetLocation = teleportPlayersToResetLocation;
         this.teleportResetLocation = teleportResetLocation;
         blocksToRandomPattern();
+        countdown = random.nextInt(resetDelay);
         reset();
     }
 
@@ -129,10 +131,10 @@ public abstract class AbstractCataMine implements Cloneable {
                 }
                 break;
             case PERCENTAGE:
-                --countdownForCalculatingBlockCount;
-                if (countdownForCalculatingBlockCount <= 0) {
-                    calculateRemainingBlocks();
-                    countdownForCalculatingBlockCount = 100;
+                --countdownForAutoReset;
+                if (countdownForAutoReset <= 0) {
+                    forceReset();
+                    countdownForAutoReset = random.nextInt(200) + 500;
                 }
                 if (getRemainingBlocksPer() <= resetPercentage) {
                     reset();
@@ -158,11 +160,6 @@ public abstract class AbstractCataMine implements Cloneable {
                     break;
                 }
 
-                --countdownForCalculatingBlockCount;
-                if (countdownForCalculatingBlockCount <= 0) {
-                    calculateRemainingBlocks();
-                    countdownForCalculatingBlockCount = 127;
-                }
                 if (getRemainingBlocksPer() <= resetPercentage) {
                     reset();
                     break;
@@ -193,6 +190,7 @@ public abstract class AbstractCataMine implements Cloneable {
             if (teleportPlayers) {
                 teleportPlayers();
             }
+
         } catch (MaxChangedBlocksException exception) {
             throw new IllegalArgumentException(name + " tried to set too many blocks!");
         } catch (NoSuchMethodError exception) {
@@ -203,23 +201,8 @@ public abstract class AbstractCataMine implements Cloneable {
     }
 
     public void forceReset() {
-        try (EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
-
-            blockCount = getTotalBlocks();
-
-            editSession.setBlocks(region, randomPattern);
-
-            if (warn) {
-                broadcastResetMessage();
-            }
-            if (teleportPlayers) {
-                teleportPlayers();
-            }
-        } catch (MaxChangedBlocksException exception) {
-            throw new IllegalArgumentException(name + " tried to set too many blocks!");
-        } catch (NoSuchMethodError exception) {
-            throw new NoSuchMethodError("Could not reset " + name + " because your version of WorldEdit is too old!");
-        }
+        blockCount = 0;
+        reset();
     }
 
     public boolean checkRunnable() {
@@ -391,31 +374,14 @@ public abstract class AbstractCataMine implements Cloneable {
         randomPattern = new RandomPattern();
 
         blocks.stream().filter(cataMineBlock -> !(cataMineBlock.getChance() == 0))
-                .forEach(cataMineBlock -> randomPattern.add(BukkitAdapter.adapt(cataMineBlock.getBlockData()), cataMineBlock.getChance()));
+                .forEach(cataMineBlock -> randomPattern.add(BukkitAdapter.adapt(cataMineBlock.getBlockData()).toBaseBlock(), cataMineBlock.getChance()));
     }
 
-    public String getTranslatedWarnMessage() {
-        String tempWarnMessage = warnMessage.replaceAll("%cm%", StringUtils.chop(CataMines.PREFIX)).replaceAll("%mine%", name);
-        int timeValue = countdown;
-        String time = CataMines.getInstance().getLangString("Time.Seconds");
-        boolean isMinutes = false;
-
-        if (countdown % 60 == 0) {
-            isMinutes = true;
-            timeValue = countdown / 60;
-            time = CataMines.getInstance().getLangString("Time.Minutes");
-        }
-
-        if (timeValue == 1) {
-            if (!isMinutes) {
-                time = CataMines.getInstance().getLangString("Time.Second");
-            } else {
-                time = CataMines.getInstance().getLangString("Time.Minute");
-            }
-        }
-
-        tempWarnMessage = tempWarnMessage.replaceAll("%seconds%", String.valueOf(timeValue)).replaceAll("%time%", time);
-        return ChatColor.translateAlternateColorCodes('&', tempWarnMessage);
+    public String getTranslatedTimeMessage() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("");
+        String.format("%");
+        return null;
     }
 
     public void broadcastHotbar() {
@@ -477,16 +443,25 @@ public abstract class AbstractCataMine implements Cloneable {
     public String getFormattedTimeString() {
         CataMines plugin = CataMines.getInstance();
         String output;
-        if (countdown >= 3600) {
-            output = plugin.getLangString("Time.Hours");
-        } else if (countdown >= 60) {
-            output = plugin.getLangString("Time.Minutes");
-        } else {
-            output = plugin.getLangString("Time.Seconds");
-        }
 
-        if ((countdown == 3600) || (countdown == 60) || (countdown == 1)) {
-            output = StringUtils.chop(output);
+        switch (countdown) {
+            case 3600:
+                output = plugin.getLangString("Time.Hour");
+                break;
+            case 60:
+                output = plugin.getLangString("Time.Minute");
+                break;
+            case 1:
+                output = plugin.getLangString("Time.Second");
+                break;
+            default:
+                if (countdown >= 3600) {
+                    output = plugin.getLangString("Time.Hours");
+                } else if (countdown >= 60) {
+                    output = plugin.getLangString("Time.Minutes");
+                } else {
+                    output = plugin.getLangString("Time.Seconds");
+                }
         }
 
         return output;

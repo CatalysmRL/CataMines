@@ -5,7 +5,6 @@ import de.c4t4lysm.catamines.commands.CommandInterface;
 import de.c4t4lysm.catamines.schedulers.MineManager;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -1,10 +1,13 @@
 package de.c4t4lysm.catamines.utils.mine.mines;
 
 import com.google.common.base.Enums;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.utils.configuration.FileConfig;
@@ -18,6 +21,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -187,9 +191,23 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
 
     public void handleBlockBreak(BlockBreakEvent event) {
 
+        if (getMinEfficiencyLvl() > 0 && !event.getPlayer().hasPermission("catamines.break")) {
+            Player player = event.getPlayer();
+            int efficiencyLvl = 0;
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
+            if (itemInHand.containsEnchantment(Enchantment.DIG_SPEED)) {
+                efficiencyLvl = itemInHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
+            }
+
+            if (efficiencyLvl < getMinEfficiencyLvl()) {
+                event.setCancelled(true);
+                player.sendMessage(CataMines.PREFIX + CataMines.getInstance().getDefaultString("Tool-Too-Weak"));
+                return;
+            }
+        }
+
         blockCount--;
 
-        //TODO - Refactor | Cleanup
         if (warnHotbar && (resetMode == CataMineResetMode.PERCENTAGE || resetMode == CataMineResetMode.TIME_PERCENTAGE)) {
             broadcastHotbar();
         }

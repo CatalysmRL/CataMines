@@ -4,7 +4,6 @@ import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.utils.ItemStackBuilder;
 import de.c4t4lysm.catamines.utils.menusystem.Menu;
 import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
-import de.c4t4lysm.catamines.utils.menusystem.menus.MineMenu;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.bukkit.Material;
 import org.bukkit.Sound;

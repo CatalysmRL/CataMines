@@ -2,15 +2,10 @@ package de.c4t4lysm.catamines.utils.mine.components;
 
 import de.c4t4lysm.catamines.CataMines;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,35 +17,18 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
     private double chance;
     private boolean addLootTable;
 
-    private List<CataMineLootItem> lootTable = new ArrayList<>();
+    private List<CataMineLootItem> lootTable;
 
     public CataMineBlock(BlockData blockData, double chance) {
-        if (!blockData.getMaterial().isBlock() || chance < 0 || chance > 100) {
-            throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
-        }
-
-        this.blockData = blockData;
-        this.chance = Math.round(chance * 100) / 100d;
+        this(blockData, chance, false, new ArrayList<>());
     }
 
     public CataMineBlock(BlockData blockData, double chance, boolean addLootTable) {
-        if (!blockData.getMaterial().isBlock() || chance < 0 || chance > 100) {
-            throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
-        }
-
-        this.blockData = blockData;
-        this.chance = Math.round(chance * 100) / 100d;
-        this.addLootTable = addLootTable;
+        this(blockData, chance, addLootTable, new ArrayList<>());
     }
 
     public CataMineBlock(BlockData blockData, double chance, List<CataMineLootItem> lootTable) {
-        if (!blockData.getMaterial().isBlock() || chance < 0 || chance > 100) {
-            throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Block-Configuration"));
-        }
-
-        this.blockData = blockData;
-        this.chance = Math.round(chance * 100) / 100d;
-        this.lootTable = lootTable;
+        this(blockData, chance, false, lootTable);
     }
 
     public CataMineBlock(BlockData blockData, double chance, boolean addLootTable, List<CataMineLootItem> lootTable) {

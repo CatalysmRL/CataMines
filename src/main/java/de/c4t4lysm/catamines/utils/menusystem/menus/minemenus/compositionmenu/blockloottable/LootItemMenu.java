@@ -11,8 +11,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.List;
-
 public class LootItemMenu extends Menu {
 
     private final CuboidCataMine mine;

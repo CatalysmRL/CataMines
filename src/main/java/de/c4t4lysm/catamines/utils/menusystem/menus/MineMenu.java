@@ -6,7 +6,6 @@ import de.c4t4lysm.catamines.utils.menusystem.Menu;
 import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
 import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.*;
 import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu.CompositionMenu;
-import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,7 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MineMenu extends Menu {
 

@@ -153,7 +153,7 @@ public class CompositionBlockMenu extends Menu {
                 .replaceAll("%compChance%", String.valueOf(cuboidCataMine.getCompositionChance())));
 
         Material material = block.getBlockData().getMaterial();
-        if (!material.isSolid()) {
+        if (!material.isItem()) {
             material = Material.WRITTEN_BOOK;
         }
 

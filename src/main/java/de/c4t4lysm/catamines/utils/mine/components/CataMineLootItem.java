@@ -1,7 +1,6 @@
 package de.c4t4lysm.catamines.utils.mine.components;
 
 import de.c4t4lysm.catamines.CataMines;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,12 +23,7 @@ public class CataMineLootItem implements ConfigurationSerializable {
     }
 
     public CataMineLootItem(ItemStack item, double chance) {
-        this.item = item;
-        if (chance < 0 || chance > 100) {
-            throw new IllegalArgumentException(CataMines.getInstance().getLangString("Error-Messages.Mine.Invalid-Chance"));
-        }
-        this.chance = Math.round(chance * 1000) / 1000d;
-        this.fortune = false;
+        this(item, chance, false);
     }
 
     public CataMineLootItem(ItemStack item, double chance, boolean fortune) {

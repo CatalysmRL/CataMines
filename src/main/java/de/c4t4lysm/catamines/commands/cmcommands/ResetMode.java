@@ -1,6 +1,5 @@
 package de.c4t4lysm.catamines.commands.cmcommands;
 
-import com.google.common.base.Enums;
 import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.commands.CommandInterface;
 import de.c4t4lysm.catamines.schedulers.MineManager;

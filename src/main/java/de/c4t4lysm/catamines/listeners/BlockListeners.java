@@ -31,21 +31,6 @@ public class BlockListeners implements Listener {
             }
             if (blockLocation.getWorld().getName().equals(mine.getWorld())
                     && mine.getRegion().contains(BlockVector3.at(blockLocation.getX(), blockLocation.getY(), blockLocation.getZ()))) {
-
-                if (mine.getMinEfficiencyLvl() > 0 && !event.getPlayer().hasPermission("catamines.break")) {
-                    Player player = event.getPlayer();
-                    int efficiencyLvl = 0;
-                    ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                    if (itemInHand.containsEnchantment(Enchantment.DIG_SPEED)) {
-                        efficiencyLvl = itemInHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
-                    }
-
-                    if (efficiencyLvl < mine.getMinEfficiencyLvl()) {
-                        event.setCancelled(true);
-                        player.sendMessage(CataMines.PREFIX + CataMines.getInstance().getDefaultString("Tool-Too-Weak"));
-                        return;
-                    }
-                }
                 mine.handleBlockBreak(event);
             }
         }
