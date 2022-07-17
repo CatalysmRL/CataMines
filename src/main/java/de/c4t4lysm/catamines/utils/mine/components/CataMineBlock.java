@@ -73,7 +73,7 @@ public class CataMineBlock implements Cloneable, ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("block", blockData.getAsString(false));
+        result.put("block", blockData.getAsString(true));
         result.put("chance", chance);
         result.put("addLootTable", addLootTable);
 

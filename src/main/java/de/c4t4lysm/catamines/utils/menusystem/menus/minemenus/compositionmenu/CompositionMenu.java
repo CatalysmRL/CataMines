@@ -10,6 +10,7 @@ import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
 import de.c4t4lysm.catamines.utils.menusystem.menus.MineMenu;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -95,11 +96,6 @@ public class CompositionMenu extends PaginatedMenu {
             return;
         }
 
-        if (!event.getCurrentItem().getType().isBlock()) {
-            player.sendMessage(plugin.getLangString("Error-Messages.Mine.Material-Not-Solid"));
-            return;
-        }
-
         Material mat = event.getCurrentItem().getType();
         switch (mat) {
             case WATER_BUCKET:
@@ -108,6 +104,11 @@ public class CompositionMenu extends PaginatedMenu {
             case LAVA_BUCKET:
                 mat = Material.LAVA;
                 break;
+        }
+
+        if (!mat.isBlock()) {
+            player.sendMessage(plugin.getLangString("Error-Messages.Mine.Material-Not-Solid"));
+            return;
         }
 
         BlockData blockData = mat.createBlockData();
@@ -136,10 +137,9 @@ public class CompositionMenu extends PaginatedMenu {
                         material = Material.WRITTEN_BOOK;
                     }
 
-                    Material finalMaterial = material;
                     List<String> lore = new ArrayList<>();
                     plugin.getLangStringList("GUI.Composition-Menu.Items.Composition-Block.Lore")
-                            .forEach(s -> lore.add(s.replaceAll("%blockdata%", blockData.getAsString(true).substring(10 + finalMaterial.name().length()))
+                            .forEach(s -> lore.add(s.replaceAll("%blockdata%", blockData.getAsString(true).substring(10 + blockData.getMaterial().name().length()))
                                     .replaceAll("%chance%", String.valueOf(cataBlock.getChance()))));
                     inventory.addItem(ItemStackBuilder.buildItem(material, material == Material.WRITTEN_BOOK ? ChatColor.WHITE + blockData.getMaterial().name() : "", lore));
 

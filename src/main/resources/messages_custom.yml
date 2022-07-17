@@ -138,6 +138,8 @@ GUI:
       Composition-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
+          - "&f%blockdata%"
+          - ""
           - "&bSpawning chance: &c%chance%%"
           - ""
           - "&aLeft click me to configure"
@@ -155,6 +157,7 @@ GUI:
       Current-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
+          - "&f%blockdata%"
           - ""
           - "&bBlock chance: &c%blockChance%%"
           - "&bComposition chance: &c%compChance%%"

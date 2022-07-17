@@ -156,6 +156,8 @@ GUI:
       Composition-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
+          - "&f%blockdata%"
+          - ""
           - "&bPorcentaje de aparición: &c%chance%%"
           - ""
           - "&aPresioname usando clic izquierdo para configurar"
@@ -173,6 +175,7 @@ GUI:
       Current-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
+          - "&f%blockdata%"
           - ""
           - "&bPorcentaje de aparición: &c%blockChance%%"
           - "&bPorcentaje de composición: &c%compChance%%"

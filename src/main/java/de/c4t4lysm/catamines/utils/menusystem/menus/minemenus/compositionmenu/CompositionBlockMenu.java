@@ -11,10 +11,12 @@ import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -148,9 +150,11 @@ public class CompositionBlockMenu extends Menu {
                         plugin.getLangStringList("GUI.Composition-Block-Menu.Items.Add-Loot-Table.Inactive.Lore")));
         inventory.setItem(8, ItemStackBuilder.buildItem(Material.DISPENSER, plugin.getLangString("GUI.Composition-Block-Menu.Items.Configure-Table.Name")));
 
+        BlockData blockData = block.getBlockData();
         List<String> blockLore = plugin.getLangStringList("GUI.Composition-Block-Menu.Items.Current-Block.Lore");
         blockLore.replaceAll(s -> s.replaceAll("%blockChance%", String.valueOf(block.getChance()))
-                .replaceAll("%compChance%", String.valueOf(cuboidCataMine.getCompositionChance())));
+                .replaceAll("%compChance%", String.valueOf(cuboidCataMine.getCompositionChance()))
+                .replaceAll("%blockdata%", blockData.getAsString(true).substring(10 + blockData.getMaterial().name().length())));
 
         Material material = block.getBlockData().getMaterial();
         if (!material.isItem()) {

@@ -99,9 +99,9 @@ public abstract class AbstractCataMine implements Cloneable {
         this.minEfficiencyLvl = minEfficiencyLvl;
         this.teleportPlayersToResetLocation = teleportPlayersToResetLocation;
         this.teleportResetLocation = teleportResetLocation;
+        this.countdown = resetDelay > 0 ? random.nextInt(resetDelay) : resetDelay;
         blocksToRandomPattern();
-        countdown = random.nextInt(resetDelay);
-        reset();
+        if (randomPattern != null) reset();
     }
 
     public void run() {
@@ -303,7 +303,7 @@ public abstract class AbstractCataMine implements Cloneable {
         double chance = 0;
 
         for (CataMineBlock block : blocks) {
-            if (block.getBlockData().equals(material)) {
+            if (block.getBlockData().getMaterial().equals(material)) {
                 chance = block.getChance();
             }
         }
@@ -366,14 +366,14 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void blocksToRandomPattern() {
 
-        if (blocks.stream().allMatch(cataMineBlock -> cataMineBlock.getChance() == 0) || blocks.isEmpty()) {
+        if (blocks.isEmpty() || blocks.stream().allMatch(cataMineBlock -> cataMineBlock.getChance() == 0)) {
             randomPattern = null;
             return;
         }
 
         randomPattern = new RandomPattern();
 
-        blocks.stream().filter(cataMineBlock -> !(cataMineBlock.getChance() == 0))
+        blocks.stream().filter(cataMineBlock -> cataMineBlock.getChance() > 0)
                 .forEach(cataMineBlock -> randomPattern.add(BukkitAdapter.adapt(cataMineBlock.getBlockData()).toBaseBlock(), cataMineBlock.getChance()));
     }
 

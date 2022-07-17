@@ -159,6 +159,8 @@ GUI:
       Composition-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
+          - "&f%blockdata%"
+          - ""
           - "&b生成概率: &c%chance%%"
           - ""
           - "&a左键来配置哦"
@@ -176,6 +178,7 @@ GUI:
       Current-Block:
         Name: "%!unchangeable! internal material name%"
         Lore:
+          - "&f%blockdata%"
           - ""
           - "&b方块概率: &c%blockChance%%"
           - "&b合成概率: &c%compChance%%"
