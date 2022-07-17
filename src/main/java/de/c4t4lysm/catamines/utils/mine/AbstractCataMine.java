@@ -101,7 +101,7 @@ public abstract class AbstractCataMine implements Cloneable {
         this.teleportResetLocation = teleportResetLocation;
         this.countdown = resetDelay > 0 ? random.nextInt(resetDelay) : resetDelay;
         blocksToRandomPattern();
-        if (randomPattern != null) reset();
+        if (randomPattern != null && !isStopped) reset();
     }
 
     public void run() {
