@@ -1,6 +1,10 @@
 package de.c4t4lysm.catamines;
 
+import com.fastasyncworldedit.core.FaweAPI;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.world.World;
 import de.c4t4lysm.catamines.commands.CataMinesHelpCommand;
 import de.c4t4lysm.catamines.commands.cmcommands.*;
 import de.c4t4lysm.catamines.commands.commandhandler.CommandHandler;
@@ -18,7 +22,6 @@ import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import de.c4t4lysm.catamines.utils.mine.placeholders.CataMinePlaceHolders;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -26,6 +29,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public final class CataMines extends JavaPlugin {
 
@@ -37,6 +42,9 @@ public final class CataMines extends JavaPlugin {
     public boolean placeholderAPI = false;
     private FileManager fileManager;
     private WorldEditPlugin worldEditPlugin;
+    private static boolean faweEnabled = false;
+
+    private final ConcurrentMap<String, EditSession> worldToEditSession = new ConcurrentHashMap<>();
 
     public static CataMines getInstance() {
         return plugin;
@@ -64,6 +72,10 @@ public final class CataMines extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
+            faweEnabled = true;
+        }
+
         ConfigurationSerialization.registerClass(CuboidCataMine.class);
         ConfigurationSerialization.registerClass(CataMineBlock.class);
 
@@ -81,6 +93,13 @@ public final class CataMines extends JavaPlugin {
             registerListeners();
         }, 5 * 20L);
 
+        if (isFaweEnabled()) {
+            FaweAPI.getTaskManager().repeatAsync(this::handleEditSessions, 1);
+        } else {
+            getLogger().warning("If you have large mines, we strongly recommend to use FastAsyncWorldEdit for async block placement.");
+            Bukkit.getScheduler().runTaskTimer(this, this::handleEditSessions, 1L, 1L);
+        }
+
         new UpdateChecker(getInstance(), 96457).getVersion(version -> {
             if (!getInstance().getDescription().getVersion().equalsIgnoreCase(version)) {
                 updateAvailable = true;
@@ -96,6 +115,15 @@ public final class CataMines extends JavaPlugin {
             placeholderAPI = true;
         }
 
+    }
+
+    private void handleEditSessions() {
+        for (EditSession session : worldToEditSession.values()) {
+            if (session.size() > 0) {
+                session.close();
+            }
+        }
+        worldToEditSession.clear();
     }
 
     @Override
@@ -169,5 +197,19 @@ public final class CataMines extends JavaPlugin {
 
     public WorldEditPlugin getWorldEditPlugin() {
         return worldEditPlugin;
+    }
+
+    public static boolean isFaweEnabled() {
+        return faweEnabled;
+    }
+
+    public EditSession getEditSession(World world) {
+        if (!worldToEditSession.containsKey(world.getId())) {
+            EditSession session = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
+            session.disableQueue();
+            worldToEditSession.put(world.getId(), session);
+        }
+
+        return worldToEditSession.get(world.getId());
     }
 }
