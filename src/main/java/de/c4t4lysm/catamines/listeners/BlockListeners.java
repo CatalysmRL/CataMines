@@ -48,7 +48,7 @@ public class BlockListeners implements Listener {
 
         for (CuboidCataMine mine : MineManager.getInstance().getMines()) {
             if (mine.isStopped() || mine.getRegion() == null) {
-                return;
+                continue;
             }
             if (blockLocation.getWorld().getName().equals(mine.getWorld())
                     && mine.getRegion().contains(BlockVector3.at(blockLocation.getX(), blockLocation.getY(), blockLocation.getZ()))) {
