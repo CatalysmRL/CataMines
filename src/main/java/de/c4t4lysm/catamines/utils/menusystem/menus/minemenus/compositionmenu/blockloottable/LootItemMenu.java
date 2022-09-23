@@ -81,6 +81,7 @@ public class LootItemMenu extends Menu {
                 addPercentage = 10;
                 break;
             case 3 * 9 - 4:
+            case 42:
                 addPercentage = -1;
                 break;
             case 3 * 9 - 3:
