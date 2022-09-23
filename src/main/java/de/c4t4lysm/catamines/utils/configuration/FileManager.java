@@ -49,7 +49,7 @@ public class FileManager {
 
     public List<String> getLangStringList(String str) {
         if (!langCfg.contains(str)) {
-            return Arrays.asList("Could not load ",str ,"language: " + plugin.getConfig().getString("language"));
+            return Arrays.asList("Could not load ", str, "language: " + plugin.getConfig().getString("language"));
         }
         List<String> translatedList = new ArrayList<>();
         langCfg.getStringList(str).forEach(s -> translatedList.add(ChatColor.translateAlternateColorCodes('&', s)));

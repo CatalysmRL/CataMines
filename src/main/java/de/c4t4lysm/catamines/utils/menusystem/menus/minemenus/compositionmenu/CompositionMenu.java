@@ -1,8 +1,5 @@
 package de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu;
 
-import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.world.block.BlockState;
 import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.utils.ItemStackBuilder;
 import de.c4t4lysm.catamines.utils.menusystem.PaginatedMenu;
@@ -10,7 +7,6 @@ import de.c4t4lysm.catamines.utils.menusystem.PlayerMenuUtility;
 import de.c4t4lysm.catamines.utils.menusystem.menus.MineMenu;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;

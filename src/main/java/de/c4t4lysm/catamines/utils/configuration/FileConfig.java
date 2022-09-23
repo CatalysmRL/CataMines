@@ -14,13 +14,19 @@ public class FileConfig extends YamlConfiguration {
     public FileConfig(File file) {
         this.file = file;
 
-        try {
-            this.file.createNewFile();
-            this.load(this.file);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+        if (!file.exists()) {
+            try {
+                this.file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                this.load(this.file);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     public FileConfig(String filename) {
@@ -33,14 +39,13 @@ public class FileConfig extends YamlConfiguration {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        } else {
+            try {
+                this.load(file);
+            } catch (InvalidConfigurationException | IOException ex) {
+                ex.printStackTrace();
+            }
         }
-
-        try {
-            this.load(file);
-        } catch (InvalidConfigurationException | IOException ex) {
-            ex.printStackTrace();
-        }
-
     }
 
     public FileConfig(String path, String fileName) {
@@ -58,16 +63,16 @@ public class FileConfig extends YamlConfiguration {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
+        } else {
             try {
-                this.load(this.file);
-            } catch (IOException e) {
+                try {
+                    this.load(this.file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
         }
     }
 

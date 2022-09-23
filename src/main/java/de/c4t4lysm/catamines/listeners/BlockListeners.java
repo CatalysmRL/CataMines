@@ -1,18 +1,14 @@
 package de.c4t4lysm.catamines.listeners;
 
 import com.sk89q.worldedit.math.BlockVector3;
-import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.schedulers.MineManager;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import org.bukkit.Location;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class BlockListeners implements Listener {
 
@@ -34,8 +30,6 @@ public class BlockListeners implements Listener {
                 mine.handleBlockBreak(event);
             }
         }
-
-
     }
 
     @EventHandler(priority = EventPriority.HIGH)

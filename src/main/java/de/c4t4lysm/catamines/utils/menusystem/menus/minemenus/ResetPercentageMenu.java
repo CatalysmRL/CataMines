@@ -114,7 +114,7 @@ public class ResetPercentageMenu extends Menu {
 
     @Override
     public void setMenuItems() {
-        
+
         inventory.setItem(13, ItemStackBuilder.buildItem(Material.STONE_PICKAXE, plugin.getLangString("GUI.Reset-Percentage-Menu.Items.Current-Percentage.Name").replaceAll("%delay%", String.valueOf(mine.getResetPercentage()))));
 
         inventory.setItem(6, ItemStackBuilder.buildItem(Material.LEVER, plugin.getLangString("GUI.Reset-Percentage-Menu.Items.Switch.Name"), plugin.getLangStringList("GUI.Reset-Percentage-Menu.Items.Switch.Lore")));

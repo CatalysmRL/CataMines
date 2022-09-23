@@ -18,7 +18,6 @@ import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
 import de.c4t4lysm.catamines.utils.mine.placeholders.CataMinePlaceHolders;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -75,11 +74,9 @@ public final class CataMines extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            new MineManager();
-            registerCommands();
-            registerListeners();
-        }, 5 * 20L);
+        new MineManager();
+        registerCommands();
+        registerListeners();
 
         new UpdateChecker(getInstance(), 96457).getVersion(version -> {
             if (!getInstance().getDescription().getVersion().equalsIgnoreCase(version)) {

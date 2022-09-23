@@ -4,14 +4,15 @@ main: de.c4t4lysm.catamines.CataMines
 api-version: 1.13
 authors: [ CatalysmRL (C4t4lysm) ]
 description: §6[§bCata§aMines§6] §7Mines plugin
+load: POSTWORLD
 depend: [ WorldEdit ]
-softdepend: [ PlaceholderAPI ]
+softdepend: [ PlaceholderAPI , MultiverseCore ]
 
 commands:
   catamines:
     description: §7Contains every mine manipulation command.
     usage: §b/<command>
-    aliases: [ "cm" , "cmines", "cmine", "mines", "mine" ]
+    aliases: [ "cm" , "cmines", "cmine" ]
 
 permissions:
   catamines.*:

@@ -20,8 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -56,52 +54,20 @@ public abstract class AbstractCataMine implements Cloneable {
     protected int minEfficiencyLvl;
     protected boolean teleportPlayersToResetLocation;
     protected Location teleportResetLocation;
-
-    // Block count
-    Random random = new Random();
     protected long blockCount;
-    protected int countdownForAutoReset = random.nextInt(200) + 500;
-
     protected boolean runnable;
     protected boolean firstCycle;
     protected int countdown;
+    // Block count
+    Random random = new Random();
+    protected int countdownForAutoReset = random.nextInt(200) + 500;
 
-    public AbstractCataMine(String name, @Nonnull Region region) {
+    public AbstractCataMine(String name, Region region) {
         this.name = name;
-        this.region = region.clone();
-        this.world = Objects.requireNonNull(region.getWorld()).getName();
-    }
-
-    public AbstractCataMine(String name, String world, Region region, ArrayList<CataMineBlock> blocks, CataMineResetMode resetMode, int resetDelay, double resetPercentage,
-                            boolean replaceMode, boolean warnHotbar, String warnHotbarMessage, boolean warn, boolean warnGlobal, String warnMessage,
-                            String resetMessage, List<Integer> warnSeconds, int warnDistance,
-                            boolean teleportPlayers, boolean isStopped, Location teleportLocation, int minEfficiencyLvl,
-                            boolean teleportPlayersToResetLocation, Location teleportResetLocation) {
-        this.name = name;
-        this.world = world;
-        this.region = region != null ? region.clone() : null;
-        this.blocks = blocks;
-        this.resetMode = resetMode;
-        this.resetDelay = resetDelay;
-        this.resetPercentage = resetPercentage;
-        this.replaceMode = replaceMode;
-        this.warnHotbar = warnHotbar;
-        this.warnHotbarMessage = warnHotbarMessage;
-        this.warn = warn;
-        this.warnGlobal = warnGlobal;
-        this.warnMessage = warnMessage;
-        this.resetMessage = resetMessage;
-        this.warnSeconds = warnSeconds;
-        this.warnDistance = warnDistance;
-        this.teleportPlayers = teleportPlayers;
-        this.isStopped = isStopped;
-        this.teleportLocation = teleportLocation;
-        this.minEfficiencyLvl = minEfficiencyLvl;
-        this.teleportPlayersToResetLocation = teleportPlayersToResetLocation;
-        this.teleportResetLocation = teleportResetLocation;
-        this.countdown = resetDelay > 0 ? random.nextInt(resetDelay) : resetDelay;
-        blocksToRandomPattern();
-        if (randomPattern != null && !isStopped) reset();
+        if (region != null) {
+            this.region = region.clone();
+            this.world = region.getWorld() != null ? region.getWorld().getName() : null;
+        }
     }
 
     public void run() {
@@ -128,6 +94,7 @@ public abstract class AbstractCataMine implements Cloneable {
 
                 if (countdown <= 0) {
                     reset();
+                    firstCycle = true;
                 }
                 break;
             case PERCENTAGE:
@@ -157,11 +124,13 @@ public abstract class AbstractCataMine implements Cloneable {
 
                 if (countdown <= 0) {
                     reset();
+                    firstCycle = true;
                     break;
                 }
 
                 if (getRemainingBlocksPer() <= resetPercentage) {
                     reset();
+                    firstCycle = true;
                     break;
                 }
                 break;
@@ -196,8 +165,6 @@ public abstract class AbstractCataMine implements Cloneable {
         } catch (NoSuchMethodError exception) {
             throw new NoSuchMethodError("Could not reset " + name + " because your version of WorldEdit is too old!");
         }
-
-        firstCycle = true;
     }
 
     public void forceReset() {
@@ -688,8 +655,6 @@ public abstract class AbstractCataMine implements Cloneable {
     public void setBlockCount(long blockCount) {
         this.blockCount = blockCount;
     }
-
-    public abstract void calculateRemainingBlocks();
 
     public long getMinedBlocks() {
         return getTotalBlocks() - getBlockCount();

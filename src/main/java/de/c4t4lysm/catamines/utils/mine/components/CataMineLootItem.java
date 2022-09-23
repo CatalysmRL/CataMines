@@ -10,11 +10,10 @@ import java.util.Random;
 
 public class CataMineLootItem implements ConfigurationSerializable {
 
+    Random random = new Random();
     private ItemStack item;
     private double chance;
     private boolean fortune;
-
-    Random random = new Random();
 
     public CataMineLootItem(ItemStack item) {
         this.item = item;
@@ -33,17 +32,6 @@ public class CataMineLootItem implements ConfigurationSerializable {
         }
         this.chance = Math.round(chance * 1000) / 1000d;
         this.fortune = fortune;
-    }
-
-    @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> serializedLootItem = new LinkedHashMap<>();
-
-        serializedLootItem.put("item", item.serialize());
-        serializedLootItem.put("chance", chance);
-        serializedLootItem.put("fortune", fortune);
-
-        return serializedLootItem;
     }
 
     public static CataMineLootItem deserialize(Map<String, Object> serializedLootItem) {
@@ -66,8 +54,23 @@ public class CataMineLootItem implements ConfigurationSerializable {
         return new CataMineLootItem(item, chance, fortune);
     }
 
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> serializedLootItem = new LinkedHashMap<>();
+
+        serializedLootItem.put("item", item.serialize());
+        serializedLootItem.put("chance", chance);
+        serializedLootItem.put("fortune", fortune);
+
+        return serializedLootItem;
+    }
+
     public ItemStack getItem() {
         return item;
+    }
+
+    public void setItem(ItemStack item) {
+        this.item = item;
     }
 
     public int getDropCount(int fortune) {
@@ -79,10 +82,6 @@ public class CataMineLootItem implements ConfigurationSerializable {
             return fortuneItem.getAmount() * (multiplier + 1);
         }
         return fortuneItem.getAmount();
-    }
-
-    public void setItem(ItemStack item) {
-        this.item = item;
     }
 
     public double getChance() {

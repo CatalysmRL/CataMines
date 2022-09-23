@@ -67,13 +67,13 @@ public class InfoCommand implements CommandInterface {
             sender.sendMessage("§7--------------------------------");
             sender.sendMessage(
                     "§bReset mode: §6" + cuboidCataMine.getResetMode().name() +
-                    "\n§bReset delay: §c" + cuboidCataMine.getResetDelay() + " §7seconds." +
-                    "\n§bReset percentage: §c" + cuboidCataMine.getResetPercentage() + "%" +
-                    "\n§bReplace mode: §c" + cuboidCataMine.isReplaceMode() +
-                    "\n§bTeleports players: §c" + cuboidCataMine.isTeleportPlayers() +
-                    "\n§bCould run: §c" + cuboidCataMine.checkRunnable() +
-                    "\n§bStopped: §c" + cuboidCataMine.isStopped() +
-                    "\n§bResets in: §c" + (cuboidCataMine.isRunnable() && !cuboidCataMine.isStopped() ? cuboidCataMine.getCountdown() + " §7seconds" : "Mine is inactive"));
+                            "\n§bReset delay: §c" + cuboidCataMine.getResetDelay() + " §7seconds." +
+                            "\n§bReset percentage: §c" + cuboidCataMine.getResetPercentage() + "%" +
+                            "\n§bReplace mode: §c" + cuboidCataMine.isReplaceMode() +
+                            "\n§bTeleports players: §c" + cuboidCataMine.isTeleportPlayers() +
+                            "\n§bCould run: §c" + cuboidCataMine.checkRunnable() +
+                            "\n§bStopped: §c" + cuboidCataMine.isStopped() +
+                            "\n§bResets in: §c" + (cuboidCataMine.isRunnable() && !cuboidCataMine.isStopped() ? cuboidCataMine.getCountdown() + " §7seconds" : "Mine is inactive"));
 
 
             sender.sendMessage("§7--------------------------------");
