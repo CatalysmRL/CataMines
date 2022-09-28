@@ -283,6 +283,7 @@ Commands:
   Stop: "&cDetenida %mine%."
   Start-Tasks: "&aIniciadas todas las tareas de la mina"
   Stop-Tasks: "&cDetenidas todas las tareas de la mina"
+  Sync: "&aSynced all mines"
   Reload:
     All: "&aEl plugin ha sido recargado."
     Mines: "&aLas minas han sido recargadas."

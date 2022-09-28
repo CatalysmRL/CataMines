@@ -12,6 +12,7 @@ import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineLootItem;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import org.bukkit.*;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -19,13 +20,17 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
 public class CuboidCataMine extends AbstractCataMine implements Cloneable, ConfigurationSerializable {
 
     private final Random random = new Random();
-    private FileConfig fileConfig;
+
+    private File file;
+    private YamlConfiguration fileConfig;
 
     public CuboidCataMine(String name, Region region) {
         super(name, region);
@@ -312,11 +317,25 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
     }
 
     public void save() {
+        if (file == null) {
+            file = new File(CataMines.getInstance().getDataFolder() + "/mines", name + ".yml");
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         if (fileConfig == null) {
-            fileConfig = new FileConfig(CataMines.getInstance().getDataFolder() + "/mines", name + ".yml");
+            fileConfig = new YamlConfiguration();
         }
         fileConfig.set("Mine", this);
-        fileConfig.saveConfig();
+        try {
+            fileConfig.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void save(FileConfig fileConfig) {
@@ -347,5 +366,10 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
     @Override
     public double getRemainingBlocksPer() {
         return Math.round(((double) getBlockCount() / (double) getTotalBlocks()) * 10000d) / 100d;
+    }
+
+    public void resetFiles() {
+        file = null;
+        fileConfig = null;
     }
 }

@@ -74,9 +74,11 @@ public final class CataMines extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
-        new MineManager();
-        registerCommands();
-        registerListeners();
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            new MineManager();
+            registerCommands();
+            registerListeners();
+        }, 1L);
 
         new UpdateChecker(getInstance(), 96457).getVersion(version -> {
             if (!getInstance().getDescription().getVersion().equalsIgnoreCase(version)) {
@@ -97,6 +99,9 @@ public final class CataMines extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        MineManager.getInstance().getMines().forEach(CuboidCataMine::save);
+
         plugin = null;
         playerMenuUtilityMap = null;
         fileManager = null;
@@ -129,6 +134,7 @@ public final class CataMines extends JavaPlugin {
         commandHandler.register("settp", new SetTeleportCommand());
         commandHandler.register("setresettp", new SetResetTeleportCommand());
         commandHandler.register("reload", new ReloadCommand());
+        commandHandler.register("sync", new SyncCommand());
 
         commandHandler.register("gui", new GuiCommand());
         getCommand("catamines").setExecutor(commandHandler);

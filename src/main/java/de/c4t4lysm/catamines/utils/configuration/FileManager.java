@@ -92,6 +92,7 @@ public class FileManager {
 
         new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_en.yml"), "messages_en.yml", StandardCopyOption.REPLACE_EXISTING);
         new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_es.yml"), "messages_es.yml", StandardCopyOption.REPLACE_EXISTING);
+        new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_cn.yml"), "messages_cn.yml", StandardCopyOption.REPLACE_EXISTING);
 
         new CustomConfigFile(plugin, new File(dataFolder + "/languages", "messages_custom.yml"), "messages_custom.yml");
 

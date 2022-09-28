@@ -4,5 +4,5 @@ prefix: "&6[&bCata&aMines&6] &7"
 # Should the plugin update you about newer versions?
 announceUpdate: true
 
-# Current supported languages: EN, CUSTOM, ES
+# Current supported languages: EN, CUSTOM, ES, CN
 language: EN

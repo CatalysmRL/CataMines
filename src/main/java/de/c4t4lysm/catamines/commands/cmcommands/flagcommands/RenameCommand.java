@@ -24,6 +24,7 @@ public class RenameCommand implements CommandInterface {
             File file = new File(CataMines.getInstance().getDataFolder() + "/mines/" + cuboidCataMine.getName() + ".yml");
             cuboidCataMine.setName(args[3]);
             file.renameTo(new File(CataMines.getInstance().getDataFolder() + "/mines/" + cuboidCataMine.getName() + ".yml"));
+            cuboidCataMine.resetFiles();
             cuboidCataMine.save();
             sender.sendMessage(CataMines.PREFIX + CataMines.getInstance().getLangString("Commands.Flag.Rename").replaceAll("%oldmine%", args[1]).replaceAll("%newmine%", args[3]));
         } else sender.sendMessage(CataMines.PREFIX + "§b/cm flag <mine> rename [name]");

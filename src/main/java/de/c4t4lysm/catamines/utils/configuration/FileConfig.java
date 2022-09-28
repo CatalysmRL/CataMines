@@ -65,12 +65,8 @@ public class FileConfig extends YamlConfiguration {
             }
         } else {
             try {
-                try {
-                    this.load(this.file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (InvalidConfigurationException e) {
+                this.load(this.file);
+            } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
         }

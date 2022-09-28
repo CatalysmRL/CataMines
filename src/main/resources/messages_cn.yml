@@ -288,6 +288,7 @@ Commands:
   Stop: "&c关闭矿区 %mine%."
   Start-Tasks: "&a开启了全部的矿区"
   Stop-Tasks: "&c关闭了全部的矿区"
+  Synced: "&aSynced all mines"
   Reload:
     All: "&a插件重载成功."
     Mines: "&a矿区重载成功."

@@ -365,6 +365,7 @@ Commands:
   Stop: "&cStopped %mine%."
   Start-Tasks: "&aStarted all mine tasks"
   Stop-Tasks: "&cStopped all mine tasks"
+  Sync: "&aSynced all mines"
   Reload:
     All: "&aPlugin has been reloaded."
     Mines: "&aMines have been reloaded."
