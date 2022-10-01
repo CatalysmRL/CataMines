@@ -129,7 +129,7 @@ public class CompositionMenu extends PaginatedMenu {
                     CataMineBlock cataBlock = blocks.get(index);
                     BlockData blockData = cataBlock.getBlockData();
                     Material material = blockData.getMaterial();
-                    if (!material.isItem()) {
+                    if (!material.isItem() || material.equals(Material.AIR)) {
                         material = Material.WRITTEN_BOOK;
                     }
 

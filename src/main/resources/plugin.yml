@@ -3,7 +3,7 @@ version: '${project.version}'
 main: de.c4t4lysm.catamines.CataMines
 api-version: 1.13
 authors: [ CatalysmRL (C4t4lysm) ]
-description: §6[§bCata§aMines§6] §7Mines plugin
+description: Mines management plugin
 load: POSTWORLD
 depend: [ WorldEdit ]
 softdepend: [ PlaceholderAPI , MultiverseCore ]
