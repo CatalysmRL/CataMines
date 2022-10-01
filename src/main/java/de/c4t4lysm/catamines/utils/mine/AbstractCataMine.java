@@ -1,8 +1,6 @@
 package de.c4t4lysm.catamines.utils.mine;
 
 import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -25,7 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.util.BoundingBox;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -142,28 +139,22 @@ public abstract class AbstractCataMine implements Cloneable {
     }
 
     public void reset() {
-        try (EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
 
-            if (blockCount != getTotalBlocks()) {
-                blockCount = getTotalBlocks();
-                if (!replaceMode) {
-                    editSession.setBlocks(region, randomPattern);
-                } else {
-                    editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
-                }
+        if (blockCount != getTotalBlocks()) {
+            EditSession editSession = CataMines.getInstance().getEditSession(region.getWorld());
+            blockCount = getTotalBlocks();
+            if (!replaceMode) {
+                editSession.setBlocks(region, randomPattern);
+            } else {
+                editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
             }
+        }
 
-            if (warn) {
-                broadcastResetMessage();
-            }
-            if (teleportPlayers) {
-                teleportPlayers();
-            }
-
-        } catch (MaxChangedBlocksException exception) {
-            throw new IllegalArgumentException(name + " tried to set too many blocks!");
-        } catch (NoSuchMethodError exception) {
-            throw new NoSuchMethodError("Could not reset " + name + " because your version of WorldEdit is too old!");
+        if (warn) {
+            broadcastResetMessage();
+        }
+        if (teleportPlayers) {
+            teleportPlayers();
         }
     }
 
