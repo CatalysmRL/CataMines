@@ -13,7 +13,7 @@ A mines management plugins
 
 - [WorldEdit](https://enginehub.org/worldedit/#downloads)
   / [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932)
-- [PlaceholdersAPI](https://www.spigotmc.org/resources/6245) (optional)
+- [PlaceholderAPI](https://www.spigotmc.org/resources/6245) (optional)
 
 ## Compatibility
 
