@@ -1,7 +1,7 @@
 name: CataMines
 version: '${project.version}'
-main: de.c4t4lysm.catamines.CataMines
-api-version: 1.13
+main: me.catalysmrl.catamines.CataMines
+api-version: 1.16
 authors: [ CatalysmRL (C4t4lysm) ]
 description: Mines management plugin
 load: POSTWORLD
@@ -10,13 +10,13 @@ softdepend: [ PlaceholderAPI , MultiverseCore ]
 
 commands:
   catamines:
-    description: §7Contains every mine manipulation command.
-    usage: §b/<command>
-    aliases: [ "cm" , "cmines", "cmine" ]
+    description: CataMines command
+    usage: /<command>
+    aliases: [ "cm" , "cmine", "cmines" ]
 
 permissions:
   catamines.*:
-    description: §7Grants access to every command.
+    description: Grants access to every command.
     default: op
     children:
       catamines.help: true
@@ -39,67 +39,67 @@ permissions:
       catamines.starttasks: true
       catamines.stoptasks: true
       catamines.reload: true
-      catamines.break: true
+      catamines.minefficiency.bypass: true
   catamines.help:
-    description: §7Lets you list all mine commands.
+    description: Lets you list all mine commands.
     default: op
   catamines.create:
-    description: §7Lets you create a mine.
+    description: Lets you create a mine.
     default: op
   catamines.delete:
-    description: §7Lets you delete a mine.
+    description: Lets you delete a mine.
     default: op
   catamines.gui:
-    description: §7Lets you open the gui
+    description: Lets you open the gui
     default: op
   catamines.list:
-    description: §7Lets you list all mines.
+    description: Lets you list all mines.
     default: op
   catamines.info:
-    description: §7Lets you display info of a mine.
+    description: Lets you display info of a mine.
     default: op
   catamines.set:
-    description: §7Lets you set the blocks of a mine.
+    description: Lets you set the blocks of a mine.
     default: op
   catamines.unset:
-    description: §7Lets you unset the blocks of a mine.
+    description: Lets you unset the blocks of a mine.
     default: op
   catamines.resetmode:
-    description: §7Lets you set the reset mode of a mine.
+    description: Lets you set the reset mode of a mine.
     default: op
   catamines.setdelay:
-    description: §7Lets you set the reset delay of a mine.
+    description: Lets you set the reset delay of a mine.
     default: op
   catamines.resetpercentage:
-    description: §7Lets you set the reset percentage of a mine.
+    description: Lets you set the reset percentage of a mine.
     default: op
   catamines.flag:
-    description: §7Lets you configure every flag of a mine.
+    description: Lets you configure every flag of a mine.
     default: op
   catamines.reset:
-    description: §7Lets you manually reset a mine
+    description: Lets you manually reset a mine
     default: op
   catamines.setteleport:
-    description: §7Lets you set a teleport location of a mine.
+    description: Lets you set a teleport location of a mine.
     default: op
   catamines.teleport:
-    description: §7Lets you teleport to a mine.
+    description: Lets you teleport to a mine.
     default: op
   catamines.start:
-    description: §7Lets you start a mine.
+    description: Lets you start a mine.
     default: op
   catamines.stop:
-    description: §7Lets you stop a mine.
+    description: Lets you stop a mine.
     default: op
   catamines.starttasks:
-    description: §7Starts all mine tasks
+    description: Starts all mine tasks
     default: op
   catamines.stoptasks:
-    description: §7Stops all mine tasks
+    description: Stops all mine tasks
     default: op
   catamines.reload:
-    description: §7Lets you reload the plugin.
+    description: Lets you reload the plugin.
     default: op
-  catamines.break:
-    description: §7Lets you bypass min. mine efficiency lvl to break blocks.
+  catamines.minefficiency.bypass:
+    description: Lets you bypass min. mine efficiency lvl to break blocks.
     default: op

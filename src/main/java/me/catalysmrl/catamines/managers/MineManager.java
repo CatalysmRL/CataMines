@@ -1,0 +1,225 @@
+package me.catalysmrl.catamines.managers;
+
+import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.managers.blockmanagers.BlockApplicator;
+import me.catalysmrl.catamines.managers.blockmanagers.BukkitBlockApplicationManager;
+import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationManager;
+import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.mine.abstraction.region.CataMineRegion;
+import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class MineManager {
+
+    private final CataMines plugin;
+    private BukkitTask minesTask;
+    private BlockApplicator blockApplicator;
+
+    private final List<CataMine> mines = new ArrayList<>();
+
+    public MineManager(CataMines plugin) {
+        this.plugin = plugin;
+        Bukkit.getScheduler().runTaskLater(plugin, () -> loadMinesFromFolder(plugin.getDataFolder().toPath().resolve("mines")), 2L);
+        start();
+    }
+
+    public void start() {
+        initBlockApplicator();
+        initMineTask();
+    }
+
+    public void shutDown() {
+        blockApplicator.cancel();
+        minesTask.cancel();
+        mines.forEach(this::saveMine);
+    }
+
+    /**
+     * Initializes the BlockApplicationManager. It's responsible for Block efficient
+     * Block manipulation as well as balancing workload.
+     */
+    private void initBlockApplicator() {
+        Logger logger = plugin.getLogger();
+
+        logger.info("Starting BlockApplicationManager...");
+
+        if (blockApplicator != null) {
+            logger.warning("BlockApplicationManager already running. Cancelling manager");
+            blockApplicator.cancel();
+        }
+
+        if (CompatibilityProvider.isFaweEnabled()) {
+            logger.info("Initializing FastAsyncBlockApplicationManager");
+            blockApplicator = new FastAsyncBlockApplicationManager(plugin);
+        } else {
+            logger.info("Initializing BukkitBlockApplicationManager");
+            blockApplicator = new BukkitBlockApplicationManager(plugin);
+        }
+
+        blockApplicator.start();
+    }
+
+    /**
+     * The mine task that ticks every mine once per second.
+     */
+    private void initMineTask() {
+        Logger logger = plugin.getLogger();
+
+        logger.info("Starting mine task...");
+
+        if (minesTask != null) {
+            logger.warning("Mine task already running. Overriding old mine task.");
+            minesTask.cancel();
+        }
+
+        this.minesTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+
+            for (CataMine cataMine : mines) {
+                cataMine.tick();
+            }
+
+        }, 0L, 20L);
+    }
+
+    /**
+     * Queues this region for reset. Resetting means filling the region with blocks
+     * configured by the region.
+     *
+     * @param region the mine to reset
+     */
+    public void resetRegion(CataMineRegion region) {
+        blockApplicator.queueForReset(region);
+    }
+
+    /**
+     * Attempts to load all mines from a directory and returns it as a
+     * List of CataMines. If the directory does not exist, is not a folder or
+     * does not contain any files ending with '.yml', then an empty
+     * ArrayList is returned. Otherwise attempts to load mines from all files
+     * ending with '.yml' and containing the key 'Mine' in the root
+     * ConfigurationSection inside the directory. Note that only direct children
+     * files of the folder are affected. Another folder inside the folder will
+     * be ignored.
+     *
+     * @param folder the path to load the mines from
+     * @return A list of successfully loaded mines of direct children paths
+     */
+    public List<CataMine> getMinesFromFolder(Path folder) {
+        Objects.requireNonNull(folder);
+        List<CataMine> cataMines = new ArrayList<>();
+        if (!Files.isDirectory(folder)) return cataMines;
+
+        try (Stream<Path> stream = Files.list(folder)) {
+            stream.filter(path -> path.endsWith(".yml"))
+                    .map(path -> YamlConfiguration.loadConfiguration(path.toFile()).getSerializable("Mine", CataMine.class))
+                    .filter(Objects::nonNull)
+                    .forEach(cataMines::add);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return cataMines;
+    }
+
+    /**
+     * Loads all mines of folder into this MineManager
+     * {@link #getMinesFromFolder(Path)}
+     *
+     * @param folder the folder to load the mines from
+     */
+    public void loadMinesFromFolder(Path folder) {
+        mines.clear();
+        mines.addAll(getMinesFromFolder(folder));
+    }
+
+    /**
+     * Returns the mine with matching ID (name). Returns null if not present
+     *
+     * @param id ID or name of the mine
+     * @return the mine if found, otherwise null
+     */
+    public CataMine getMine(String id) {
+        return mines.stream().filter(cataMine -> cataMine.getName().equals(id)).findFirst().orElse(null);
+    }
+
+    /**
+     * Returns the list containing all registered mines.
+     *
+     * @return the registered mines
+     */
+    public List<CataMine> getMines() {
+        return mines;
+    }
+
+    /**
+     * Returns a list of every mine name that is registered.
+     *
+     * @return a list of mine IDs
+     */
+    public List<String> getMineList() {
+        return mines.stream().map(CataMine::getName).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns true if a mine with matching ID (name) is registered.
+     *
+     * @param id ID or name of the mine
+     * @return true if mine with matching ID is registered
+     */
+    public boolean containsMine(String id) {
+        return mines.stream().anyMatch(mine -> mine.getName().equals(id));
+    }
+
+    /**
+     * {@link #containsMine(String)}
+     *
+     * @param mine the cata mine
+     * @return true if a mine with matching ID is registered
+     */
+    public boolean containsMine(CataMine mine) {
+        return containsMine(mine.getName());
+    }
+
+    /**
+     * Registers a mine
+     *
+     * @param mine the mine to register
+     * @throws IllegalArgumentException if the mine is already registered
+     */
+    public void registerMine(CataMine mine) {
+        if (containsMine(mine)) throw new IllegalArgumentException();
+        mines.add(mine);
+    }
+
+    public void deleteMine(CataMine cataMine) throws IOException {
+        mines.remove(cataMine);
+
+        Files.deleteIfExists(plugin.getDataPath().resolve("mines").resolve(cataMine.getName() + ".yml"));
+    }
+
+    public void saveMine(CataMine mine) {
+        Path file = plugin.getDataPath().resolve("mines").resolve(mine.getName() + ".yml");
+        FileConfiguration fileCfg = new YamlConfiguration();
+
+        fileCfg.set("Mine", mine.serialize());
+
+        try {
+            fileCfg.save(file.toFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
