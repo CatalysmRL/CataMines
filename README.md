@@ -1,6 +1,6 @@
 # CataMines
 
-A mines management plugins
+A mines management plugin
 
 - Create mines
 - Manage via GUI
