@@ -17,8 +17,8 @@ A mines management plugin
 
 ## Compatibility
 
-- Java 8 to 18
-- Minecraft 1.13.2 - 1.19
+- Java 8 to 21
+- Minecraft 1.13.2 - 1.20.1
 
 ## 🔗 Links
 
