@@ -25,8 +25,7 @@ public class LangSystem {
     private final Path msgDirectory;
     private final Path guiDirectory;
 
-    private Locale locale;
-
+    private static Locale locale;
     private static ResourceBundle bundle;
 
     private FileConfiguration guiLang;

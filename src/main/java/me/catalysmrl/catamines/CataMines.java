@@ -21,6 +21,9 @@ import java.nio.file.Path;
 public final class CataMines extends JavaPlugin {
 
     private static CataMines instance;
+    public static CataMines getInstance() {
+        return instance;
+    }
 
     static {
         ConfigurationSerialization.registerClass(RegionCataMine.class);
@@ -28,13 +31,8 @@ public final class CataMines extends JavaPlugin {
     }
 
     private Path dataPath;
-
     private MineManager mineManager;
     private CommandManager commandManager;
-
-    public static CataMines getInstance() {
-        return instance;
-    }
 
     @Override
     public void onLoad() {
@@ -87,7 +85,7 @@ public final class CataMines extends JavaPlugin {
     private void registerListeners() {
         getLogger().info("Registering listeners");
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new BlockListeners(), this);
+        pm.registerEvents(new BlockListeners(mineManager), this);
     }
 
     public MineManager getMineManager() {
