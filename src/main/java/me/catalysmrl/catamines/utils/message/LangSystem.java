@@ -4,37 +4,31 @@ import me.catalysmrl.catamines.CataMines;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class LangSystem {
 
     private final CataMines plugin;
     private final Path langDirectory;
-    private final Path msgDirectory;
-    private final Path guiDirectory;
+    private final Path defaultDirectory;
+    private final Path customDirectory;
 
-    private static Locale locale;
-    private static ResourceBundle bundle;
-
-    private FileConfiguration guiLang;
+    private Locale locale;
+    private FileConfiguration langFile;
 
     public LangSystem(CataMines plugin) {
         this.plugin = plugin;
-        langDirectory = plugin.getDataFolder().toPath().toAbsolutePath().resolve("lang");
-        msgDirectory = langDirectory.resolve("msg");
-        guiDirectory = langDirectory.resolve("gui");
+        langDirectory = plugin.getDataFolder().toPath().resolve("lang");
+        defaultDirectory = langDirectory.resolve("default");
+        customDirectory = langDirectory.resolve("custom");
         reloadLang();
     }
 
@@ -45,17 +39,14 @@ public class LangSystem {
      * @param key the translation key
      * @return message retrieved from the key stored in a properties file
      */
-    public static String getTranslatedMessage(String key) {
-        if (bundle == null) return "Resource bundle is null";
-        try {
-            return bundle.getString(key).replaceAll("%p%", Messages.PREFIX);
-        } catch (MissingResourceException e) {
-            return "Missing key: " + key;
-        }
+    public String getTranslatedMessage(String key) {
+        if (langFile == null) return "Failed to load language file";
+        return langFile.getString(key, "Missing " + key);
     }
 
-    public static String getTranslatedGUIMessage(String key) {
-        return null;
+    public List<String> getTranslatedList(String key) {
+        if (langFile == null) return Collections.singletonList("Failed to load language file");
+        return langFile.contains(key) ? langFile.getStringList(key) : Collections.singletonList("Missing " + key);
     }
 
     public void reloadLang() {
@@ -63,45 +54,45 @@ public class LangSystem {
 
         try {
             createDirectoriesIfNotExists(langDirectory);
-            createDirectoriesIfNotExists(msgDirectory);
-            createDirectoriesIfNotExists(guiDirectory);
+            createDirectoriesIfNotExists(defaultDirectory);
+            createDirectoriesIfNotExists(customDirectory);
 
-            copyMsgFile("Lang.properties");
-            copyMsgFile("Lang_en.properties");
-            copyMsgFile("Lang_de.properties");
-
-            bundle = loadResourceBundle();
+            copyResourceToDisk("messages_en");
+            copyResourceToDisk("messages_de");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.langFile = resolveLangFile();
     }
 
-    private void copyMsgFile(String resourceName) throws IOException {
-        Path langPath = msgDirectory.resolve(resourceName);
+    private void copyResourceToDisk(String resourceName) throws IOException {
 
-        try (InputStream inputStream = new BufferedInputStream(Objects.requireNonNull(plugin.getResource("i18n/msg/" + resourceName)));
-             OutputStream outputStream = Files.newOutputStream(langPath)) {
-            inputStream.transferTo(outputStream);
-        }
+        try (InputStream is = plugin.getResource("/i18n/" + resourceName)) {
+            if (is == null) {
+                plugin.getLogger().severe("Failed to copy " + resourceName + " to disk");
+                return;
+            }
 
-    }
-
-    private ResourceBundle loadResourceBundle() throws IOException {
-        URL[] urls = new URL[]{langDirectory.toUri().toURL()};
-        try (URLClassLoader loader = new URLClassLoader(urls)) {
-            return ResourceBundle.getBundle("Lang", locale, loader);
+            Files.copy(is, defaultDirectory, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
-    private void loadGUILangFile() {
-        String yamlFileName = "gui_" + locale.toLanguageTag() + ".yml";
-        Path yamlFilePath = guiDirectory.resolve(yamlFileName);
-        if (Files.exists(yamlFilePath)) {
-            guiLang = YamlConfiguration.loadConfiguration(yamlFilePath.toFile());
-        } else {
-            plugin.getLogger().warning(yamlFilePath.toAbsolutePath() + " does not exist");
-            guiLang = YamlConfiguration.loadConfiguration(guiDirectory.resolve("gui_en.yml").toFile());
+    private FileConfiguration resolveLangFile() {
+        String langFileName = "messages_" + locale.toLanguageTag() + ".yml";
+
+        Path customPath = customDirectory.resolve(langFileName);
+        if (Files.exists(customPath)) {
+            return YamlConfiguration.loadConfiguration(customPath.toFile());
         }
+
+        Path defaultPath = defaultDirectory.resolve(langFileName);
+        if (Files.exists(defaultPath)) {
+            return YamlConfiguration.loadConfiguration(defaultPath.toFile());
+        }
+
+        plugin.getLogger().severe("Failed to load language file " + defaultPath);
+        return null;
     }
 
     private static void createDirectoriesIfNotExists(Path path) throws IOException {
@@ -114,6 +105,5 @@ public class LangSystem {
         } catch (FileAlreadyExistsException e) {
             // ignore
         }
-
     }
 }

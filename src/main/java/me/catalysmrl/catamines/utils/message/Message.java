@@ -1,5 +1,6 @@
 package me.catalysmrl.catamines.utils.message;
 
+import me.catalysmrl.catamines.CataMines;
 import org.bukkit.command.CommandSender;
 
 import java.text.MessageFormat;
@@ -64,7 +65,7 @@ public enum Message {
      * @param sender the sender to send the message to
      */
     public void send(CommandSender sender) {
-        Messages.sendColorized(sender, LangSystem.getTranslatedMessage(key));
+        Messages.sendColorized(sender, getMessage());
     }
 
     /**
@@ -74,17 +75,21 @@ public enum Message {
      * in the message
      *
      * @param sender the sender to send the message to
-     * @param args arguments to format
+     * @param args   arguments to format
      */
     public void send(CommandSender sender, Object... args) {
-        Messages.sendColorized(sender, MessageFormat.format(LangSystem.getTranslatedMessage(key), args));
+        Messages.sendColorized(sender, getMessage(args));
     }
 
     public String getMessage() {
-        return LangSystem.getTranslatedMessage(key);
+        return CataMines.getInstance().getLangSystem().getTranslatedMessage(key);
     }
 
     public String getMessage(Object... args) {
-        return MessageFormat.format(LangSystem.getTranslatedMessage(key), args);
+        return format(getMessage(), args);
+    }
+
+    private String format(String message, Object... args) {
+        return MessageFormat.format(getMessage(), args);
     }
 }

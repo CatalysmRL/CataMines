@@ -63,7 +63,7 @@ public class Messages {
 
         // Convert from the '&#rrggbb' hex color format to the '&x&r&r&g&g&b&b' one used by Bukkit.
         Matcher matcher = HEX_COLOR_PATTERN.matcher(string);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         while (matcher.find()) {
             StringBuilder replacement = new StringBuilder(14).append("&x");

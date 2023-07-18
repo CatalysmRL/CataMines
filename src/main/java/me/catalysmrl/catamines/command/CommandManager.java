@@ -95,7 +95,7 @@ public class CommandManager implements TabExecutor {
 
         final List<CataCommand> commands = commandMap.values().stream()
                 .filter(c -> c.isAuthorized(commandSender))
-                .collect(Collectors.toList());
+                .toList();
 
         if (args.length == 1) {
             return StringUtil.copyPartialMatches(args[0], commands.stream().map(CataCommand::getName).collect(Collectors.toList()), new ArrayList<>());

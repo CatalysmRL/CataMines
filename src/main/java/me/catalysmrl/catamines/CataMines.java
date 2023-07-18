@@ -31,6 +31,7 @@ public final class CataMines extends JavaPlugin {
     }
 
     private Path dataPath;
+    private LangSystem langSystem;
     private MineManager mineManager;
     private CommandManager commandManager;
 
@@ -46,7 +47,7 @@ public final class CataMines extends JavaPlugin {
         CompatibilityProvider.checkCompatibility();
 
         dataPath = getDataFolder().toPath();
-        new LangSystem(this);
+        langSystem = new LangSystem(this);
 
         mineManager = new MineManager(this);
         registerCommands();
@@ -86,6 +87,10 @@ public final class CataMines extends JavaPlugin {
         getLogger().info("Registering listeners");
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new BlockListeners(mineManager), this);
+    }
+
+    public LangSystem getLangSystem() {
+        return langSystem;
     }
 
     public MineManager getMineManager() {
