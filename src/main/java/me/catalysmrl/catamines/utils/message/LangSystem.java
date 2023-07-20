@@ -22,7 +22,7 @@ public class LangSystem {
     private final Path customDirectory;
 
     private Locale locale;
-    private FileConfiguration langFile;
+    private static FileConfiguration langFile;
 
     public LangSystem(CataMines plugin) {
         this.plugin = plugin;
@@ -33,18 +33,19 @@ public class LangSystem {
     }
 
     /**
-     * Gets the desired translated message from a key. Messages are saved in properties
-     * files. A resource bundle is responsible for handling i18n.
+     * Gets the desired translated message from a key. Messages are saved in yml files.
+     * A static FileConfiguration file is loaded when plugin is enabled.
+     * TODO: When translations are robust and reliable, consider using player specific locales.
      *
      * @param key the translation key
      * @return message retrieved from the key stored in a properties file
      */
-    public String getTranslatedMessage(String key) {
+    public static String getTranslatedMessage(String key) {
         if (langFile == null) return "Failed to load language file";
         return langFile.getString(key, "Missing " + key);
     }
 
-    public List<String> getTranslatedList(String key) {
+    public static List<String> getTranslatedList(String key) {
         if (langFile == null) return Collections.singletonList("Failed to load language file");
         return langFile.contains(key) ? langFile.getStringList(key) : Collections.singletonList("Missing " + key);
     }
@@ -63,7 +64,7 @@ public class LangSystem {
             e.printStackTrace();
         }
 
-        this.langFile = resolveLangFile();
+        langFile = resolveLangFile();
     }
 
     private void copyResourceToDisk(String resourceName) throws IOException {

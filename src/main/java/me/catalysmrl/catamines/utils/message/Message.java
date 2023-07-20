@@ -1,6 +1,5 @@
 package me.catalysmrl.catamines.utils.message;
 
-import me.catalysmrl.catamines.CataMines;
 import org.bukkit.command.CommandSender;
 
 import java.text.MessageFormat;
@@ -82,14 +81,14 @@ public enum Message {
     }
 
     public String getMessage() {
-        return CataMines.getInstance().getLangSystem().getTranslatedMessage(key);
+        return LangSystem.getTranslatedMessage(key);
     }
 
     public String getMessage(Object... args) {
         return format(getMessage(), args);
     }
 
-    private String format(String message, Object... args) {
+    private String format(Object... args) {
         return MessageFormat.format(getMessage(), args);
     }
 }

@@ -21,6 +21,7 @@ import java.nio.file.Path;
 public final class CataMines extends JavaPlugin {
 
     private static CataMines instance;
+
     public static CataMines getInstance() {
         return instance;
     }
