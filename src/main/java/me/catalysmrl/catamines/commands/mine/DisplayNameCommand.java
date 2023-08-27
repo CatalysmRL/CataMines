@@ -10,31 +10,35 @@ import org.bukkit.command.CommandSender;
 import java.io.IOException;
 import java.util.List;
 
-public class DeleteCommand extends AbstractCataMineCommand {
-    public DeleteCommand() {
-        super("delete", "catamines.command.delete", i -> i == 1, false);
+public class DisplayNameCommand extends AbstractCataMineCommand {
+    public DisplayNameCommand() {
+        super("displayname", "catamines.command.displayname", i -> true, false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
 
-        try {
-            plugin.getMineManager().deleteMine(mine);
-        } catch (IOException e) {
-            Message.DELETE_EXCEPTION.send(sender);
-            return;
-        }
+        String oldDisplayName = mine.getDisplayName();
 
-        Message.DELETE_SUCCESS.send(sender, mine.getName());
+        String displayName = String.join(" ", args);
+        mine.setDisplayName(displayName);
+
+        Message.DISPLAYNAME_SUCCESS.send(sender, oldDisplayName, displayName);
+
+        try {
+            plugin.getMineManager().saveMine(mine);
+        } catch (IOException e) {
+            Message.MINE_SAVE_EXCEPTION.send(sender, mine.getName());
+        }
     }
 
     @Override
     public String getDescription() {
-        return Message.DELETE_DESCRIPTION.getMessage();
+        return null;
     }
 
     @Override
     public String getUsage() {
-        return "/cm delete <mine>";
+        return null;
     }
 }

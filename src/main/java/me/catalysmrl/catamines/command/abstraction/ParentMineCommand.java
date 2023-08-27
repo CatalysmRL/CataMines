@@ -8,10 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * A parent command containing any number of child commands.
@@ -65,14 +62,16 @@ public abstract class ParentMineCommand extends AbstractCataCommand {
             return;
         }
 
-        CataMine mine = plugin.getMineManager().getMine(args.get(0));
+        String mineID = args.get(0);
 
-        if (mine == null) {
-            Message.MINE_NOT_EXIST.send(sender, args.get(0));
+        Optional<CataMine> mineOptional = plugin.getMineManager().getMine(mineID);
+
+        if (mineOptional.isEmpty()) {
+            Message.MINE_NOT_EXIST.send(sender, mineID);
             return;
         }
 
-        sub.execute(plugin, sender, args.subList(1, args.size()), mine);
+        sub.execute(plugin, sender, args.subList(1, args.size()), mineOptional.get());
     }
 
     @Override

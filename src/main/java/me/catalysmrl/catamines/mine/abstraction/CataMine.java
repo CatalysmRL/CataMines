@@ -1,8 +1,6 @@
 package me.catalysmrl.catamines.mine.abstraction;
 
-import me.catalysmrl.catamines.mine.abstraction.region.CataMineRegion;
-import me.catalysmrl.catamines.mine.components.CataMineType;
-import org.bukkit.Location;
+import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.List;
@@ -54,22 +52,5 @@ public interface CataMine extends ConfigurationSerializable {
 
     void setDisplayName(String displayName);
 
-    /**
-     * Gets the type of this mine.
-     *
-     * @return the mines type
-     * @see CataMineType
-     */
-    CataMineType getMineType();
-
     List<CataMineRegion> getRegions();
-
-    boolean containsLocation(Location location);
-
-    /**
-     * Get the total of blocks contained in this mine
-     *
-     * @return the mines volume
-     */
-    long getVolume();
 }

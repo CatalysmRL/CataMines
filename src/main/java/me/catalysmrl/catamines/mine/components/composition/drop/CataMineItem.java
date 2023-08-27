@@ -1,7 +1,7 @@
 package me.catalysmrl.catamines.mine.components.composition.drop;
 
-import me.catalysmrl.catamines.mine.abstraction.reward.CataMineReward;
-import me.catalysmrl.catamines.mine.abstraction.reward.Rewardable;
+import me.catalysmrl.catamines.mine.components.reward.CataMineReward;
+import me.catalysmrl.catamines.mine.components.reward.Rewardable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

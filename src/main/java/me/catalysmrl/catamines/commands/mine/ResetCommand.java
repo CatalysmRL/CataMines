@@ -25,7 +25,7 @@ public class ResetCommand extends AbstractCataMineCommand {
 
         // TODO: Silent resetting and other flags
         mine.reset();
-        Message.RESET.send(sender, mine.getName());
+        Message.RESET_SUCCESS.send(sender, mine.getName());
     }
 
     @Override

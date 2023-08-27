@@ -1,8 +1,7 @@
 package me.catalysmrl.catamines.mine.components.composition;
 
 import com.sk89q.worldedit.function.pattern.RandomPattern;
-import me.catalysmrl.catamines.mine.abstraction.reward.CataMineReward;
-import me.catalysmrl.catamines.mine.abstraction.reward.Rewardable;
+import me.catalysmrl.catamines.mine.components.reward.Rewardable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,10 +14,6 @@ import java.util.*;
  * @see com.sk89q.worldedit.function.pattern.RandomPattern
  */
 public class CataMineComposition implements Rewardable, ConfigurationSerializable {
-
-    // The chance to generate this composition
-    private double chance;
-    private CataMineReward reward;
 
     private final List<CataMineBlock> blocks;
     private RandomPattern randomPattern;
@@ -40,7 +35,7 @@ public class CataMineComposition implements Rewardable, ConfigurationSerializabl
     public void add(CataMineBlock block) {
         Objects.requireNonNull(block);
 
-        blocks.remove(block);
+        blocks.removeIf(cataMineBlock -> block.getBaseBlock().equals(cataMineBlock.getBaseBlock()));
 
         double sum = getChanceSum();
         if (sum + block.getChance() > 100) block.setChance(100 - sum);
@@ -58,7 +53,7 @@ public class CataMineComposition implements Rewardable, ConfigurationSerializabl
         randomPattern = new RandomPattern();
         blocks.stream()
                 .filter(b -> b.getChance() > 0)
-                .forEach(b -> randomPattern.add(b.getBlockState(), b.getChance()));
+                .forEach(b -> randomPattern.add(b.getBaseBlock(), b.getChance()));
     }
 
     public double getChanceSum() {
@@ -75,27 +70,8 @@ public class CataMineComposition implements Rewardable, ConfigurationSerializabl
         Map<String, Object> serializedComp = new LinkedHashMap<>();
         return null;
     }
+
     public static CataMineComposition deserialize(Map<String, Object> serializedComp) {
         return null;
-    }
-
-    @Override
-    public double getChance() {
-        return chance;
-    }
-
-    @Override
-    public void setChance(double chance) {
-        this.chance = chance;
-    }
-
-    @Override
-    public CataMineReward getReward() {
-        return reward;
-    }
-
-    @Override
-    public void setReward(CataMineReward reward) {
-        this.reward = reward;
     }
 }

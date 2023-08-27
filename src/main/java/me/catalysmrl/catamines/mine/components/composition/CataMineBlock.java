@@ -1,5 +1,6 @@
 package me.catalysmrl.catamines.mine.components.composition;
 
+import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
 import me.catalysmrl.catamines.mine.components.composition.drop.CataMineItem;
 import me.catalysmrl.catamines.utils.message.Message;
@@ -13,33 +14,34 @@ import java.util.Map;
 
 public class CataMineBlock implements ConfigurationSerializable {
 
-    private BlockState blockState;
+    private BaseBlock baseBlock;
     private double chance;
 
     private DropType dropType;
     private List<CataMineItem> drops;
 
-    public CataMineBlock(BlockState blockState, double chance) {
-        this(blockState, chance, DropType.CUSTOM);
+    public CataMineBlock(BaseBlock baseBlock, double chance) {
+        this(baseBlock, chance, DropType.CUSTOM);
     }
 
-    public CataMineBlock(BlockState blockState, double chance, DropType dropType) {
-        this(blockState, chance, dropType, new ArrayList<>());
+    public CataMineBlock(BaseBlock baseBlock, double chance, DropType dropType) {
+        this(baseBlock, chance, dropType, new ArrayList<>());
     }
 
-    public CataMineBlock(BlockState blockState, double chance, DropType dropType, List<CataMineItem> drops) {
+    public CataMineBlock(BaseBlock baseBlock, double chance, DropType dropType, List<CataMineItem> drops) {
         if (chance < 0 || chance > 100) {
             throw new IllegalArgumentException(Message.SET_INVALID_CHANCE.getMessage());
         }
 
-        this.blockState = blockState;
+        this.baseBlock = baseBlock;
         this.chance = Math.round(chance * 100) / 100d;
+        this.dropType = dropType;
         this.drops = drops;
     }
 
     public static CataMineBlock deserialize(Map<String, Object> map) {
 
-        BlockState blockState = BlockState.get((String) map.get("block"));
+        BaseBlock baseBlock = BlockState.get((String) map.get("block")).toBaseBlock();
 
         double chance = 0d;
         if (map.containsKey("chance")) {
@@ -56,7 +58,7 @@ public class CataMineBlock implements ConfigurationSerializable {
             serializedLootTable = (ArrayList<Map<String, Object>>) map.get("lootTable");
         }
         if (serializedLootTable.isEmpty()) {
-            return new CataMineBlock(blockState, chance);
+            return new CataMineBlock(baseBlock, chance);
         }
 
         List<CataMineItem> drops = new ArrayList<>();
@@ -64,14 +66,14 @@ public class CataMineBlock implements ConfigurationSerializable {
             drops.add(CataMineItem.deserialize(loot));
         }
 
-        return new CataMineBlock(blockState, chance, dropType, drops);
+        return new CataMineBlock(baseBlock, chance, dropType, drops);
     }
 
     @Nonnull
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("block", blockState.toString());
+        result.put("block", baseBlock.toString());
         result.put("chance", chance);
         result.put("dropType", dropType);
 
@@ -86,12 +88,12 @@ public class CataMineBlock implements ConfigurationSerializable {
         return result;
     }
 
-    public BlockState getBlockState() {
-        return blockState;
+    public BaseBlock getBaseBlock() {
+        return baseBlock;
     }
 
-    public void setBlockState(BlockState blockState) {
-        this.blockState = blockState;
+    public void setBaseBlock(BaseBlock baseBlock) {
+        this.baseBlock = baseBlock;
     }
 
     public double getChance() {
@@ -105,6 +107,14 @@ public class CataMineBlock implements ConfigurationSerializable {
         this.chance = Math.round(chance * 100) / 100d;
     }
 
+    public DropType getDropType() {
+        return dropType;
+    }
+
+    public void setDropType(DropType dropType) {
+        this.dropType = dropType;
+    }
+
     public List<CataMineItem> getDrops() {
         return drops;
     }
@@ -113,7 +123,7 @@ public class CataMineBlock implements ConfigurationSerializable {
         this.drops = drops;
     }
 
-    private enum DropType {
+    public enum DropType {
         CUSTOM, ALL, SINGLE;
     }
 }

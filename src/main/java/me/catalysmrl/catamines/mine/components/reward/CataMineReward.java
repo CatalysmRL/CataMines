@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.mine.abstraction.reward;
+package me.catalysmrl.catamines.mine.components.reward;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

@@ -7,6 +7,12 @@ import java.text.MessageFormat;
 public enum Message {
 
     /*
+     * Universal
+     */
+    MINE_SAVE_EXCEPTION("catamines.universal.mine.save-exception"),
+    MINE_DELETE_EXCEPTION("catamines.universal.mine.delete-exception"),
+
+    /*
      * CommandSystem
      */
     NO_PERMISSION("catamines.commandsystem.no-permission"),
@@ -28,27 +34,36 @@ public enum Message {
     /*
      * Mine commands
      */
+
     // Create command
     MINE_EXIST("catamines.command.mine.create.mine-exists"),
     INCOMPLETE_REGION("catamines.command.mine.create.incomplete-region"),
     MINE_INVALID_NAME("catamines.command.mine.create.invalid-name"),
-    CREATE("catamines.command.mine.create"),
+    CREATE_SUCCESS("catamines.command.mine.create.success"),
     CREATE_DESCRIPTION("catamines.command.mine.create.description"),
 
     // Delete command
     DELETE_EXCEPTION("catamines.command.mine.delete.io-exception"),
-    DELETE("catamines.command.mine.delete"),
+    DELETE_SUCCESS("catamines.command.mine.delete.success"),
     DELETE_DESCRIPTION("catamines.command.mine.delete.description"),
 
     // Reset command
-    RESET("catamines.command.mine.reset"),
+    RESET_SUCCESS("catamines.command.mine.reset.success"),
     RESET_DESCRIPTION("catamines.command.mine.reset.description"),
 
     // Set command
-    SET_INVALID_BLOCKDATA("catamines.command.mine.set.invalid-blockdata"),
+    SET_INVALID_BLOCKSTATE("catamines.command.mine.set.invalid-blockstate"),
     SET_INVALID_NUMBER("catamines.command.mine.set.invalid-number"),
     SET_INVALID_CHANCE("catamines.command.mine.set.invalid-chance"),
-    SET("catamines.command.mine.set");
+    SET_SUCCESS("catamines.command.mine.set.success"),
+
+    // Rename command
+    RENAME_SUCCESS("catamines.command.rename"),
+    RENAME_DESCRIPTION("catamines.command.rename.description"),
+
+    // Displayname command
+    DISPLAYNAME_SUCCESS("catamines.command.displayname.success"),
+    DISPLAYNAME_DESCRIPTION("catamines.command.displayname.description");
 
 
     private final String key;

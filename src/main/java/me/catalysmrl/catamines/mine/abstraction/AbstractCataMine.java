@@ -1,8 +1,9 @@
 package me.catalysmrl.catamines.mine.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.mine.abstraction.region.CataMineRegion;
+import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,7 +15,8 @@ public abstract class AbstractCataMine implements CataMine {
 
     public AbstractCataMine(String name) {
         this.name = name;
-        this.displayName = name;
+        this.displayName = "default";
+        regions = new ArrayList<>();
     }
 
     @Override
@@ -34,12 +36,13 @@ public abstract class AbstractCataMine implements CataMine {
 
     @Override
     public void setName(String name) {
+        if ("*".equals(name)) throw new IllegalArgumentException();
         this.name = name;
     }
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return "default".equals(displayName) ? name : displayName;
     }
 
     @Override
@@ -53,6 +56,7 @@ public abstract class AbstractCataMine implements CataMine {
     }
 
     public CataMineRegion getRegion() {
+        /*
         double rand = regions.stream()
                 .mapToDouble(CataMineRegion::getChance)
                 .sum() * ThreadLocalRandom.current().nextDouble();
@@ -65,5 +69,10 @@ public abstract class AbstractCataMine implements CataMine {
         }
 
         return choice;
+        */
+
+        return regions.get(0);
     }
+
+
 }

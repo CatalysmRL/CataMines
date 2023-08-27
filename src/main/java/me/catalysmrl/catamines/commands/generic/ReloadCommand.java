@@ -16,7 +16,7 @@ public class ReloadCommand extends AbstractCataCommand {
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
-
+        
     }
 
     @Override

@@ -1,6 +1,7 @@
 package me.catalysmrl.catamines.utils.worldedit;
 
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -11,11 +12,12 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.catalysmrl.catamines.CataMines;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -27,14 +29,29 @@ public class WorldEditUtils {
         return WorldEditPlugin.getInstance().getSession(player).getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
     }
 
-    public static void pasteSchematic(Clipboard clipboard, Location location) {
+    public static void pasteRegion(Region region, Pattern pattern) {
+        try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
+                .world(region.getWorld())
+                .changeSetNull()
+                .allowedRegionsEverywhere()
+                .fastMode(true)
+                .build()) {
+
+            editSession.setReorderMode(EditSession.ReorderMode.FAST);
+            editSession.setBlocks(region, pattern);
+        } catch (MaxChangedBlocksException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void pasteSchematic(Clipboard clipboard, BlockVector3 location) {
         if (clipboard == null)
             throw new IllegalArgumentException("Invalid Clipboard");
 
-        try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(location.getWorld()))) {
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(clipboard.getRegion().getWorld())) {
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)
-                    .to(BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ()))
+                    .to(location)
                     .ignoreAirBlocks(true)
                     .copyEntities(false)
                     .build();

@@ -5,11 +5,16 @@ import me.catalysmrl.catamines.managers.blockmanagers.BlockApplicator;
 import me.catalysmrl.catamines.managers.blockmanagers.BukkitBlockApplicationManager;
 import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationManager;
 import me.catalysmrl.catamines.mine.abstraction.CataMine;
-import me.catalysmrl.catamines.mine.abstraction.region.CataMineRegion;
+import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
+import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.IOException;
@@ -18,11 +23,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MineManager {
+
+    private Path minesPath;
 
     private final CataMines plugin;
     private BukkitTask minesTask;
@@ -32,6 +40,7 @@ public class MineManager {
 
     public MineManager(CataMines plugin) {
         this.plugin = plugin;
+        minesPath = plugin.getDataFolder().toPath().resolve("mines");
         Bukkit.getScheduler().runTaskLater(plugin, () -> loadMinesFromFolder(plugin.getDataFolder().toPath().resolve("mines")), 2L);
         start();
     }
@@ -44,7 +53,14 @@ public class MineManager {
     public void shutDown() {
         blockApplicator.cancel();
         minesTask.cancel();
-        mines.forEach(this::saveMine);
+
+        for (CataMine mine : mines) {
+            try {
+                saveMine(mine);
+            } catch (IOException e) {
+                plugin.getLogger().severe(Message.MINE_SAVE_EXCEPTION.getMessage(mine.getName()));
+            }
+        }
     }
 
     /**
@@ -123,15 +139,31 @@ public class MineManager {
         if (!Files.isDirectory(folder)) return cataMines;
 
         try (Stream<Path> stream = Files.list(folder)) {
-            stream.filter(path -> path.endsWith(".yml"))
-                    .map(path -> YamlConfiguration.loadConfiguration(path.toFile()).getSerializable("Mine", CataMine.class))
-                    .filter(Objects::nonNull)
-                    .forEach(cataMines::add);
+            cataMines = stream
+                    .filter(path -> path.endsWith(".yml"))
+                    .map(this::deserializeCataMineFromYaml)
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().severe("Failed loading directory " + folder);
         }
 
         return cataMines;
+    }
+
+    private Optional<CataMine> deserializeCataMineFromYaml(Path path) {
+        FileConfiguration cfg = YamlConfiguration.loadConfiguration(path.toFile());
+        ConfigurationSection section = cfg.getConfigurationSection("Mine");
+        if (section != null) {
+            return deserializeCataMine(section);
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<CataMine> deserializeCataMine(ConfigurationSection section) {
+        CataMine mine = AdvancedCataMine.deserialize(section.getValues(false));
+        return Optional.ofNullable(mine);
     }
 
     /**
@@ -145,14 +177,24 @@ public class MineManager {
         mines.addAll(getMinesFromFolder(folder));
     }
 
+    public void callBlockBreak(BlockBreakEvent event) {
+
+    }
+
+    public void callBlockPlace(BlockPlaceEvent event) {
+
+    }
+
     /**
      * Returns the mine with matching ID (name). Returns null if not present
      *
      * @param id ID or name of the mine
      * @return the mine if found, otherwise null
      */
-    public CataMine getMine(String id) {
-        return mines.stream().filter(cataMine -> cataMine.getName().equals(id)).findFirst().orElse(null);
+    public Optional<CataMine> getMine(String id) {
+        return mines.stream()
+                .filter(cataMine -> cataMine.getName().equals(id))
+                .findFirst();
     }
 
     /**
@@ -207,19 +249,19 @@ public class MineManager {
     public void deleteMine(CataMine cataMine) throws IOException {
         mines.remove(cataMine);
 
-        Files.deleteIfExists(plugin.getDataPath().resolve("mines").resolve(cataMine.getName() + ".yml"));
+        Files.deleteIfExists(plugin.getDataFolder().toPath().resolve("mines").resolve(cataMine.getName() + ".yml"));
     }
 
-    public void saveMine(CataMine mine) {
-        Path file = plugin.getDataPath().resolve("mines").resolve(mine.getName() + ".yml");
+    public void saveMine(CataMine mine) throws IOException {
+        Path file = plugin.getDataFolder().toPath().resolve("mines").resolve(mine.getName() + ".yml");
         FileConfiguration fileCfg = new YamlConfiguration();
 
         fileCfg.set("Mine", mine.serialize());
 
-        try {
-            fileCfg.save(file.toFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        fileCfg.save(file.toFile());
+    }
+
+    public Path getMinesPath() {
+        return minesPath;
     }
 }

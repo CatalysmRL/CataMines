@@ -4,7 +4,7 @@ import me.catalysmrl.catamines.command.CommandManager;
 import me.catalysmrl.catamines.listeners.BlockListeners;
 import me.catalysmrl.catamines.managers.MineManager;
 import me.catalysmrl.catamines.mine.components.composition.CataMineBlock;
-import me.catalysmrl.catamines.mine.mines.RegionCataMine;
+import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.mine.placeholders.CataMinePlaceHolders;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
 import me.catalysmrl.catamines.utils.message.LangSystem;
@@ -16,8 +16,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.nio.file.Path;
-
 public final class CataMines extends JavaPlugin {
 
     private static CataMines instance;
@@ -27,12 +25,10 @@ public final class CataMines extends JavaPlugin {
     }
 
     static {
-        ConfigurationSerialization.registerClass(RegionCataMine.class);
+        ConfigurationSerialization.registerClass(AdvancedCataMine.class);
         ConfigurationSerialization.registerClass(CataMineBlock.class);
     }
 
-    private Path dataPath;
-    private LangSystem langSystem;
     private MineManager mineManager;
     private CommandManager commandManager;
 
@@ -47,9 +43,7 @@ public final class CataMines extends JavaPlugin {
     public void onEnable() {
         CompatibilityProvider.checkCompatibility();
 
-        dataPath = getDataFolder().toPath();
-        langSystem = new LangSystem(this);
-
+        new LangSystem(this);
         mineManager = new MineManager(this);
         registerCommands();
         registerListeners();
@@ -90,19 +84,11 @@ public final class CataMines extends JavaPlugin {
         pm.registerEvents(new BlockListeners(mineManager), this);
     }
 
-    public LangSystem getLangSystem() {
-        return langSystem;
-    }
-
     public MineManager getMineManager() {
         return mineManager;
     }
 
     public CommandManager getCommandManager() {
         return commandManager;
-    }
-
-    public Path getDataPath() {
-        return dataPath;
     }
 }

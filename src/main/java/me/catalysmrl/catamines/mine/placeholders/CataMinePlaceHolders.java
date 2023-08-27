@@ -1,12 +1,15 @@
 package me.catalysmrl.catamines.mine.placeholders;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.legacycatamines.schedulers.MineManager;
-import me.catalysmrl.legacycatamines.utils.Utils;
-import me.catalysmrl.legacycatamines.mine.AbstractCataMine;
+import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.message.Messages;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class CataMinePlaceHolders extends PlaceholderExpansion {
 
@@ -43,46 +46,39 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         int mineIndex = 1;
+        String delimiter = "_";
+        String regex = "(?<!\\\\)(?:" + Pattern.quote(delimiter) + "|\\\\(?!\\\\))";
+        String[] args = identifier.split(regex);
 
-        String[] args = identifier.split("_");
         if (args.length <= 1) {
-            if (args[0].equalsIgnoreCase("prefix")) {
-                return plugin.getConfig().getString("prefix", "&6[&bCata&aMines&6] &7");
-            } else {
-                return null;
-            }
+            return switch (args[0]) {
+                case "prefix", "p" -> Messages.PREFIX;
+                default -> null;
+            };
         }
 
-        AbstractCataMine cataMine = MineManager.getInstance().getMine(args[mineIndex]);
-        if (cataMine == null) {
-            return plugin.getLangString("Error-Messages.Mine.Not-Exist");
+        Optional<CataMine> mineOptional = plugin.getMineManager().getMine(args[mineIndex]);
+        if (mineOptional.isEmpty()) {
+            return Message.MINE_NOT_EXIST.getMessage();
         }
 
-        if (!cataMine.isRunnable()) {
-            return "inactive";
-        }
+        CataMine mine = mineOptional.get();
 
-        switch (args[0].toLowerCase()) {
-            case "countdown":
-            case "time":
-                return Utils.secondsToTimeFormat(cataMine.getCountdown());
-            case "remainingseconds":
-                return String.valueOf(cataMine.getCountdown());
-            case "totalblocks":
-                return String.valueOf(cataMine.getTotalBlocks());
-            case "remainingblocks":
-                return String.valueOf(cataMine.getBlockCount());
-            case "minedblocks":
-                return String.valueOf(cataMine.getMinedBlocks());
-            case "remainingblockspercentage":
-            case "remainingblocksper":
-                return String.valueOf(cataMine.getRemainingBlocksPer());
-            case "resetpercentage":
-                return String.valueOf(cataMine.getResetPercentage());
-            case "timestring":
-                return cataMine.getFormattedTimeString();
-        }
+        // TODO: Placholders via new CataMine interface
+        /*
+        return switch (args[0].toLowerCase()) {
+            case "countdown", "time" -> Utils.secondsToTimeFormat(mine.getCountdown());
+            case "remainingseconds" -> String.valueOf(mine.getCountdown());
+            case "totalblocks" -> String.valueOf(mine.getTotalBlocks());
+            case "remainingblocks" -> String.valueOf(mine.getBlockCount());
+            case "minedblocks" -> String.valueOf(mine.getMinedBlocks());
+            case "remainingblockspercentage", "remainingblocksper" -> String.valueOf(mine.getRemainingBlocksPer());
+            case "resetpercentage" -> String.valueOf(mine.getResetPercentage());
+            case "timestring" -> mine.getFormattedTimeString();
+            default -> null;
+        };
+         */
 
-        return null;
+        return "Not yet implemented";
     }
 }

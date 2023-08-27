@@ -1,6 +1,6 @@
 package me.catalysmrl.catamines.managers.blockmanagers;
 
-import me.catalysmrl.catamines.mine.abstraction.region.CataMineRegion;
+import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayDeque;
@@ -28,17 +28,13 @@ public abstract class BlockApplicator {
 
     protected void handleQueue() {
         long blockUpdates = 0L;
-        Iterator<CataMineRegion> iterator = resetQueue.iterator();
 
-        while (iterator.hasNext()) {
-            CataMineRegion region = iterator.next();
-            iterator.remove();
+        while (!resetQueue.isEmpty()) {
+            CataMineRegion region = resetQueue.pop();
             blockUpdates += region.getVolume();
             region.fill();
 
-            if (blockUpdates > MAX_BLOCK_UPDATES_PER_TICK) {
-                break;
-            }
+            if (blockUpdates > MAX_BLOCK_UPDATES_PER_TICK) break;
         }
     }
 }

@@ -1,7 +1,7 @@
-package me.catalysmrl.catamines.mine.abstraction.reward.rewards;
+package me.catalysmrl.catamines.mine.components.reward.rewards;
 
 import me.catalysmrl.catamines.mine.abstraction.CataMine;
-import me.catalysmrl.catamines.mine.abstraction.reward.CataMineReward;
+import me.catalysmrl.catamines.mine.components.reward.CataMineReward;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 

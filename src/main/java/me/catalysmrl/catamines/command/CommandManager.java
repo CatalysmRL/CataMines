@@ -6,10 +6,8 @@ import me.catalysmrl.catamines.command.abstraction.CataCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.commands.generic.HelpCommand;
 import me.catalysmrl.catamines.commands.generic.ListCommand;
-import me.catalysmrl.catamines.commands.mine.CreateCommand;
-import me.catalysmrl.catamines.commands.mine.DeleteCommand;
-import me.catalysmrl.catamines.commands.mine.ResetCommand;
-import me.catalysmrl.catamines.commands.mine.SetCommand;
+import me.catalysmrl.catamines.commands.generic.ReloadCommand;
+import me.catalysmrl.catamines.commands.mine.*;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.Command;
@@ -34,10 +32,13 @@ public class CommandManager implements TabExecutor {
         commandMap = ImmutableMap.<String, CataCommand>builder()
                 .put("help", new HelpCommand())
                 .put("list", new ListCommand())
+                .put("reload", new ReloadCommand())
                 .put("create", new CreateCommand())
                 .put("delete", new DeleteCommand())
                 .put("reset", new ResetCommand())
                 .put("set", new SetCommand())
+                .put("rename", new RenameCommand())
+                .put("displayname", new DisplayNameCommand())
                 .build();
     }
 
@@ -69,7 +70,7 @@ public class CommandManager implements TabExecutor {
         }
 
         List<String> strippedArgs = new ArrayList<>(Arrays.asList(args));
-        if (strippedArgs.size() > 0) {
+        if (!strippedArgs.isEmpty()) {
             strippedArgs.remove(0);
         }
 
