@@ -126,12 +126,28 @@ public class SelectionRegion extends AbstractCataMineRegion {
             case CUBOID -> region = new CuboidRegion(world,
                     VectorParser.asBlockVector3((String) serializedRegion.get("min")),
                     VectorParser.asBlockVector3((String) serializedRegion.get("min")));
-            case CYLINDER, SPHERE -> region = new CylinderRegion(world,
+            case CYLINDER -> region = new CylinderRegion(world,
                     VectorParser.asBlockVector3((String) serializedRegion.get("center")),
                     VectorParser.asVector2((String) serializedRegion.get("radius")),
                     (int) serializedRegion.get("minY"),
                     (int) serializedRegion.get("maxY"));
+            case ELLIPSOID, SPHERE -> region = new EllipsoidRegion(world,
+                    VectorParser.asBlockVector3((String) serializedRegion.get("center")),
+                    VectorParser.asVector3((String) serializedRegion.get("radius")));
+            case POLYGONAL2D -> {
+                List<BlockVector2> points = ((List<String>) serializedRegion.get("points")).stream().map(VectorParser::asBlockVector2).toList();
+                region = new Polygonal2DRegion(world, points, (int) serializedRegion.get("minY"), (int) serializedRegion.get("maxY"));
+            }
+            case CONVEXPOLYHEDRAL -> {
+                List<BlockVector3> vertices = ((List<String>) serializedRegion.get("vertices")).stream().map(VectorParser::asBlockVector3).toList();
+                ConvexPolyhedralRegion convexRegion = new ConvexPolyhedralRegion(world);
 
+                for (BlockVector3 blockVector3 : convexRegion) {
+                    convexRegion.addVertex(blockVector3);
+                }
+
+                region = convexRegion;
+            }
         }
 
         return new SelectionRegion(name, selectionType, region);
