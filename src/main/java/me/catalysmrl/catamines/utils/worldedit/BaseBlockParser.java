@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.utils.helper;
+package me.catalysmrl.catamines.utils.worldedit;
 
 import com.sk89q.worldedit.world.block.BaseBlock;
 
@@ -7,8 +7,7 @@ import com.sk89q.worldedit.world.block.BaseBlock;
  */
 public final class BaseBlockParser {
 
-    private BaseBlockParser() {
-    }
+    private BaseBlockParser() {}
 
     public static BaseBlock asBaseBlock(String string) {
         return null;

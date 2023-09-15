@@ -25,6 +25,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class WorldEditUtils {
+
+    private WorldEditUtils() {}
+
     public static RegionSelector getSelector(Player player) {
         return WorldEditPlugin.getInstance().getSession(player).getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
     }

@@ -4,6 +4,10 @@ import org.bukkit.Bukkit;
 
 public class CompatibilityProvider {
 
+    private CompatibilityProvider() {
+        //no instance
+    }
+
     private static boolean faweEnabled;
     private static boolean papiEnabled;
 

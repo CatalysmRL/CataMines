@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 /**
- * Class representing the composition of a mine
+ * Class representing the composition of a mine.
+ * Contains all blocks that make up this upon regeneration.
  *
  * @see CataMineBlock
  * @see com.sk89q.worldedit.function.pattern.RandomPattern
