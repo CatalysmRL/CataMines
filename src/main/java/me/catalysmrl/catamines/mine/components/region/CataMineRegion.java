@@ -1,7 +1,7 @@
 package me.catalysmrl.catamines.mine.components.region;
 
-import me.catalysmrl.catamines.mine.components.reward.Rewardable;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
+import me.catalysmrl.catamines.mine.components.reward.Rewardable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.List;

@@ -5,6 +5,7 @@ import com.sk89q.worldedit.world.block.BlockState;
 import me.catalysmrl.catamines.mine.components.composition.drop.CataMineItem;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@SerializableAs("CataMineBlock")
 public class CataMineBlock implements ConfigurationSerializable {
 
     private BaseBlock baseBlock;

@@ -26,10 +26,11 @@ import java.io.IOException;
 
 public class WorldEditUtils {
 
-    private WorldEditUtils() {}
+    private WorldEditUtils() {
+    }
 
     public static RegionSelector getSelector(Player player) {
-        return WorldEditPlugin.getInstance().getSession(player).getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
+        return WorldEdit.getInstance().getSessionManager().get(BukkitAdapter.adapt(player)).getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
     }
 
     public static void pasteRegion(Region region, Pattern pattern) {
@@ -82,21 +83,5 @@ public class WorldEditUtils {
         }
 
         return clipboard;
-    }
-
-    public static BlockVector3 unparseBlockVector3(String input) {
-        String[] values = input.split(",");
-        if (values.length != 3) {
-            throw new IllegalArgumentException("Input must contain 3 comma-separated values");
-        }
-        int x, y, z;
-        try {
-            x = Integer.parseInt(values[0]);
-            y = Integer.parseInt(values[1]);
-            z = Integer.parseInt(values[2]);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Input must contain 3 comma-separated integers");
-        }
-        return BlockVector3.at(x, y, z);
     }
 }

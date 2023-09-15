@@ -21,8 +21,6 @@ public class SetCommand extends AbstractCataMineCommand {
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
 
-
-
         BlockState blockState;
         try {
             blockState = BlockState.get(args.get(0));

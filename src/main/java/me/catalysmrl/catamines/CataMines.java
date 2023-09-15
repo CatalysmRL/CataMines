@@ -4,6 +4,9 @@ import me.catalysmrl.catamines.command.CommandManager;
 import me.catalysmrl.catamines.listeners.BlockListeners;
 import me.catalysmrl.catamines.managers.MineManager;
 import me.catalysmrl.catamines.mine.components.composition.CataMineBlock;
+import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
+import me.catalysmrl.catamines.mine.components.region.impl.SchematicRegion;
+import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.mine.placeholders.CataMinePlaceHolders;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
@@ -18,14 +21,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CataMines extends JavaPlugin {
 
-    private static CataMines instance;
+    private static CataMines INSTANCE;
 
     public static CataMines getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     static {
         ConfigurationSerialization.registerClass(AdvancedCataMine.class);
+        ConfigurationSerialization.registerClass(SelectionRegion.class);
+        ConfigurationSerialization.registerClass(SchematicRegion.class);
+        ConfigurationSerialization.registerClass(CataMineComposition.class);
         ConfigurationSerialization.registerClass(CataMineBlock.class);
     }
 
@@ -34,7 +40,7 @@ public final class CataMines extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        instance = this;
+        INSTANCE = this;
 
         saveDefaultConfig();
     }
@@ -57,8 +63,8 @@ public final class CataMines extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        INSTANCE = null;
         mineManager.shutDown();
-        instance = null;
     }
 
     private void setupMetrics() {

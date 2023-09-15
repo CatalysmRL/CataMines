@@ -51,7 +51,7 @@ public class CreateCommand extends AbstractCataCommand {
         Message.CREATE_SUCCESS.send(player, name);
 
         try {
-            plugin.getMineManager().saveMine(mine);
+            plugin.getMineManager().saveMine(cataMine);
         } catch (IOException e) {
             Message.MINE_SAVE_EXCEPTION.send(sender, name);
         }

@@ -58,8 +58,8 @@ public class LangSystem {
             createDirectoriesIfNotExists(defaultDirectory);
             createDirectoriesIfNotExists(customDirectory);
 
-            copyResourceToDisk("messages_en");
-            copyResourceToDisk("messages_de");
+            copyResourceToDisk("Lang_en.yml");
+            copyResourceToDisk("Lang_de.yml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,30 +69,30 @@ public class LangSystem {
 
     private void copyResourceToDisk(String resourceName) throws IOException {
 
-        try (InputStream is = plugin.getResource("/i18n/" + resourceName)) {
+        try (InputStream is = plugin.getResource("i18n/" + resourceName)) {
             if (is == null) {
-                plugin.getLogger().severe("Failed to copy " + resourceName + " to disk");
+                plugin.getLogger().severe("Could not find resource " + resourceName);
                 return;
             }
 
-            Files.copy(is, defaultDirectory, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(is, defaultDirectory.resolve(resourceName), StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
     private FileConfiguration resolveLangFile() {
-        String langFileName = "messages_" + locale.toLanguageTag() + ".yml";
+        String langFileName = "Lang_" + locale.toLanguageTag() + ".yml";
 
-        Path customPath = customDirectory.resolve(langFileName);
-        if (Files.exists(customPath)) {
-            return YamlConfiguration.loadConfiguration(customPath.toFile());
+        Path customFile = customDirectory.resolve(langFileName);
+        if (Files.exists(customFile)) {
+            return YamlConfiguration.loadConfiguration(customFile.toFile());
         }
 
-        Path defaultPath = defaultDirectory.resolve(langFileName);
-        if (Files.exists(defaultPath)) {
-            return YamlConfiguration.loadConfiguration(defaultPath.toFile());
+        Path defaultFile = defaultDirectory.resolve(langFileName);
+        if (Files.exists(defaultFile)) {
+            return YamlConfiguration.loadConfiguration(defaultFile.toFile());
         }
 
-        plugin.getLogger().severe("Failed to load language file " + defaultPath);
+        plugin.getLogger().severe("Failed to load language file " + defaultFile);
         return null;
     }
 

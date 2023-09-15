@@ -5,7 +5,6 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractCataMine implements CataMine {
 

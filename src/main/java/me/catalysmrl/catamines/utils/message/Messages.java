@@ -3,10 +3,8 @@ package me.catalysmrl.catamines.utils.message;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Utility class used for message handling such as colorizing or sending

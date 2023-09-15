@@ -10,12 +10,14 @@ import me.catalysmrl.catamines.mine.components.region.AbstractCataMineRegion;
 import me.catalysmrl.catamines.utils.worldedit.VectorParser;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@SerializableAs("SelectionRegion")
 public class SelectionRegion extends AbstractCataMineRegion {
 
     private SelectionType selectionType;
@@ -64,7 +66,7 @@ public class SelectionRegion extends AbstractCataMineRegion {
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> serializedRegion = new LinkedHashMap<>();
         serializedRegion.put("name", name);
-        serializedRegion.put("selection_type", selectionType);
+        serializedRegion.put("selection_type", selectionType.toString());
         serializedRegion.put("world", region.getWorld() == null ? "null" : region.getWorld().getName());
         serializedRegion.put("region", serializeRegion());
         return serializedRegion;
@@ -142,7 +144,7 @@ public class SelectionRegion extends AbstractCataMineRegion {
                 List<BlockVector3> vertices = ((List<String>) serializedRegion.get("vertices")).stream().map(VectorParser::asBlockVector3).toList();
                 ConvexPolyhedralRegion convexRegion = new ConvexPolyhedralRegion(world);
 
-                for (BlockVector3 blockVector3 : convexRegion) {
+                for (BlockVector3 blockVector3 : vertices) {
                     convexRegion.addVertex(blockVector3);
                 }
 

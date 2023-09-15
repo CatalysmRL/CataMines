@@ -5,7 +5,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 public abstract class BlockApplicator {
 

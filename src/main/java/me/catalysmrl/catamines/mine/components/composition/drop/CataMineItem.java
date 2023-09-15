@@ -17,31 +17,11 @@ public class CataMineItem implements Rewardable, ConfigurationSerializable {
     boolean fortune;
 
     @Override
-    public double getChance() {
-        return chance;
-    }
-
-    @Override
-    public void setChance(double chance) {
-        this.chance = chance;
-    }
-
-    @Override
-    public CataMineReward getReward() {
-        return reward;
-    }
-
-    @Override
-    public void setReward(CataMineReward reward) {
-        this.reward = reward;
-    }
-
-    @Override
     public @NotNull Map<String, Object> serialize() {
         return null;
     }
 
-    public static CataMineItem deserialize(Map<String, Object> serItem) {
+    public static CataMineItem deserialize(Map<String, Object> serializedItem) {
         return null;
     }
 }

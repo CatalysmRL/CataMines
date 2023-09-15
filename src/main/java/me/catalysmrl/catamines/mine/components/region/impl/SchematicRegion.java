@@ -4,10 +4,12 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.math.BlockVector3;
 import me.catalysmrl.catamines.mine.components.region.AbstractCataMineRegion;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+@SerializableAs("SchematicRegion")
 public class SchematicRegion extends AbstractCataMineRegion {
 
     String schemName;

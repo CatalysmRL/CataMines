@@ -1,6 +1,5 @@
 package me.catalysmrl.catamines.utils.metrics;
 
-import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -89,4 +88,5 @@ public class UpdateChecker implements Listener {
                     "&7is available at: &dhttps://spigotmc.org/resources/96457/");
         }
     }
+
 }

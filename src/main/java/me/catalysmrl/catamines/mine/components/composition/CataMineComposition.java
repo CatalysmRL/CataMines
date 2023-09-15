@@ -3,6 +3,7 @@ package me.catalysmrl.catamines.mine.components.composition;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
 import me.catalysmrl.catamines.mine.components.reward.Rewardable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -14,6 +15,8 @@ import java.util.*;
  * @see CataMineBlock
  * @see com.sk89q.worldedit.function.pattern.RandomPattern
  */
+
+@SerializableAs("CataMineComposition")
 public class CataMineComposition implements Rewardable, ConfigurationSerializable {
 
     private final List<CataMineBlock> blocks;
