@@ -1,17 +1,20 @@
 package me.catalysmrl.catamines.commands.mine;
 
-import com.sk89q.worldedit.extension.input.InputParseException;
-import com.sk89q.worldedit.world.block.BlockState;
+import com.sk89q.worldedit.world.block.BaseBlock;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.mine.abstraction.CataMine;
 import me.catalysmrl.catamines.mine.components.composition.CataMineBlock;
+import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
+import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.worldedit.BaseBlockParser;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SetCommand extends AbstractCataMineCommand {
     public SetCommand() {
@@ -21,16 +24,16 @@ public class SetCommand extends AbstractCataMineCommand {
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
 
-        BlockState blockState;
+        BaseBlock baseBlock;
         try {
-            blockState = BlockState.get(args.get(0));
-        } catch (InputParseException e) {
+            baseBlock = BaseBlockParser.asBaseBlock(args.get(0));
+        } catch (Exception e) {
             Message.SET_INVALID_BLOCKSTATE.send(sender);
             return;
         }
 
         double chance = 100d;
-        if (args.size() == 2) {
+        if (args.size() >= 2) {
             try {
                 chance = Double.parseDouble(args.get(1).replace("%", ""));
             } catch (NumberFormatException e) {
@@ -44,9 +47,35 @@ public class SetCommand extends AbstractCataMineCommand {
             }
         }
 
-        CataMineBlock block = new CataMineBlock(blockState.toBaseBlock(), chance);
+        String regionName = "default";
+        if (args.size() >= 3) {
+            regionName = args.get(2);
+        }
 
-        mine.getRegions().get(0).getCompositions().get(0).add(block);
+        String compositionName = "default";
+        if (args.size() >= 4) {
+            compositionName = args.get(3);
+        }
+
+        Optional<CataMineRegion> regionOptional = mine.getRegion(regionName);
+        if (regionOptional.isEmpty()) {
+            Message.SET_INVALID_REGION.send(sender);
+            return;
+        }
+
+        CataMineRegion region = regionOptional.get();
+
+        Optional<CataMineComposition> compositionOptional = region.getComposition(compositionName);
+        if (compositionOptional.isEmpty()) {
+            Message.SET_INVALID_COMPOSITION.send(sender);
+            return;
+        }
+
+        CataMineComposition composition = compositionOptional.get();
+
+        CataMineBlock block = new CataMineBlock(baseBlock, chance);
+
+        composition.add(block);
 
         Message.SET_SUCCESS.send(sender, args.get(0), block.getChance(), mine.getName());
     }

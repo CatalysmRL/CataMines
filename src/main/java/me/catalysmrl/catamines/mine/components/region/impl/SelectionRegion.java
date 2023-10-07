@@ -6,6 +6,7 @@ import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.*;
 import com.sk89q.worldedit.world.World;
+import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.mine.components.region.AbstractCataMineRegion;
 import me.catalysmrl.catamines.utils.worldedit.VectorParser;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
@@ -124,35 +125,48 @@ public class SelectionRegion extends AbstractCataMineRegion {
         World world = BukkitAdapter.adapt(Bukkit.getWorld((String) serializedRegion.get("world")));
 
         Region region = new NullRegion();
-        switch (selectionType) {
-            case CUBOID -> region = new CuboidRegion(world,
-                    VectorParser.asBlockVector3((String) serializedRegion.get("min")),
-                    VectorParser.asBlockVector3((String) serializedRegion.get("min")));
-            case CYLINDER -> region = new CylinderRegion(world,
-                    VectorParser.asBlockVector3((String) serializedRegion.get("center")),
-                    VectorParser.asVector2((String) serializedRegion.get("radius")),
-                    (int) serializedRegion.get("minY"),
-                    (int) serializedRegion.get("maxY"));
-            case ELLIPSOID, SPHERE -> region = new EllipsoidRegion(world,
-                    VectorParser.asBlockVector3((String) serializedRegion.get("center")),
-                    VectorParser.asVector3((String) serializedRegion.get("radius")));
-            case POLYGONAL2D -> {
-                List<BlockVector2> points = ((List<String>) serializedRegion.get("points")).stream().map(VectorParser::asBlockVector2).toList();
-                region = new Polygonal2DRegion(world, points, (int) serializedRegion.get("minY"), (int) serializedRegion.get("maxY"));
-            }
-            case CONVEXPOLYHEDRAL -> {
-                List<BlockVector3> vertices = ((List<String>) serializedRegion.get("vertices")).stream().map(VectorParser::asBlockVector3).toList();
-                ConvexPolyhedralRegion convexRegion = new ConvexPolyhedralRegion(world);
-
-                for (BlockVector3 blockVector3 : vertices) {
-                    convexRegion.addVertex(blockVector3);
+        try {
+            switch (selectionType) {
+                case CUBOID -> region = new CuboidRegion(world,
+                        VectorParser.asBlockVector3((String) serializedRegion.get("min")),
+                        VectorParser.asBlockVector3((String) serializedRegion.get("min")));
+                case CYLINDER -> region = new CylinderRegion(world,
+                        VectorParser.asBlockVector3((String) serializedRegion.get("center")),
+                        VectorParser.asVector2((String) serializedRegion.get("radius")),
+                        (int) serializedRegion.get("minY"),
+                        (int) serializedRegion.get("maxY"));
+                case ELLIPSOID, SPHERE -> region = new EllipsoidRegion(world,
+                        VectorParser.asBlockVector3((String) serializedRegion.get("center")),
+                        VectorParser.asVector3((String) serializedRegion.get("radius")));
+                case POLYGONAL2D -> {
+                    List<BlockVector2> points = ((List<String>) serializedRegion.get("points")).stream().map(VectorParser::asBlockVector2).toList();
+                    region = new Polygonal2DRegion(world, points, (int) serializedRegion.get("minY"), (int) serializedRegion.get("maxY"));
                 }
+                case CONVEXPOLYHEDRAL -> {
+                    List<BlockVector3> vertices = ((List<String>) serializedRegion.get("vertices")).stream().map(VectorParser::asBlockVector3).toList();
+                    ConvexPolyhedralRegion convexRegion = new ConvexPolyhedralRegion(world);
 
-                region = convexRegion;
+                    for (BlockVector3 blockVector3 : vertices) {
+                        convexRegion.addVertex(blockVector3);
+                    }
+
+                    region = convexRegion;
+                }
             }
+        } catch (Exception ex) {
+            CataMines.getInstance().getLogger().severe("Could not deserialize " + selectionType + " region in mine " + name);
+            CataMines.getInstance().getLogger().severe("The mine now uses a NullRegion as replacement");
         }
 
         return new SelectionRegion(name, selectionType, region);
+    }
+
+    @Override
+    public String toString() {
+        return "SelectionRegion{" +
+                "selectionType=" + selectionType +
+                ", region=" + region +
+                "} " + super.toString();
     }
 
     public enum SelectionType {

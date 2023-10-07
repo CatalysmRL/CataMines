@@ -125,6 +125,16 @@ public class CataMineBlock implements ConfigurationSerializable {
         this.drops = drops;
     }
 
+    @Override
+    public String toString() {
+        return "CataMineBlock{" +
+                "baseBlock=" + baseBlock +
+                ", chance=" + chance +
+                ", dropType=" + dropType +
+                ", drops=" + drops +
+                '}';
+    }
+
     public enum DropType {
         CUSTOM, ALL, SINGLE;
     }

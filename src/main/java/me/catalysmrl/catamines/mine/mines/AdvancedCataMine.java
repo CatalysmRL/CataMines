@@ -32,4 +32,13 @@ public class AdvancedCataMine extends AbstractCataMine {
 
         return new AdvancedCataMine(name);
     }
+
+    @Override
+    public String toString() {
+        return "AdvancedCataMine{" +
+                "name='" + name + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", regions=" + regions +
+                '}';
+    }
 }

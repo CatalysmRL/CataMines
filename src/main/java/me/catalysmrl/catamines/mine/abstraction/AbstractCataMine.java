@@ -25,7 +25,7 @@ public abstract class AbstractCataMine implements CataMine {
 
     @Override
     public void reset() {
-        CataMines.getInstance().getMineManager().resetRegion(getRegion());
+        CataMines.getInstance().getMineManager().resetRegion(getRegions().get(0));
     }
 
     @Override
@@ -53,25 +53,4 @@ public abstract class AbstractCataMine implements CataMine {
     public List<CataMineRegion> getRegions() {
         return regions;
     }
-
-    public CataMineRegion getRegion() {
-        /*
-        double rand = regions.stream()
-                .mapToDouble(CataMineRegion::getChance)
-                .sum() * ThreadLocalRandom.current().nextDouble();
-
-        CataMineRegion choice = null;
-        for (CataMineRegion region : regions) {
-            choice = region;
-            rand -= choice.getChance();
-            if (rand < 0) break;
-        }
-
-        return choice;
-        */
-
-        return regions.get(0);
-    }
-
-
 }

@@ -19,14 +19,18 @@ import java.util.*;
 @SerializableAs("CataMineComposition")
 public class CataMineComposition implements Rewardable, ConfigurationSerializable {
 
+    private String name;
+
     private final List<CataMineBlock> blocks;
     private RandomPattern randomPattern;
 
-    public CataMineComposition() {
+    public CataMineComposition(String name) {
+        this.name = name;
         this.blocks = new ArrayList<>();
     }
 
-    public CataMineComposition(final List<CataMineBlock> blocks) {
+    public CataMineComposition(String name, final List<CataMineBlock> blocks) {
+        this.name = name;
         if (blocks == null) {
             this.blocks = new ArrayList<>();
             return;
@@ -60,6 +64,14 @@ public class CataMineComposition implements Rewardable, ConfigurationSerializabl
                 .forEach(b -> randomPattern.add(b.getBaseBlock(), b.getChance()));
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public double getChanceSum() {
         return blocks.stream().mapToDouble(CataMineBlock::getChance).sum();
     }
@@ -77,5 +89,14 @@ public class CataMineComposition implements Rewardable, ConfigurationSerializabl
 
     public static CataMineComposition deserialize(Map<String, Object> serializedComp) {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "CataMineComposition{" +
+                "name='" + name + '\'' +
+                ", blocks=" + blocks +
+                ", randomPattern=" + randomPattern +
+                '}';
     }
 }

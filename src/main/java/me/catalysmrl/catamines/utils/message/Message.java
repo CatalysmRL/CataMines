@@ -55,6 +55,8 @@ public enum Message {
     SET_INVALID_BLOCKSTATE("catamines.command.mine.set.invalid-blockstate"),
     SET_INVALID_NUMBER("catamines.command.mine.set.invalid-number"),
     SET_INVALID_CHANCE("catamines.command.mine.set.invalid-chance"),
+    SET_INVALID_REGION("catamines.commmand.mine.set.invalid-region"),
+    SET_INVALID_COMPOSITION("catamines.command.mine.set.invalid-composition"),
     SET_SUCCESS("catamines.command.mine.set.success"),
 
     // Rename command

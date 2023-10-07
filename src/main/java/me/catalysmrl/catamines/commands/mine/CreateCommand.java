@@ -5,6 +5,7 @@ import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCataCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
@@ -44,6 +45,7 @@ public class CreateCommand extends AbstractCataCommand {
 
         if (regionSelector.isDefined()) {
             CataMineRegion region = new SelectionRegion("default", regionSelector);
+            region.getCompositions().add(new CataMineComposition("default"));
             cataMine.getRegions().add(region);
         }
 

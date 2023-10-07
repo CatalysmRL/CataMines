@@ -33,6 +33,8 @@ public class CommandManager implements TabExecutor {
                 .put("help", new HelpCommand())
                 .put("list", new ListCommand())
                 .put("reload", new ReloadCommand())
+                .put("info", new InfoCommand())
+                .put("debug", new DebugCommand())
                 .put("create", new CreateCommand())
                 .put("delete", new DeleteCommand())
                 .put("reset", new ResetCommand())

@@ -29,4 +29,12 @@ public abstract class AbstractCataMineRegion implements CataMineRegion {
     public List<CataMineComposition> getCompositions() {
         return compositions;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractCataMineRegion{" +
+                "name='" + name + '\'' +
+                ", compositions=" + compositions +
+                '}';
+    }
 }

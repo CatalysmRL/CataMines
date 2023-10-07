@@ -4,6 +4,7 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A regenerating mine. The user of this interface has precise
@@ -53,4 +54,8 @@ public interface CataMine extends ConfigurationSerializable {
     void setDisplayName(String displayName);
 
     List<CataMineRegion> getRegions();
+
+    default Optional<CataMineRegion> getRegion(String name) {
+        return getRegions().stream().filter(region -> region.getName().equals(name)).findFirst();
+    }
 }
