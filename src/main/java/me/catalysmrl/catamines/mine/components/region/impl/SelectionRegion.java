@@ -166,7 +166,9 @@ public class SelectionRegion extends AbstractCataMineRegion {
         return "SelectionRegion{" +
                 "selectionType=" + selectionType +
                 ", region=" + region +
-                "} " + super.toString();
+                ", name='" + name + '\'' +
+                ", compositions=" + compositions +
+                '}';
     }
 
     public enum SelectionType {

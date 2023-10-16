@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class AbstractCataMineRegion implements CataMineRegion {
 
     protected String name;
-    private final List<CataMineComposition> compositions;
+    protected final List<CataMineComposition> compositions;
 
     public AbstractCataMineRegion(String name) {
         this.name = name;

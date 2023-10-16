@@ -54,4 +54,15 @@ public class SchematicRegion extends AbstractCataMineRegion {
     public static SelectionRegion deserialize(Map<String, Object> serializedRegion) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "SchematicRegion{" +
+                "schemName='" + schemName + '\'' +
+                ", location=" + location +
+                ", clipboard=" + clipboard +
+                ", name='" + name + '\'' +
+                ", compositions=" + compositions +
+                '}';
+    }
 }

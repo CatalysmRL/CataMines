@@ -64,7 +64,11 @@ public final class CataMines extends JavaPlugin {
     @Override
     public void onDisable() {
         INSTANCE = null;
+        commandManager = null;
+
+        // Properly disable MineManager
         mineManager.shutDown();
+        mineManager = null;
     }
 
     private void setupMetrics() {
