@@ -24,7 +24,7 @@ public class VectorParser {
     public static Vector3 asVector3(String input) {
         String[] parts = input.split(",");
 
-        if (parts.length != 3) throw new IllegalArgumentException("Illegal argument size for Vector2");
+        if (parts.length != 3) throw new IllegalArgumentException("Illegal argument size for Vector3");
 
         double x = Double.parseDouble(parts[0].trim());
         double y = Double.parseDouble(parts[1].trim());
