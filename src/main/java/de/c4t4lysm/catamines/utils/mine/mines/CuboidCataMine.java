@@ -279,6 +279,7 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
         }
 
         blockCount--;
+        countdownForAutoReset = 6000;
 
         if (warnHotbar && (resetMode == CataMineResetMode.PERCENTAGE || resetMode == CataMineResetMode.TIME_PERCENTAGE)) {
             broadcastHotbar();

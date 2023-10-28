@@ -56,8 +56,7 @@ public abstract class AbstractCataMine implements Cloneable {
     protected boolean firstCycle;
     protected int countdown;
     // Block count
-    Random random = new Random();
-    protected int countdownForAutoReset = random.nextInt(200) + 500;
+    protected int countdownForAutoReset = 6000;
 
     public AbstractCataMine(String name, Region region) {
         this.name = name;
@@ -98,7 +97,8 @@ public abstract class AbstractCataMine implements Cloneable {
                 --countdownForAutoReset;
                 if (countdownForAutoReset <= 0) {
                     forceReset();
-                    countdownForAutoReset = random.nextInt(200) + 500;
+                    countdownForAutoReset = 6000;
+                    break;
                 }
                 if (getRemainingBlocksPer() <= resetPercentage) {
                     reset();
