@@ -1,6 +1,6 @@
 package me.catalysmrl.catamines.mine.reward;
 
-import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 

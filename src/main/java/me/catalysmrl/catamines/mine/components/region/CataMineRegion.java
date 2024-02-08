@@ -1,13 +1,12 @@
 package me.catalysmrl.catamines.mine.components.region;
 
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
+import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
+import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
 import me.catalysmrl.catamines.mine.reward.Rewardable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface CataMineRegion extends Rewardable, ConfigurationSerializable {
+public interface CataMineRegion extends Rewardable, Identifiable, ConfigurationSerializable {
 
     String getName();
 
@@ -17,11 +16,7 @@ public interface CataMineRegion extends Rewardable, ConfigurationSerializable {
 
     RegionType getType();
 
-    default Optional<CataMineComposition> getComposition(String name) {
-        return getCompositions().stream().filter(composition -> composition.getName().equals(name)).findFirst();
-    }
-
-    List<CataMineComposition> getCompositions();
+    ChoiceManager<CataMineComposition> getCompositionManager();
 
     long getVolume();
 

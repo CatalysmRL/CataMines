@@ -1,18 +1,16 @@
 package me.catalysmrl.catamines.mine.components.region;
 
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
-
-import java.util.ArrayList;
-import java.util.List;
+import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
 
 public abstract class AbstractCataMineRegion implements CataMineRegion {
 
     protected String name;
-    protected final List<CataMineComposition> compositions;
+    protected ChoiceManager<CataMineComposition> compositionManager;
 
     public AbstractCataMineRegion(String name) {
         this.name = name;
-        compositions = new ArrayList<>();
+        this.compositionManager = new ChoiceManager<>();
     }
 
     @Override
@@ -26,15 +24,15 @@ public abstract class AbstractCataMineRegion implements CataMineRegion {
     }
 
     @Override
-    public List<CataMineComposition> getCompositions() {
-        return compositions;
+    public ChoiceManager<CataMineComposition> getCompositionManager() {
+        return compositionManager;
     }
 
     @Override
     public String toString() {
         return "AbstractCataMineRegion{" +
                 "name='" + name + '\'' +
-                ", compositions=" + compositions +
+                ", compositions=" + compositionManager +
                 '}';
     }
 }

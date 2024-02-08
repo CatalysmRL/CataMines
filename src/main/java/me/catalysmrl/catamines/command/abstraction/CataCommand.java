@@ -2,7 +2,7 @@ package me.catalysmrl.catamines.command.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.CommandManager;
-import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

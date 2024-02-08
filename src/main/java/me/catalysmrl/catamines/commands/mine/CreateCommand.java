@@ -4,7 +4,7 @@ import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCataCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
-import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
@@ -45,8 +45,8 @@ public class CreateCommand extends AbstractCataCommand {
 
         if (regionSelector.isDefined()) {
             CataMineRegion region = new SelectionRegion("default", regionSelector);
-            region.getCompositions().add(new CataMineComposition("default"));
-            cataMine.getRegions().add(region);
+            region.getCompositionManager().add(new CataMineComposition("default"));
+            cataMine.getRegionManager().add(region);
         }
 
         plugin.getMineManager().registerMine(cataMine);

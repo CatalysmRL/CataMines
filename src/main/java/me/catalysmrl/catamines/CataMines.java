@@ -83,9 +83,15 @@ public final class CataMines extends JavaPlugin {
         commandManager = new CommandManager(this);
 
         PluginCommand command = getCommand("catamines");
-        if (command != null) {
-            command.setExecutor(commandManager);
+        if (command == null) {
+            getLogger().severe("***************************************");
+            getLogger().severe("Could not register commands. All plugin");
+            getLogger().severe("functions may still work apart from commands");
+            getLogger().severe("***************************************");
+            return;
         }
+
+        command.setExecutor(commandManager);
     }
 
     private void registerListeners() {

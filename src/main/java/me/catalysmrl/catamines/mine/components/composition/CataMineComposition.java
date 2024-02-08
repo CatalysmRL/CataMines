@@ -1,6 +1,7 @@
 package me.catalysmrl.catamines.mine.components.composition;
 
 import com.sk89q.worldedit.function.pattern.RandomPattern;
+import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
 import me.catalysmrl.catamines.mine.reward.Rewardable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -17,7 +18,7 @@ import java.util.*;
  */
 
 @SerializableAs("CataMineComposition")
-public class CataMineComposition implements Rewardable, ConfigurationSerializable {
+public class CataMineComposition implements Rewardable, Identifiable, ConfigurationSerializable {
 
     private String name;
 

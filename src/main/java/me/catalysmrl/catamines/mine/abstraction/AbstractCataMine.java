@@ -1,21 +1,21 @@
 package me.catalysmrl.catamines.mine.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
+import me.catalysmrl.catamines.mine.components.manager.controller.CataMineController;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractCataMine implements CataMine {
 
     protected String name;
     protected String displayName;
-    protected List<CataMineRegion> regions;
+    protected CataMineController controller;
+    protected ChoiceManager<CataMineRegion> regionManager;
 
     public AbstractCataMine(String name) {
         this.name = name;
         this.displayName = "default";
-        regions = new ArrayList<>();
     }
 
     @Override
@@ -25,7 +25,7 @@ public abstract class AbstractCataMine implements CataMine {
 
     @Override
     public void reset() {
-        CataMines.getInstance().getMineManager().resetRegion(getRegions().get(0));
+        CataMines.getInstance().getMineManager().resetRegion(regionManager.getUpcomingChoice());
     }
 
     @Override
@@ -50,7 +50,7 @@ public abstract class AbstractCataMine implements CataMine {
     }
 
     @Override
-    public List<CataMineRegion> getRegions() {
-        return regions;
+    public ChoiceManager<CataMineRegion> getRegionManager() {
+        return regionManager;
     }
 }

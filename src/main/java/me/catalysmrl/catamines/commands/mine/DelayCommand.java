@@ -4,37 +4,29 @@ import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.helper.Predicates;
 import org.bukkit.command.CommandSender;
 
-import java.io.IOException;
 import java.util.List;
 
-public class DeleteCommand extends AbstractCataMineCommand {
-    public DeleteCommand() {
-        super("delete", "catamines.command.delete", i -> i == 1, false);
+public class DelayCommand extends AbstractCataMineCommand {
+
+    public DelayCommand() {
+        super("setdelay", "catamines.command.setdelay", Predicates.inRange(1, 2), false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
 
-        try {
-            plugin.getMineManager().deleteMine(mine);
-        } catch (IOException e) {
-            Message.DELETE_EXCEPTION.send(sender);
-            return;
-        }
-
-        Message.DELETE_SUCCESS.send(sender, mine.getName());
     }
 
     @Override
     public String getDescription() {
-        return Message.DELETE_DESCRIPTION.getMessage();
+        return null;
     }
 
     @Override
     public String getUsage() {
-        return "/cm delete <mine>";
+        return "/cm setdelay <mine> <value> [format]";
     }
 }

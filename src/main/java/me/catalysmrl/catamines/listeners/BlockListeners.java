@@ -17,11 +17,11 @@ public class BlockListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-
+        mineManager.callBlockBreak(event);
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-
+        mineManager.callBlockPlace(event);
     }
 }

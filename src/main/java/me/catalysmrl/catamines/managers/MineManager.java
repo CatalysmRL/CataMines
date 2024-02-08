@@ -4,7 +4,7 @@ import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.managers.blockmanagers.BlockApplicator;
 import me.catalysmrl.catamines.managers.blockmanagers.BukkitBlockApplicationManager;
 import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationManager;
-import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 public class MineManager {
 
-    private Path minesPath;
+    private final Path minesPath;
 
     private final CataMines plugin;
     private BukkitTask minesTask;

@@ -45,7 +45,7 @@ public class SelectionRegion extends AbstractCataMineRegion {
 
     @Override
     public void fill() {
-        WorldEditUtils.pasteRegion(region, getCompositions().get(0).getRandomPattern());
+        WorldEditUtils.pasteRegion(region, getCompositionManager().getCurrentChoice().getRandomPattern());
     }
 
     public void defineRegion(RegionSelector selector) throws IncompleteRegionException {
@@ -167,7 +167,7 @@ public class SelectionRegion extends AbstractCataMineRegion {
                 "selectionType=" + selectionType +
                 ", region=" + region +
                 ", name='" + name + '\'' +
-                ", compositions=" + compositions +
+                ", compositions=" + compositionManager +
                 '}';
     }
 

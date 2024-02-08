@@ -19,7 +19,7 @@ public class AdvancedCataMine extends AbstractCataMine {
     public Map<String, Object> serialize() {
         Map<String, Object> ser = new LinkedHashMap<>();
         ser.put("name", name);
-        ser.put("regions", regions);
+        ser.put("regions", regionManager.getChoices());
 
         return ser;
     }
@@ -38,7 +38,7 @@ public class AdvancedCataMine extends AbstractCataMine {
         return "AdvancedCataMine{" +
                 "name='" + name + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", regions=" + regions +
+                ", regions=" + regionManager +
                 '}';
     }
 }

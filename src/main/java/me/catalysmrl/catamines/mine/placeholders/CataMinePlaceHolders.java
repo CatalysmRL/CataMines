@@ -1,7 +1,7 @@
 package me.catalysmrl.catamines.mine.placeholders;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.mine.abstraction.CataMine;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
