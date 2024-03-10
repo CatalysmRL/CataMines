@@ -2,15 +2,15 @@ package me.catalysmrl.catamines.commands.mine;
 
 import com.sk89q.worldedit.world.block.BaseBlock;
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
 import me.catalysmrl.catamines.mine.components.composition.CataMineBlock;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.worldedit.BaseBlockParser;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -18,11 +18,13 @@ import java.util.Optional;
 
 public class SetCommand extends AbstractCataMineCommand {
     public SetCommand() {
-        super("set", "catamines.command.set", Predicates.inRange(2, 3), false);
+        super("set", "catamines.command.set", Predicates.inRange(2, 5), false);
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
+
+        Bukkit.broadcastMessage(args.toString());
 
         BaseBlock baseBlock;
         try {
@@ -57,7 +59,7 @@ public class SetCommand extends AbstractCataMineCommand {
             compositionName = args.get(3);
         }
 
-        Optional<CataMineRegion> regionOptional = mine.getRegion(regionName);
+        Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
         if (regionOptional.isEmpty()) {
             Message.SET_INVALID_REGION.send(sender);
             return;
@@ -65,7 +67,7 @@ public class SetCommand extends AbstractCataMineCommand {
 
         CataMineRegion region = regionOptional.get();
 
-        Optional<CataMineComposition> compositionOptional = region.getComposition(compositionName);
+        Optional<CataMineComposition> compositionOptional = region.getCompositionManager().get(compositionName);
         if (compositionOptional.isEmpty()) {
             Message.SET_INVALID_COMPOSITION.send(sender);
             return;

@@ -18,14 +18,14 @@ public abstract class ParentMineCommand extends AbstractCataCommand {
     /**
      * All sub commands of this command
      */
-    private final List<CataCommand> children;
+    private final List<AbstractCataMineCommand> children;
 
-    public ParentMineCommand(String name, List<CataCommand> children) {
+    public ParentMineCommand(String name, List<AbstractCataMineCommand> children) {
         super(name, null, integer -> true, false);
         this.children = children;
     }
 
-    public List<CataCommand> getChildren() {
+    public List<AbstractCataMineCommand> getChildren() {
         return this.children;
     }
 
@@ -37,7 +37,7 @@ public abstract class ParentMineCommand extends AbstractCataCommand {
             return;
         }
 
-        CataCommand sub = getChildren().stream()
+        AbstractCataMineCommand sub = getChildren().stream()
                 .filter(s -> s.getName().equalsIgnoreCase(args.get(1)) || getAliases().contains(s.getName().toLowerCase(Locale.ROOT)))
                 .findFirst()
                 .orElse(null);
@@ -76,7 +76,7 @@ public abstract class ParentMineCommand extends AbstractCataCommand {
 
     @Override
     public List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args) {
-        if (args.size() == 0) {
+        if (args.isEmpty()) {
             return Collections.emptyList();
         }
 

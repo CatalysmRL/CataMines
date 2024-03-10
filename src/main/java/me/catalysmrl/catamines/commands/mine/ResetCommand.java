@@ -1,9 +1,8 @@
 package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
@@ -16,7 +15,7 @@ public class ResetCommand extends AbstractCataMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
 
         if (!sender.hasPermission("catamines.command.reset") || !sender.hasPermission("catamines.command.reset." + mine.getName())) {
             Message.NO_PERMISSION.send(sender);

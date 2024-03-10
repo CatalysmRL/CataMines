@@ -2,9 +2,9 @@ package me.catalysmrl.catamines.commands.mine;
 
 import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.AbstractCataCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
-import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
@@ -24,7 +24,7 @@ public class CreateCommand extends AbstractCataCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException {
         String name = args.get(0);
 
         if ("*".equals(name)) {

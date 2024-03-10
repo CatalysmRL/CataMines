@@ -3,7 +3,6 @@ package me.catalysmrl.catamines.commands.generic;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCataCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
-import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
@@ -16,7 +15,7 @@ public class HelpCommand extends AbstractCataCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException {
 
         if (!sender.hasPermission("catamines.help")) {
             String versionString = "&7Running version &a" + plugin.getDescription().getVersion();

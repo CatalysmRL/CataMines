@@ -16,6 +16,7 @@ public abstract class AbstractCataMine implements CataMine {
     public AbstractCataMine(String name) {
         this.name = name;
         this.displayName = "default";
+        regionManager = new ChoiceManager<>();
     }
 
     @Override
@@ -25,7 +26,7 @@ public abstract class AbstractCataMine implements CataMine {
 
     @Override
     public void reset() {
-        CataMines.getInstance().getMineManager().resetRegion(regionManager.getUpcomingChoice());
+        regionManager.getUpcoming().ifPresent(region -> CataMines.getInstance().getMineManager().resetRegion(region));
     }
 
     @Override

@@ -6,6 +6,7 @@ import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
 public abstract class AbstractCataMineRegion implements CataMineRegion {
 
     protected String name;
+    protected double chance;
     protected ChoiceManager<CataMineComposition> compositionManager;
 
     public AbstractCataMineRegion(String name) {
@@ -21,6 +22,15 @@ public abstract class AbstractCataMineRegion implements CataMineRegion {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public double getChance() {
+        return chance;
+    }
+
+    public void setChance(double chance) {
+        this.chance = chance;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package me.catalysmrl.catamines.command.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.command.utils.ArgumentException;
 import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.command.utils.ArgumentException;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
@@ -63,5 +63,7 @@ public abstract class AbstractCataMineCommand extends AbstractCataCommand {
 
         execute(plugin, sender, args.subList(1, args.size()), mineOptional.get());
     }
+
+    public abstract void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine);
 
 }

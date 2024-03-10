@@ -1,8 +1,6 @@
 package me.catalysmrl.catamines.command.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.command.CommandManager;
-import me.catalysmrl.catamines.api.mine.CataMine;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -62,32 +60,18 @@ public interface CataCommand {
     boolean onlyPlayers();
 
     /**
-     * {@link #execute(CataMines, CommandSender, List, CataMine)}
-     */
-    default void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException {
-        execute(plugin, sender, args, null);
-    }
-
-    /**
-     * Method called on execution of this command if requirements are met
-     * checked in the underlying command manager. Additionally injects
-     * a CataMine object or null if required by the command.
-     *
+     * Executing the command
      * @param plugin the plugin instance
      * @param sender the command sender
-     * @param args   the arguments provided
-     * @param mine   the mine
-     * @throws CommandException when unexpected arguments are passed or something goes wrong
-     * @see CommandManager
-     * @see AbstractCataMineCommand
-     * @see CataMine
+     * @param args   the command arguments
+     * @throws CommandException if there is an exception when executing the command
      */
-    void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) throws CommandException;
+    void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException;
 
     /**
      * Returns a list of command completions applicable for this command
      *
-     * @param plugin The plugin instance
+     * @param plugin the plugin instance
      * @param sender the command sender
      * @param args   the command arguments
      * @return a list of command completions

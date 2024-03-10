@@ -3,6 +3,7 @@ package me.catalysmrl.catamines.mine.components.composition;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
 import me.catalysmrl.catamines.mine.components.composition.drop.CataMineItem;
+import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @SerializableAs("CataMineBlock")
-public class CataMineBlock implements ConfigurationSerializable {
+public class CataMineBlock implements Choice, ConfigurationSerializable {
 
     private BaseBlock baseBlock;
     private double chance;
@@ -98,6 +99,7 @@ public class CataMineBlock implements ConfigurationSerializable {
         this.baseBlock = baseBlock;
     }
 
+    @Override
     public double getChance() {
         return chance;
     }

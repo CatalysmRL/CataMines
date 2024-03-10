@@ -62,7 +62,7 @@ public class SchematicRegion extends AbstractCataMineRegion {
                 ", location=" + location +
                 ", clipboard=" + clipboard +
                 ", name='" + name + '\'' +
-                ", compositions=" + compositions +
+                ", compositions=" + compositionManager +
                 '}';
     }
 }

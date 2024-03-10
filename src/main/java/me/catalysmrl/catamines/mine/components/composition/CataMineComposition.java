@@ -1,6 +1,7 @@
 package me.catalysmrl.catamines.mine.components.composition;
 
 import com.sk89q.worldedit.function.pattern.RandomPattern;
+import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
 import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
 import me.catalysmrl.catamines.mine.reward.Rewardable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -18,9 +19,10 @@ import java.util.*;
  */
 
 @SerializableAs("CataMineComposition")
-public class CataMineComposition implements Rewardable, Identifiable, ConfigurationSerializable {
+public class CataMineComposition implements Rewardable, Identifiable, Choice, ConfigurationSerializable {
 
     private String name;
+    private double chance;
 
     private final List<CataMineBlock> blocks;
     private RandomPattern randomPattern;
@@ -71,6 +73,15 @@ public class CataMineComposition implements Rewardable, Identifiable, Configurat
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public double getChance() {
+        return chance;
+    }
+
+    public void setChance(double chance) {
+        this.chance = chance;
     }
 
     public double getChanceSum() {

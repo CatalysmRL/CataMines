@@ -45,7 +45,9 @@ public class SelectionRegion extends AbstractCataMineRegion {
 
     @Override
     public void fill() {
-        WorldEditUtils.pasteRegion(region, getCompositionManager().getCurrentChoice().getRandomPattern());
+        Bukkit.broadcastMessage("Filling SelectionRegion");
+        getCompositionManager().getUpcoming().ifPresent(composition -> WorldEditUtils.pasteRegion(region, composition.getRandomPattern()));
+        getCompositionManager().next();
     }
 
     public void defineRegion(RegionSelector selector) throws IncompleteRegionException {

@@ -1,6 +1,7 @@
 package me.catalysmrl.catamines.managers.blockmanagers;
 
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayDeque;
@@ -30,6 +31,7 @@ public abstract class BlockApplicator {
 
         while (!resetQueue.isEmpty()) {
             CataMineRegion region = resetQueue.pop();
+            Bukkit.broadcastMessage("Handling " + region.getName());
             blockUpdates += region.getVolume();
             region.fill();
 

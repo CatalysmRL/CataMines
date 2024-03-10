@@ -29,7 +29,6 @@ public class AdvancedCataMine extends AbstractCataMine {
 
         String name = (String) ser.get("name");
 
-
         return new AdvancedCataMine(name);
     }
 
