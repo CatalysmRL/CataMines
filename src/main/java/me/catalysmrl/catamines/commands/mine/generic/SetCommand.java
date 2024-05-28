@@ -1,5 +1,6 @@
 package me.catalysmrl.catamines.commands.mine.generic;
 
+import com.sk89q.worldedit.extension.input.InputParseException;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -28,8 +29,8 @@ public class SetCommand extends AbstractMineCommand {
 
         BaseBlock baseBlock;
         try {
-            baseBlock = BaseBlockParser.asBaseBlock(args.get(0));
-        } catch (Exception e) {
+            baseBlock = BaseBlockParser.parseInput(args.get(0));
+        } catch (InputParseException e) {
             Message.SET_INVALID_BLOCKSTATE.send(sender);
             return;
         }

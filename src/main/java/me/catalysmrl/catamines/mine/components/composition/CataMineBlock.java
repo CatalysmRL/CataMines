@@ -46,8 +46,10 @@ public class CataMineBlock implements Choice, SectionSerializable {
         section.set("chance", chance);
         section.set("drop_type", dropType);
 
-        for (CataMineItem item : items) {
-
+        for (int i = 0; i < items.size(); i++) {
+            ConfigurationSection itemSection = section.createSection("item_" + i);
+            CataMineItem item = items.get(i);
+            item.serialize(itemSection);
         }
     }
 
@@ -56,11 +58,11 @@ public class CataMineBlock implements Choice, SectionSerializable {
         String blockString = section.getString("block");
         if (blockString == null) throw new DeserializationException("Missing 'block' path");
 
-        BaseBlock baseBlock = null;
+        BaseBlock baseBlock;
         try {
             baseBlock = BaseBlockParser.parseInput(blockString);
         } catch (InputParseException exception) {
-            throw new DeserializationException("Could not deserialize " + blockString);
+            throw new DeserializationException("Could not deserialize " + blockString, exception);
         }
 
         double chance = section.getDouble("chance", 0d);
@@ -68,13 +70,16 @@ public class CataMineBlock implements Choice, SectionSerializable {
         DropType dropType = DropType.valueOf(section.getString("drop_type", "CUSTOM"));
 
         ConfigurationSection itemsSection = section.getConfigurationSection("loot_table");
+        List<CataMineItem> itemList = new ArrayList<>();
         if (itemsSection != null) {
             for (String key : itemsSection.getKeys(false)) {
-
+                ConfigurationSection itemSection = itemsSection.getConfigurationSection(key);
+                if (itemSection == null) continue;
+                itemList.add(CataMineItem.deserialize(itemSection));
             }
         }
 
-        return new CataMineBlock(baseBlock, chance, dropType);
+        return new CataMineBlock(baseBlock, chance, dropType, itemList);
     }
 
     public BaseBlock getBaseBlock() {

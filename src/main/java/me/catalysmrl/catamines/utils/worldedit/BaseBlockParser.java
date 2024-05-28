@@ -2,6 +2,7 @@ package me.catalysmrl.catamines.utils.worldedit;
 
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.extension.input.InputParseException;
+import com.sk89q.worldedit.extension.input.ParserContext;
 import com.sk89q.worldedit.util.nbt.TagStringIO;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
@@ -28,8 +29,7 @@ public final class BaseBlockParser {
     }
 
     public static BaseBlock parseInput(String input) throws InputParseException {
-        WorldEdit.getInstance().getBlockFactory().parseFromInput(input, null);
-        return null;
+        return WorldEdit.getInstance().getBlockFactory().parseFromInput(input, new ParserContext());
     }
 
 }

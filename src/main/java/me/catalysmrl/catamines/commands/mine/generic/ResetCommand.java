@@ -17,7 +17,7 @@ public class ResetCommand extends AbstractMineCommand {
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
 
-        if (!sender.hasPermission("catamines.command.reset") || !sender.hasPermission("catamines.command.reset." + mine.getName())) {
+        if (!sender.hasPermission("catamines.reset") || !sender.hasPermission("catamines.reset." + mine.getName())) {
             Message.NO_PERMISSION.send(sender);
             return;
         }
