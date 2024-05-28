@@ -1,11 +1,8 @@
 package me.catalysmrl.catamines.mine.mines;
 
 import me.catalysmrl.catamines.mine.abstraction.AbstractCataMine;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @SerializableAs("AdvancedCataMine")
 public class AdvancedCataMine extends AbstractCataMine {
@@ -14,21 +11,13 @@ public class AdvancedCataMine extends AbstractCataMine {
         super(name);
     }
 
-    @NotNull
     @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> ser = new LinkedHashMap<>();
-        ser.put("name", name);
-        ser.put("regions", regionManager.getChoices());
+    public void serialize(ConfigurationSection section) {
 
-        return ser;
     }
 
-
-    public static AdvancedCataMine deserialize(Map<String, Object> ser) {
-
-        String name = (String) ser.get("name");
-
+    public static AdvancedCataMine deserialize(ConfigurationSection section) {
+        String name = section.getString("name");
         return new AdvancedCataMine(name);
     }
 
@@ -40,4 +29,5 @@ public class AdvancedCataMine extends AbstractCataMine {
                 ", regions=" + regionManager +
                 '}';
     }
+
 }

@@ -18,7 +18,7 @@ public enum Message {
     NO_PERMISSION("catamines.commandsystem.no-permission"),
     UNKNOWN_COMMAND("catamines.commandsystem.unknown-command"),
     ONLY_PLAYERS("catamines.commandsystem.only-players"),
-    MINE_NOT_EXIST("catamines.commandsystem.mine-not-exist"),
+    MINE_NOT_EXISTS("catamines.commandsystem.mine-not-exist"),
     QUERY_ALL("catamines.commandsystem.query-all"),
 
     /*
@@ -36,7 +36,7 @@ public enum Message {
      */
 
     // Create command
-    MINE_EXIST("catamines.command.mine.create.mine-exists"),
+    MINE_EXISTS("catamines.command.mine.create.mine-exists"),
     INCOMPLETE_REGION("catamines.command.mine.create.incomplete-region"),
     MINE_INVALID_NAME("catamines.command.mine.create.invalid-name"),
     CREATE_SUCCESS("catamines.command.mine.create.success"),
@@ -65,8 +65,20 @@ public enum Message {
 
     // Displayname command
     DISPLAYNAME_SUCCESS("catamines.command.displayname.success"),
-    DISPLAYNAME_DESCRIPTION("catamines.command.displayname.description");
+    DISPLAYNAME_DESCRIPTION("catamines.command.displayname.description"),
 
+    /*
+     * Mine region commands
+     */
+
+    // Create region command
+    REGION_EXISTS("catamines.command.regions.create.region-exists"),
+    REGION_CREATE_SUCCESS("catamines.command.region.create.success"),
+    REGION_CREATE_DESCRIPTION("catamines.command.region.create.description"),
+
+    REGION_NOT_EXISTS("catamines.command.region.region-not-exists"),
+    REGION_DELETE_SUCCESS("catamines.command.region.delete.success"),
+    REGION_DELETE_DESCRIPTION("catamines.command.region.create.description");
 
     private final String key;
 

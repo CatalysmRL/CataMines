@@ -4,10 +4,8 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.math.BlockVector3;
 import me.catalysmrl.catamines.mine.components.region.AbstractCataMineRegion;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 @SerializableAs("SchematicRegion")
 public class SchematicRegion extends AbstractCataMineRegion {
@@ -39,19 +37,11 @@ public class SchematicRegion extends AbstractCataMineRegion {
     }
 
     @Override
-    public @NotNull Map<String, Object> serialize() {
-        return null;
+    public void serialize(ConfigurationSection section) {
+
     }
 
-    /**
-     * Used for deserialization of a ConfigurationSerializable class.
-     * Returns an instance of a SchematicRegion constructed from a map
-     * provided by {@link org.bukkit.configuration.serialization.ConfigurationSerialization}.
-     *
-     * @param serializedRegion the serialized object as a Map
-     * @return a new SchematicRegion instance constructed from the map
-     */
-    public static SelectionRegion deserialize(Map<String, Object> serializedRegion) {
+    public static SelectionRegion deserialize(ConfigurationSection section) {
         return null;
     }
 
@@ -61,8 +51,6 @@ public class SchematicRegion extends AbstractCataMineRegion {
                 "schemName='" + schemName + '\'' +
                 ", location=" + location +
                 ", clipboard=" + clipboard +
-                ", name='" + name + '\'' +
-                ", compositions=" + compositionManager +
-                '}';
+                "} " + super.toString();
     }
 }

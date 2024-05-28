@@ -27,6 +27,7 @@ public abstract class AbstractCataMine implements CataMine {
     @Override
     public void reset() {
         regionManager.getUpcoming().ifPresent(region -> CataMines.getInstance().getMineManager().resetRegion(region));
+        regionManager.next();
     }
 
     @Override

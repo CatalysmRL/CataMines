@@ -6,7 +6,7 @@ public abstract class CommandException extends Exception {
 
     protected abstract void handle(CommandSender sender);
 
-    public void handle(CommandSender sender, CataCommand command) {
+    public void handle(CommandSender sender, Command command) {
         handle(sender);
     }
 }

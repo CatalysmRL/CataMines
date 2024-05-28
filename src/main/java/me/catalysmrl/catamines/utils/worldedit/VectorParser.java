@@ -5,12 +5,15 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.math.Vector2;
 import com.sk89q.worldedit.math.Vector3;
 
+import java.util.Objects;
+
 public class VectorParser {
 
     private VectorParser() {
     }
 
     public static Vector2 asVector2(String input) {
+        Objects.requireNonNull(input);
         String[] parts = input.split(",");
 
         if (parts.length != 2) throw new IllegalArgumentException("Illegal argument size for Vector2");
@@ -22,6 +25,7 @@ public class VectorParser {
     }
 
     public static Vector3 asVector3(String input) {
+        Objects.requireNonNull(input);
         String[] parts = input.split(",");
 
         if (parts.length != 3) throw new IllegalArgumentException("Illegal argument size for Vector3");

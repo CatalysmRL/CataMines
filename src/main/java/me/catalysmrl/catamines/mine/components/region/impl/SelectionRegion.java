@@ -6,17 +6,15 @@ import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.*;
 import com.sk89q.worldedit.world.World;
-import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.mine.components.region.AbstractCataMineRegion;
 import me.catalysmrl.catamines.utils.worldedit.VectorParser;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @SerializableAs("SelectionRegion")
 public class SelectionRegion extends AbstractCataMineRegion {
@@ -52,7 +50,7 @@ public class SelectionRegion extends AbstractCataMineRegion {
 
     public void defineRegion(RegionSelector selector) throws IncompleteRegionException {
         this.selectionType = SelectionType.getType(selector.getTypeName());
-        this.region = selector.getRegion();
+        this.region = selector.getRegion().clone();
     }
 
     @Override
@@ -66,87 +64,87 @@ public class SelectionRegion extends AbstractCataMineRegion {
     }
 
     @Override
-    public @NotNull Map<String, Object> serialize() {
-        Map<String, Object> serializedRegion = new LinkedHashMap<>();
-        serializedRegion.put("name", name);
-        serializedRegion.put("selection_type", selectionType.toString());
-        serializedRegion.put("world", region.getWorld() == null ? "null" : region.getWorld().getName());
-        serializedRegion.put("region", serializeRegion());
-        return serializedRegion;
+    public void serialize(ConfigurationSection section) {
+        section.set("name", name);
+        section.set("selection_type", selectionType.toString());
+        section.set("world", region.getWorld() == null ? "null" : region.getWorld().getName());
+        serializeRegion(section.createSection("region"));
     }
 
-    public Map<String, Object> serializeRegion() {
-        Map<String, Object> mappedRegion = new LinkedHashMap<>();
+    public void serializeRegion(ConfigurationSection section) {
         switch (selectionType) {
             case CUBOID -> {
-                mappedRegion.put("min", region.getMinimumPoint().toParserString());
-                mappedRegion.put("max", region.getMaximumPoint().toParserString());
+                section.set("min", region.getMinimumPoint().toParserString());
+                section.set("max", region.getMaximumPoint().toParserString());
             }
             case CYLINDER -> {
                 CylinderRegion cylinderRegion = (CylinderRegion) region;
-                mappedRegion.put("center", cylinderRegion.getCenter().toParserString());
-                mappedRegion.put("radius", cylinderRegion.getRadius().toParserString());
-                mappedRegion.put("minY", cylinderRegion.getMinimumY());
-                mappedRegion.put("maxY", cylinderRegion.getMaximumY());
+                section.set("center", cylinderRegion.getCenter().toParserString());
+                section.set("radius", cylinderRegion.getRadius().toParserString());
+                section.set("minY", cylinderRegion.getMinimumY());
+                section.set("maxY", cylinderRegion.getMaximumY());
             }
             case ELLIPSOID, SPHERE -> {
                 EllipsoidRegion ellipsoidRegion = (EllipsoidRegion) region;
-                mappedRegion.put("center", ellipsoidRegion.getCenter().toParserString());
-                mappedRegion.put("radius", ellipsoidRegion.getRadius().toParserString());
+                section.set("center", ellipsoidRegion.getCenter().toParserString());
+                section.set("radius", ellipsoidRegion.getRadius().toParserString());
             }
             case POLYGONAL2D -> {
                 Polygonal2DRegion polygonal2DRegion = (Polygonal2DRegion) region;
                 List<String> points = polygonal2DRegion.getPoints().stream().map(BlockVector2::toParserString).toList();
-                mappedRegion.put("points", points);
+                section.set("points", points);
 
-                mappedRegion.put("minY", polygonal2DRegion.getMinimumY());
-                mappedRegion.put("maxY", polygonal2DRegion.getMinimumY());
+                section.set("minY", polygonal2DRegion.getMinimumY());
+                section.set("maxY", polygonal2DRegion.getMinimumY());
             }
             case CONVEXPOLYHEDRAL -> {
                 ConvexPolyhedralRegion convexPolyhedralRegion = (ConvexPolyhedralRegion) region;
                 List<String> vertices = convexPolyhedralRegion.getVertices().stream().map(BlockVector3::toParserString).toList();
-                mappedRegion.put("vertices", vertices);
+                section.set("vertices", vertices);
             }
-            default -> mappedRegion.put("undefined", "undefined");
+            default -> section.set("undefined", "undefined");
         }
-
-        return mappedRegion;
     }
 
-    /**
-     * Used for deserialization of a ConfigurationSerializable class.
-     * Returns an instance of a SelectionRegion constructed from a map
-     * provided by {@link org.bukkit.configuration.serialization.ConfigurationSerialization}.
-     *
-     * @param serializedRegion the serialized object as a Map
-     * @return a new SelectionRegion instance constructed from the map
-     */
-    public static SelectionRegion deserialize(Map<String, Object> serializedRegion) {
-        String name = (String) serializedRegion.get("name");
-        SelectionType selectionType = SelectionType.valueOf((String) serializedRegion.get("selection_type"));
-        World world = BukkitAdapter.adapt(Bukkit.getWorld((String) serializedRegion.get("world")));
+    public static SelectionRegion deserialize(ConfigurationSection section) throws DeserializationException {
+
+        String name = section.getString("name");
+        if (name == null) throw new DeserializationException("No name specified");
+
+        SelectionType selectionType = SelectionType.valueOf(section.getString("selection_type"));
+        if (selectionType == SelectionType.NONE)
+            throw new DeserializationException("Invalid selection type in region " + name);
+
+        String worldName = section.getString("world");
+        if (worldName == null) throw new DeserializationException("No world specified in region " + name);
+
+        org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
+        if (bukkitWorld == null)
+            throw new DeserializationException("World " + worldName + " not found in region " + name);
+
+        World worldEditWorld = BukkitAdapter.adapt(bukkitWorld);
 
         Region region = new NullRegion();
         try {
             switch (selectionType) {
-                case CUBOID -> region = new CuboidRegion(world,
-                        VectorParser.asBlockVector3((String) serializedRegion.get("min")),
-                        VectorParser.asBlockVector3((String) serializedRegion.get("min")));
-                case CYLINDER -> region = new CylinderRegion(world,
-                        VectorParser.asBlockVector3((String) serializedRegion.get("center")),
-                        VectorParser.asVector2((String) serializedRegion.get("radius")),
-                        (int) serializedRegion.get("minY"),
-                        (int) serializedRegion.get("maxY"));
-                case ELLIPSOID, SPHERE -> region = new EllipsoidRegion(world,
-                        VectorParser.asBlockVector3((String) serializedRegion.get("center")),
-                        VectorParser.asVector3((String) serializedRegion.get("radius")));
+                case CUBOID -> region = new CuboidRegion(worldEditWorld,
+                        VectorParser.asBlockVector3(section.getString("min")),
+                        VectorParser.asBlockVector3(section.getString("max")));
+                case CYLINDER -> region = new CylinderRegion(worldEditWorld,
+                        VectorParser.asBlockVector3(section.getString("center")),
+                        VectorParser.asVector2(section.getString("radius")),
+                        section.getInt("minY"),
+                        section.getInt("maxY"));
+                case ELLIPSOID, SPHERE -> region = new EllipsoidRegion(worldEditWorld,
+                        VectorParser.asBlockVector3(section.getString("center")),
+                        VectorParser.asVector3(section.getString("radius")));
                 case POLYGONAL2D -> {
-                    List<BlockVector2> points = ((List<String>) serializedRegion.get("points")).stream().map(VectorParser::asBlockVector2).toList();
-                    region = new Polygonal2DRegion(world, points, (int) serializedRegion.get("minY"), (int) serializedRegion.get("maxY"));
+                    List<BlockVector2> points = section.getStringList("points").stream().map(VectorParser::asBlockVector2).toList();
+                    region = new Polygonal2DRegion(worldEditWorld, points, section.getInt("minY"), section.getInt("maxY"));
                 }
                 case CONVEXPOLYHEDRAL -> {
-                    List<BlockVector3> vertices = ((List<String>) serializedRegion.get("vertices")).stream().map(VectorParser::asBlockVector3).toList();
-                    ConvexPolyhedralRegion convexRegion = new ConvexPolyhedralRegion(world);
+                    List<BlockVector3> vertices = section.getStringList("vertices").stream().map(VectorParser::asBlockVector3).toList();
+                    ConvexPolyhedralRegion convexRegion = new ConvexPolyhedralRegion(worldEditWorld);
 
                     for (BlockVector3 blockVector3 : vertices) {
                         convexRegion.addVertex(blockVector3);
@@ -155,9 +153,8 @@ public class SelectionRegion extends AbstractCataMineRegion {
                     region = convexRegion;
                 }
             }
-        } catch (Exception ex) {
-            CataMines.getInstance().getLogger().severe("Could not deserialize " + selectionType + " region in mine " + name);
-            CataMines.getInstance().getLogger().severe("The mine now uses a NullRegion as replacement");
+        } catch (IllegalArgumentException exception) {
+            throw new DeserializationException("Could not deserialize region " + region, exception);
         }
 
         return new SelectionRegion(name, selectionType, region);
@@ -168,9 +165,7 @@ public class SelectionRegion extends AbstractCataMineRegion {
         return "SelectionRegion{" +
                 "selectionType=" + selectionType +
                 ", region=" + region +
-                ", name='" + name + '\'' +
-                ", compositions=" + compositionManager +
-                '}';
+                "} " + super.toString();
     }
 
     public enum SelectionType {

@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * A command interface
  */
-public interface CataCommand {
+public interface Command {
 
     /**
      * Gets the name of this commmand

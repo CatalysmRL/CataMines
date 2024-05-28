@@ -2,15 +2,15 @@ package me.catalysmrl.catamines.command;
 
 import com.google.common.collect.ImmutableMap;
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.command.abstraction.CataCommand;
+import me.catalysmrl.catamines.command.abstraction.Command;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.commands.generic.HelpCommand;
 import me.catalysmrl.catamines.commands.generic.ListCommand;
 import me.catalysmrl.catamines.commands.generic.ReloadCommand;
-import me.catalysmrl.catamines.commands.mine.*;
+import me.catalysmrl.catamines.commands.mine.generic.*;
+import me.catalysmrl.catamines.commands.mine.regions.RegionsCommand;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -24,12 +24,12 @@ import java.util.stream.Collectors;
 public class CommandManager implements TabExecutor {
 
     private final CataMines plugin;
-    private final Map<String, CataCommand> commandMap;
+    private final Map<String, Command> commandMap;
 
     public CommandManager(CataMines plugin) {
         this.plugin = plugin;
 
-        commandMap = ImmutableMap.<String, CataCommand>builder()
+        commandMap = ImmutableMap.<String, Command>builder()
                 .put("help", new HelpCommand())
                 .put("list", new ListCommand())
                 .put("reload", new ReloadCommand())
@@ -41,11 +41,12 @@ public class CommandManager implements TabExecutor {
                 .put("set", new SetCommand())
                 .put("rename", new RenameCommand())
                 .put("displayname", new DisplayNameCommand())
+                .put("regions", new RegionsCommand())
                 .build();
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args) {
 
         String subCmd;
 
@@ -55,7 +56,7 @@ public class CommandManager implements TabExecutor {
             subCmd = args[0].toLowerCase(Locale.ROOT);
         }
 
-        CataCommand cataCommand = getCommand(subCmd);
+        Command cataCommand = getCommand(subCmd);
         if (cataCommand == null) {
             Message.UNKNOWN_COMMAND.send(sender);
             return true;
@@ -94,14 +95,14 @@ public class CommandManager implements TabExecutor {
 
     @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args) {
 
-        final List<CataCommand> commands = commandMap.values().stream()
+        final List<Command> commands = commandMap.values().stream()
                 .filter(c -> c.isAuthorized(commandSender))
                 .toList();
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], commands.stream().map(CataCommand::getName).collect(Collectors.toList()), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], commands.stream().map(Command::getName).collect(Collectors.toList()), new ArrayList<>());
         } else if (args.length > 1) {
             return commands.stream()
                     .filter(c -> c.getName().equalsIgnoreCase(args[0]) || c.getAliases().contains(args[0].toLowerCase(Locale.ROOT)))
@@ -113,7 +114,7 @@ public class CommandManager implements TabExecutor {
         return Collections.emptyList();
     }
 
-    public CataCommand getCommand(String commandName) {
+    public Command getCommand(String commandName) {
         if (commandMap.containsKey(commandName)) return commandMap.get(commandName);
 
         return commandMap.values().stream()
@@ -121,7 +122,7 @@ public class CommandManager implements TabExecutor {
                 .findFirst().orElse(null);
     }
 
-    public Map<String, CataCommand> getCommandMap() {
+    public Map<String, Command> getCommandMap() {
         return commandMap;
     }
 }

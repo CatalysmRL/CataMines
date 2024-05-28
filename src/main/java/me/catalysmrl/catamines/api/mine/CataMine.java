@@ -1,8 +1,8 @@
 package me.catalysmrl.catamines.api.mine;
 
+import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 /**
  * A regenerating mine. The user of this interface has precise
@@ -10,7 +10,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
  *
  * @author CatalysmRL
  */
-public interface CataMine extends ConfigurationSerializable {
+public interface CataMine extends SectionSerializable {
 
     /**
      * Ticks the mine and notifys it to perform various actions

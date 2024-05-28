@@ -1,14 +1,18 @@
 package me.catalysmrl.catamines.commands.mine.regions;
 
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
-import me.catalysmrl.catamines.command.abstraction.ParentMineCommand;
-
-import java.util.List;
+import com.google.common.collect.ImmutableList;
+import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.abstraction.mine.ParentMineCommand;
+import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionCreateCommand;
+import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionDeleteCommand;
 
 public class RegionsCommand extends ParentMineCommand {
 
-    public RegionsCommand(String name, List<AbstractCataMineCommand> children) {
-        super(name, children);
+    public RegionsCommand() {
+        super("regions", ImmutableList.<AbstractMineCommand>builder()
+                .add(new RegionCreateCommand())
+                .add(new RegionDeleteCommand())
+                .build());
     }
 
     @Override
@@ -18,7 +22,7 @@ public class RegionsCommand extends ParentMineCommand {
 
     @Override
     public String getUsage() {
-        return null;
+        return "/cm regions <mine>";
     }
 
 }

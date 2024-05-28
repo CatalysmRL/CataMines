@@ -22,6 +22,7 @@ public class ChoiceManager<T extends Identifiable & Choice> {
         for (T choice : choices) {
             if (randomDouble <= (offset + choice.getChance()) / max) {
                 upcoming = choice;
+                return;
             }
 
             offset += choice.getChance();

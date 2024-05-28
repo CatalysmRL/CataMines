@@ -1,27 +1,25 @@
 package me.catalysmrl.catamines.mine.components.composition;
 
+import com.sk89q.worldedit.extension.input.InputParseException;
 import com.sk89q.worldedit.world.block.BaseBlock;
-import com.sk89q.worldedit.world.block.BlockState;
+import me.catalysmrl.catamines.api.serialization.DeserializationException;
+import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.composition.drop.CataMineItem;
 import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
 import me.catalysmrl.catamines.utils.message.Message;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
+import me.catalysmrl.catamines.utils.worldedit.BaseBlockParser;
+import org.bukkit.configuration.ConfigurationSection;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-@SerializableAs("CataMineBlock")
-public class CataMineBlock implements Choice, ConfigurationSerializable {
+public class CataMineBlock implements Choice, SectionSerializable {
 
     private BaseBlock baseBlock;
     private double chance;
 
     private DropType dropType;
-    private List<CataMineItem> drops;
+    private List<CataMineItem> items;
 
     public CataMineBlock(BaseBlock baseBlock, double chance) {
         this(baseBlock, chance, DropType.CUSTOM);
@@ -31,7 +29,7 @@ public class CataMineBlock implements Choice, ConfigurationSerializable {
         this(baseBlock, chance, dropType, new ArrayList<>());
     }
 
-    public CataMineBlock(BaseBlock baseBlock, double chance, DropType dropType, List<CataMineItem> drops) {
+    public CataMineBlock(BaseBlock baseBlock, double chance, DropType dropType, List<CataMineItem> items) {
         if (chance < 0 || chance > 100) {
             throw new IllegalArgumentException(Message.SET_INVALID_CHANCE.getMessage());
         }
@@ -39,56 +37,44 @@ public class CataMineBlock implements Choice, ConfigurationSerializable {
         this.baseBlock = baseBlock;
         this.chance = Math.round(chance * 100) / 100d;
         this.dropType = dropType;
-        this.drops = drops;
+        this.items = items;
     }
 
-    public static CataMineBlock deserialize(Map<String, Object> map) {
-
-        BaseBlock baseBlock = BlockState.get((String) map.get("block")).toBaseBlock();
-
-        double chance = 0d;
-        if (map.containsKey("chance")) {
-            chance = (double) map.get("chance");
-        }
-
-        DropType dropType = DropType.CUSTOM;
-        if (map.containsKey("dropType")) {
-            dropType = DropType.valueOf((String) map.get("dropType"));
-        }
-
-        ArrayList<Map<String, Object>> serializedLootTable = new ArrayList<>();
-        if (map.containsKey("lootTable")) {
-            serializedLootTable = (ArrayList<Map<String, Object>>) map.get("lootTable");
-        }
-        if (serializedLootTable.isEmpty()) {
-            return new CataMineBlock(baseBlock, chance);
-        }
-
-        List<CataMineItem> drops = new ArrayList<>();
-        for (Map<String, Object> loot : serializedLootTable) {
-            drops.add(CataMineItem.deserialize(loot));
-        }
-
-        return new CataMineBlock(baseBlock, chance, dropType, drops);
-    }
-
-    @Nonnull
     @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> result = new LinkedHashMap<>();
-        result.put("block", baseBlock.toString());
-        result.put("chance", chance);
-        result.put("dropType", dropType);
+    public void serialize(ConfigurationSection section) {
+        section.set("block", baseBlock.toString());
+        section.set("chance", chance);
+        section.set("drop_type", dropType);
 
-        ArrayList<Map<String, Object>> mappedLootTable = new ArrayList<>();
+        for (CataMineItem item : items) {
 
-        for (CataMineItem drop : drops) {
-            mappedLootTable.add(drop.serialize());
+        }
+    }
+
+    public static CataMineBlock deserialize(ConfigurationSection section) throws DeserializationException {
+
+        String blockString = section.getString("block");
+        if (blockString == null) throw new DeserializationException("Missing 'block' path");
+
+        BaseBlock baseBlock = null;
+        try {
+            baseBlock = BaseBlockParser.parseInput(blockString);
+        } catch (InputParseException exception) {
+            throw new DeserializationException("Could not deserialize " + blockString);
         }
 
-        result.put("rewards", mappedLootTable);
+        double chance = section.getDouble("chance", 0d);
 
-        return result;
+        DropType dropType = DropType.valueOf(section.getString("drop_type", "CUSTOM"));
+
+        ConfigurationSection itemsSection = section.getConfigurationSection("loot_table");
+        if (itemsSection != null) {
+            for (String key : itemsSection.getKeys(false)) {
+
+            }
+        }
+
+        return new CataMineBlock(baseBlock, chance, dropType);
     }
 
     public BaseBlock getBaseBlock() {
@@ -119,12 +105,12 @@ public class CataMineBlock implements Choice, ConfigurationSerializable {
         this.dropType = dropType;
     }
 
-    public List<CataMineItem> getDrops() {
-        return drops;
+    public List<CataMineItem> getItems() {
+        return items;
     }
 
-    public void setDrops(List<CataMineItem> drops) {
-        this.drops = drops;
+    public void setItems(List<CataMineItem> items) {
+        this.items = items;
     }
 
     @Override
@@ -133,7 +119,7 @@ public class CataMineBlock implements Choice, ConfigurationSerializable {
                 "baseBlock=" + baseBlock +
                 ", chance=" + chance +
                 ", dropType=" + dropType +
-                ", drops=" + drops +
+                ", drops=" + items +
                 '}';
     }
 

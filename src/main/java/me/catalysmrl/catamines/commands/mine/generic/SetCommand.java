@@ -1,9 +1,9 @@
-package me.catalysmrl.catamines.commands.mine;
+package me.catalysmrl.catamines.commands.mine.generic;
 
 import com.sk89q.worldedit.world.block.BaseBlock;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
+import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.mine.components.composition.CataMineBlock;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
@@ -16,9 +16,9 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 import java.util.Optional;
 
-public class SetCommand extends AbstractCataMineCommand {
+public class SetCommand extends AbstractMineCommand {
     public SetCommand() {
-        super("set", "catamines.command.set", Predicates.inRange(2, 5), false);
+        super("set", "catamines.set", Predicates.inRange(2, 5), false);
     }
 
     @Override
@@ -89,6 +89,6 @@ public class SetCommand extends AbstractCataMineCommand {
 
     @Override
     public String getUsage() {
-        return "/cm set <mine> <blockData> (%)";
+        return "/cm set <mine> <blockData> (0-100%) (region) (composition)";
     }
 }

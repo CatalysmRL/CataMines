@@ -1,6 +1,6 @@
 package me.catalysmrl.catamines.command.utils;
 
-import me.catalysmrl.catamines.command.abstraction.CataCommand;
+import me.catalysmrl.catamines.command.abstraction.Command;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,7 @@ public abstract class ArgumentException extends CommandException {
         }
 
         @Override
-        public void handle(CommandSender sender, CataCommand command) {
+        public void handle(CommandSender sender, Command command) {
             Messages.send(sender, command.getUsage());
         }
     }

@@ -1,14 +1,16 @@
 package me.catalysmrl.catamines.mine.components.composition;
 
 import com.sk89q.worldedit.function.pattern.RandomPattern;
+import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
 import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
 import me.catalysmrl.catamines.mine.reward.Rewardable;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class representing the composition of a mine.
@@ -18,8 +20,7 @@ import java.util.*;
  * @see com.sk89q.worldedit.function.pattern.RandomPattern
  */
 
-@SerializableAs("CataMineComposition")
-public class CataMineComposition implements Rewardable, Identifiable, Choice, ConfigurationSerializable {
+public class CataMineComposition implements Rewardable, Identifiable, Choice, SectionSerializable {
 
     private String name;
     private double chance;
@@ -92,11 +93,11 @@ public class CataMineComposition implements Rewardable, Identifiable, Choice, Co
         return randomPattern;
     }
 
-    @NotNull
     @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> serializedComp = new LinkedHashMap<>();
-        return null;
+    public void serialize(ConfigurationSection section) {
+        section.set("name", name);
+        section.set("chance", chance);
+        section.set("blocks", blocks);
     }
 
     public static CataMineComposition deserialize(Map<String, Object> serializedComp) {
@@ -107,6 +108,7 @@ public class CataMineComposition implements Rewardable, Identifiable, Choice, Co
     public String toString() {
         return "CataMineComposition{" +
                 "name='" + name + '\'' +
+                ", chance=" + chance +
                 ", blocks=" + blocks +
                 ", randomPattern=" + randomPattern +
                 '}';

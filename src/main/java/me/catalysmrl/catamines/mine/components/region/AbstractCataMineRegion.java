@@ -42,7 +42,8 @@ public abstract class AbstractCataMineRegion implements CataMineRegion {
     public String toString() {
         return "AbstractCataMineRegion{" +
                 "name='" + name + '\'' +
-                ", compositions=" + compositionManager +
+                ", chance=" + chance +
+                ", compositionManager=" + compositionManager +
                 '}';
     }
 }

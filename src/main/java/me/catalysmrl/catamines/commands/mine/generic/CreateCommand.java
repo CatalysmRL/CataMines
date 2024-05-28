@@ -1,9 +1,9 @@
-package me.catalysmrl.catamines.commands.mine;
+package me.catalysmrl.catamines.commands.mine.generic;
 
 import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataCommand;
+import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
@@ -17,10 +17,10 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 import java.util.List;
 
-public class CreateCommand extends AbstractCataCommand {
+public class CreateCommand extends AbstractCommand {
 
     public CreateCommand() {
-        super("create", "catamines.command.create", integer -> integer == 1, true);
+        super("create", "catamines.create", integer -> integer == 1, false);
     }
 
     @Override
@@ -33,24 +33,27 @@ public class CreateCommand extends AbstractCataCommand {
         }
 
         if (plugin.getMineManager().containsMine(name)) {
-            Message.MINE_EXIST.send(sender, name);
+            Message.MINE_EXISTS.send(sender, name);
             return;
         }
 
-        Player player = (Player) sender;
-
-        RegionSelector regionSelector = WorldEditUtils.getSelector(player);
-
         CataMine cataMine = new AdvancedCataMine(name);
 
-        if (regionSelector.isDefined()) {
-            CataMineRegion region = new SelectionRegion("default", regionSelector);
-            region.getCompositionManager().add(new CataMineComposition("default"));
-            cataMine.getRegionManager().add(region);
+        if (sender instanceof Player player) {
+            RegionSelector regionSelector = WorldEditUtils.getSelector(player);
+
+            if (regionSelector.isDefined()) {
+                CataMineRegion region = new SelectionRegion("default", regionSelector);
+                region.getCompositionManager().add(new CataMineComposition("default"));
+                cataMine.getRegionManager().add(region);
+            } else {
+                Message.INCOMPLETE_REGION.send(sender);
+            }
         }
 
+
         plugin.getMineManager().registerMine(cataMine);
-        Message.CREATE_SUCCESS.send(player, name);
+        Message.CREATE_SUCCESS.send(sender, name);
 
         try {
             plugin.getMineManager().saveMine(cataMine);

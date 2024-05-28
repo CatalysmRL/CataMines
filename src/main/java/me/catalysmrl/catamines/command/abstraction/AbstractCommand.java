@@ -8,14 +8,14 @@ import java.util.function.Predicate;
 /**
  * Simple abstract command
  */
-public abstract class AbstractCataCommand implements CataCommand {
+public abstract class AbstractCommand implements Command {
 
     private final String name;
     private final String permission;
     private final Predicate<Integer> argumentCheck;
     private final boolean onlyPlayers;
 
-    public AbstractCataCommand(String name, String permission, Predicate<Integer> argumentCheck, boolean onlyPlayers) {
+    public AbstractCommand(String name, String permission, Predicate<Integer> argumentCheck, boolean onlyPlayers) {
         this.name = name;
         this.permission = permission;
         this.argumentCheck = argumentCheck;

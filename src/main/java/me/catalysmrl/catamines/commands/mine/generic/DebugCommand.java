@@ -1,22 +1,20 @@
-package me.catalysmrl.catamines.commands.mine;
+package me.catalysmrl.catamines.commands.mine.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
-import me.catalysmrl.catamines.utils.helper.Predicates;
+import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class DelayCommand extends AbstractCataMineCommand {
-
-    public DelayCommand() {
-        super("setdelay", "catamines.command.setdelay", Predicates.inRange(1, 2), false);
+public class DebugCommand extends AbstractMineCommand {
+    public DebugCommand() {
+        super("debug", "catamines.debug", integer -> integer == 1, false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
-
+        sender.sendMessage(mine.toString());
     }
 
     @Override
@@ -26,6 +24,6 @@ public class DelayCommand extends AbstractCataMineCommand {
 
     @Override
     public String getUsage() {
-        return "/cm setdelay <mine> <value> [format]";
+        return "/cm debug <mine>";
     }
 }

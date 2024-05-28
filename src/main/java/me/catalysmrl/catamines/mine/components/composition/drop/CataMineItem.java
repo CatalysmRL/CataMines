@@ -1,16 +1,15 @@
 package me.catalysmrl.catamines.mine.components.composition.drop;
 
+import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.reward.CataMineReward;
 import me.catalysmrl.catamines.mine.reward.Rewardable;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-@SerializableAs("CataMineItem")
-public class CataMineItem implements Rewardable, ConfigurationSerializable {
+public class CataMineItem implements Rewardable, SectionSerializable {
 
     double chance;
     CataMineReward reward;
@@ -19,11 +18,15 @@ public class CataMineItem implements Rewardable, ConfigurationSerializable {
     boolean fortune;
 
     @Override
-    public @NotNull Map<String, Object> serialize() {
-        return null;
+    public void serialize(ConfigurationSection section) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("chance", chance);
+        result.put("reward", reward);
+        result.put("item", item.serialize());
+        result.put("fortune", fortune);
     }
 
-    public static CataMineItem deserialize(Map<String, Object> serializedItem) {
+    public static CataMineItem deserialize(ConfigurationSection section) {
         return null;
     }
 

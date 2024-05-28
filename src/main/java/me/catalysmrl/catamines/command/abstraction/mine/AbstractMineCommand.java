@@ -1,19 +1,24 @@
-package me.catalysmrl.catamines.command.abstraction;
+package me.catalysmrl.catamines.command.abstraction.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
+import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.utils.ArgumentException;
 import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
+import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public abstract class AbstractCataMineCommand extends AbstractCataCommand {
+public abstract class AbstractMineCommand extends AbstractCommand {
 
-    public AbstractCataMineCommand(String name, String permission, Predicate<Integer> argumentCheck, boolean onlyPlayers) {
+    public AbstractMineCommand(String name, String permission, Predicate<Integer> argumentCheck, boolean onlyPlayers) {
         super(name, permission, argumentCheck, onlyPlayers);
     }
 
@@ -57,7 +62,7 @@ public abstract class AbstractCataMineCommand extends AbstractCataCommand {
         Optional<CataMine> mineOptional = plugin.getMineManager().getMine(mineID);
 
         if (mineOptional.isEmpty()) {
-            Message.MINE_NOT_EXIST.send(sender, mineID);
+            Message.MINE_NOT_EXISTS.send(sender, mineID);
             return;
         }
 
@@ -66,4 +71,20 @@ public abstract class AbstractCataMineCommand extends AbstractCataCommand {
 
     public abstract void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine);
 
+    @Override
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args) {
+        if (args.size() == 1) {
+            return StringUtil.copyPartialMatches(args.get(0), plugin.getMineManager().getMineList(), new ArrayList<>());
+        } else {
+            Optional<CataMine> optionalCataMine = plugin.getMineManager().getMine(args.get(0));
+            if (optionalCataMine.isEmpty()) return List.of(Messages.colorize("&cUnknown mine"));
+            CataMine mine = optionalCataMine.get();
+
+            return tabComplete(plugin, sender, args.subList(1, args.size()), mine);
+        }
+    }
+
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
+        return Collections.emptyList();
+    }
 }

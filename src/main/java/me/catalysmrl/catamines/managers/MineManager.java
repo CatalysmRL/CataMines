@@ -1,10 +1,10 @@
 package me.catalysmrl.catamines.managers;
 
 import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.managers.blockmanagers.BlockApplicator;
 import me.catalysmrl.catamines.managers.blockmanagers.BukkitBlockApplicationManager;
 import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationManager;
-import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
@@ -124,7 +124,7 @@ public class MineManager {
      * Attempts to load all mines from a directory and returns it as a
      * List of CataMines. If the directory does not exist, is not a folder or
      * does not contain any files ending with '.yml', then an empty
-     * ArrayList is returned. Otherwise attempts to load mines from all files
+     * ArrayList is returned. Otherwise, attempts to load mines from all files
      * ending with '.yml' and containing the key 'Mine' in the root
      * ConfigurationSection inside the directory. Note that only direct children
      * files of the folder are affected. Another folder inside the folder will
@@ -136,7 +136,11 @@ public class MineManager {
     public List<CataMine> getMinesFromFolder(Path folder) {
         Objects.requireNonNull(folder);
         List<CataMine> cataMines = new ArrayList<>();
-        if (!Files.isDirectory(folder)) return cataMines;
+
+        if (!Files.isDirectory(folder)) {
+            plugin.getLogger().severe("Path is not a directory: " + folder);
+            return cataMines;
+        }
 
         try (Stream<Path> stream = Files.list(folder)) {
             cataMines = stream
@@ -145,9 +149,10 @@ public class MineManager {
                     .flatMap(Optional::stream)
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            plugin.getLogger().severe("Failed loading directory " + folder);
+            plugin.getLogger().severe("Failed loading directory: " + folder);
         }
 
+        plugin.getLogger().info("Loaded " + cataMines.size() + " mines");
         return cataMines;
     }
 
@@ -162,8 +167,8 @@ public class MineManager {
     }
 
     private Optional<CataMine> deserializeCataMine(ConfigurationSection section) {
-        CataMine mine = AdvancedCataMine.deserialize(section.getValues(false));
-        return Optional.ofNullable(mine);
+        CataMine mine = AdvancedCataMine.deserialize(section);
+        return Optional.of(mine);
     }
 
     /**
@@ -256,7 +261,7 @@ public class MineManager {
         Path file = plugin.getDataFolder().toPath().resolve("mines").resolve(mine.getName() + ".yml");
         FileConfiguration fileCfg = new YamlConfiguration();
 
-        fileCfg.set("Mine", mine.serialize());
+        mine.serialize(fileCfg);
 
         fileCfg.save(file.toFile());
     }

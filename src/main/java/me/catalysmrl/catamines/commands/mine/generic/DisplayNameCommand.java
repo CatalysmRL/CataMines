@@ -1,17 +1,17 @@
-package me.catalysmrl.catamines.commands.mine;
+package me.catalysmrl.catamines.commands.mine.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
+import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
 import java.util.List;
 
-public class DisplayNameCommand extends AbstractCataMineCommand {
+public class DisplayNameCommand extends AbstractMineCommand {
     public DisplayNameCommand() {
-        super("displayname", "catamines.command.displayname", i -> true, false);
+        super("displayname", "catamines.displayname", i -> true, false);
     }
 
     @Override

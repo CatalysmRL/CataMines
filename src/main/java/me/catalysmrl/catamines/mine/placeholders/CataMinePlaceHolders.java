@@ -59,7 +59,7 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
 
         Optional<CataMine> mineOptional = plugin.getMineManager().getMine(args[mineIndex]);
         if (mineOptional.isEmpty()) {
-            return Message.MINE_NOT_EXIST.getMessage();
+            return Message.MINE_NOT_EXISTS.getMessage();
         }
 
         CataMine mine = mineOptional.get();

@@ -1,20 +1,20 @@
-package me.catalysmrl.catamines.commands.mine;
+package me.catalysmrl.catamines.commands.mine.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
+import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class DebugCommand extends AbstractCataMineCommand {
-    public DebugCommand() {
-        super("debug", "catamines.command.debug", integer -> integer == 1, false);
+public class InfoCommand extends AbstractMineCommand {
+    public InfoCommand() {
+        super("info", "catamines.info", integer -> integer == 1, false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
-        sender.sendMessage(mine.toString());
+
     }
 
     @Override
@@ -24,6 +24,6 @@ public class DebugCommand extends AbstractCataMineCommand {
 
     @Override
     public String getUsage() {
-        return "/cm debug <mine>";
+        return null;
     }
 }

@@ -1,8 +1,8 @@
-package me.catalysmrl.catamines.commands.mine;
+package me.catalysmrl.catamines.commands.mine.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.AbstractCataMineCommand;
+import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
@@ -11,9 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class RenameCommand extends AbstractCataMineCommand {
+public class RenameCommand extends AbstractMineCommand {
     public RenameCommand() {
-        super("rename", "catamines.command.rename", integer -> integer == 1, false);
+        super("rename", "catamines.rename", integer -> integer == 1, false);
     }
 
     @Override
