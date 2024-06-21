@@ -2,6 +2,7 @@ package me.catalysmrl.catamines.api.mine;
 
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
+import me.catalysmrl.catamines.mine.components.manager.controller.CataMineController;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 
 /**
@@ -50,6 +51,10 @@ public interface CataMine extends SectionSerializable {
     String getDisplayName();
 
     void setDisplayName(String displayName);
+
+    CataMineController getController();
+
+    void setController(CataMineController controller);
 
     ChoiceManager<CataMineRegion> getRegionManager();
 

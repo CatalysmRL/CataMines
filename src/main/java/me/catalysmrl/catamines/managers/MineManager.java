@@ -2,6 +2,7 @@ package me.catalysmrl.catamines.managers;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.managers.blockmanagers.BlockApplicator;
 import me.catalysmrl.catamines.managers.blockmanagers.BukkitBlockApplicationManager;
 import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationManager;
@@ -41,7 +42,7 @@ public class MineManager {
     public MineManager(CataMines plugin) {
         this.plugin = plugin;
         minesPath = plugin.getDataFolder().toPath().resolve("mines");
-        Bukkit.getScheduler().runTaskLater(plugin, () -> loadMinesFromFolder(plugin.getDataFolder().toPath().resolve("mines")), 2L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> loadMinesFromFolder(minesPath), 2L);
         start();
     }
 
@@ -144,7 +145,6 @@ public class MineManager {
 
         try (Stream<Path> stream = Files.list(folder)) {
             cataMines = stream
-                    .filter(path -> path.endsWith(".yml"))
                     .map(this::deserializeCataMineFromYaml)
                     .flatMap(Optional::stream)
                     .collect(Collectors.toList());
@@ -158,17 +158,18 @@ public class MineManager {
 
     private Optional<CataMine> deserializeCataMineFromYaml(Path path) {
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(path.toFile());
-        ConfigurationSection section = cfg.getConfigurationSection("Mine");
-        if (section != null) {
-            return deserializeCataMine(section);
-        }
-
-        return Optional.empty();
+        return deserializeCataMine(cfg);
     }
 
     private Optional<CataMine> deserializeCataMine(ConfigurationSection section) {
-        CataMine mine = AdvancedCataMine.deserialize(section);
-        return Optional.of(mine);
+        CataMine mine = null;
+        try {
+            mine = AdvancedCataMine.deserialize(section);
+        } catch (DeserializationException e) {
+            // ignore
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(mine);
     }
 
     /**

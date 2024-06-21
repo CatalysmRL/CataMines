@@ -11,9 +11,9 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.worldedit.BaseBlockParser;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +24,6 @@ public class SetCommand extends AbstractMineCommand {
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
-
-        Bukkit.broadcastMessage(args.toString());
 
         BaseBlock baseBlock;
         try {
@@ -75,12 +73,16 @@ public class SetCommand extends AbstractMineCommand {
         }
 
         CataMineComposition composition = compositionOptional.get();
-
         CataMineBlock block = new CataMineBlock(baseBlock, chance);
-
         composition.add(block);
 
         Message.SET_SUCCESS.send(sender, args.get(0), block.getChance(), mine.getName());
+
+        try {
+            plugin.getMineManager().saveMine(mine);
+        } catch (IOException e) {
+            Message.MINE_SAVE_EXCEPTION.send(sender, mine.getName());
+        }
     }
 
     @Override

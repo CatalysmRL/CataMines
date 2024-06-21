@@ -21,16 +21,6 @@ public final class CataMines extends JavaPlugin {
         return INSTANCE;
     }
 
-    /*
-    static {
-        ConfigurationSerialization.registerClass(AdvancedCataMine.class);
-        ConfigurationSerialization.registerClass(SelectionRegion.class);
-        ConfigurationSerialization.registerClass(SchematicRegion.class);
-        ConfigurationSerialization.registerClass(CataMineComposition.class);
-        ConfigurationSerialization.registerClass(CataMineBlock.class);
-    }
-     */
-
     private MineManager mineManager;
     private CommandManager commandManager;
 

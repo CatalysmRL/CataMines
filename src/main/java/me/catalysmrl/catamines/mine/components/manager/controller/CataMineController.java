@@ -1,16 +1,14 @@
 package me.catalysmrl.catamines.mine.components.manager.controller;
 
 import me.catalysmrl.catamines.api.mine.CataMine;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.jetbrains.annotations.NotNull;
+import me.catalysmrl.catamines.api.serialization.SectionSerializable;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Map;
-
-public class CataMineController implements ConfigurationSerializable {
+public class CataMineController implements SectionSerializable {
 
     private final CataMine mine;
 
-    private ResetMode resetMode;
+    private ResetMode resetMode = ResetMode.TIME;
     private int resetDelay;
     private double resetPercentage;
 
@@ -41,7 +39,7 @@ public class CataMineController implements ConfigurationSerializable {
             return true;
         }
 
-
+        countdown--;
         return false;
     }
 
@@ -50,16 +48,28 @@ public class CataMineController implements ConfigurationSerializable {
         return false;
     }
 
-    @NotNull
     @Override
-    public Map<String, Object> serialize() {
-        return Map.of();
+    public void serialize(ConfigurationSection section) {
+        section.set("reset-mode", resetMode.toString());
+        section.set("reset-delay", resetDelay);
+        section.set("reset-percentage", resetPercentage);
+
+        section.set("countdown", countdown);
     }
 
-    public static CataMineController deserialize(Map<String, Object> serializedController) {
+    public static CataMineController deserialize(ConfigurationSection section, CataMine mine) {
+        ResetMode mode = ResetMode.valueOf(section.getString("reset-mode"));
+        int resetDelay = section.getInt("reset-delay", -0);
+        double resetPercentage = section.getDouble("reset-percentage", 0d);
 
+        int countdown = section.getInt("countdown", 0);
 
-        return null;
+        CataMineController controller = new CataMineController(mine);
+        controller.setResetMode(mode);
+        controller.setResetDelay(resetDelay);
+        controller.setResetPercentage(resetPercentage);
+        controller.setCountdown(countdown);
+        return controller;
     }
 
     public ResetMode getResetMode() {

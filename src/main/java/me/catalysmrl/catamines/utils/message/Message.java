@@ -67,6 +67,13 @@ public enum Message {
     DISPLAYNAME_SUCCESS("catamines.command.displayname.success"),
     DISPLAYNAME_DESCRIPTION("catamines.command.displayname.description"),
 
+    // Timer command
+    TIMER_INVALID_FORMAT("catamines.command.timer.invalid-format"),
+    TIMER_SUCCESS("catamines.command.timer.success"),
+
+    // ResetMode command
+    RESETMODE_INVALID(""),
+
     /*
      * Mine region commands
      */

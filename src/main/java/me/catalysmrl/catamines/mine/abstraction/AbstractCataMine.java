@@ -16,12 +16,13 @@ public abstract class AbstractCataMine implements CataMine {
     public AbstractCataMine(String name) {
         this.name = name;
         this.displayName = "default";
+        controller = new CataMineController(this);
         regionManager = new ChoiceManager<>();
     }
 
     @Override
     public void tick() {
-
+        controller.tick();
     }
 
     @Override
@@ -49,6 +50,16 @@ public abstract class AbstractCataMine implements CataMine {
     @Override
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    @Override
+    public CataMineController getController() {
+        return controller;
+    }
+
+    @Override
+    public void setController(CataMineController controller) {
+        this.controller = controller;
     }
 
     @Override

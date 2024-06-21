@@ -13,6 +13,14 @@ public class ChoiceManager<T extends Identifiable & Choice> {
     private final List<T> choices = new ArrayList<>();
     private double max = 0;
 
+    public ChoiceManager() {
+    }
+
+    public ChoiceManager(List<T> choices) {
+        this.choices.addAll(choices);
+        next();
+    }
+
     public void next() {
         current = upcoming;
 
@@ -40,15 +48,23 @@ public class ChoiceManager<T extends Identifiable & Choice> {
     }
 
     public Optional<T> get(String name) {
-        return getChoices().stream().filter(region -> region.getName().equals(name)).findFirst();
+        return getChoices().stream().filter(choice -> choice.getName().equals(name)).findFirst();
     }
 
     public Optional<T> getCurrent() {
         return Optional.ofNullable(current);
     }
 
+    public void setCurrent(T current) {
+        this.current = current;
+    }
+
     public Optional<T> getUpcoming() {
         return Optional.ofNullable(upcoming);
+    }
+
+    public void setUpcoming(T upcoming) {
+        this.upcoming = upcoming;
     }
 
     public List<T> getChoices() {

@@ -16,12 +16,14 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.World;
 import me.catalysmrl.catamines.CataMines;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class WorldEditUtils {
 
@@ -33,11 +35,11 @@ public class WorldEditUtils {
     }
 
     public static void pasteRegion(Region region, Pattern pattern) {
+        Objects.requireNonNull(region);
+        Objects.requireNonNull(pattern);
+
         try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
                 .world(region.getWorld())
-                .changeSetNull()
-                .allowedRegionsEverywhere()
-                .fastMode(true)
                 .build()) {
 
             editSession.setReorderMode(EditSession.ReorderMode.FAST);
@@ -47,11 +49,12 @@ public class WorldEditUtils {
         }
     }
 
-    public static void pasteSchematic(Clipboard clipboard, BlockVector3 location) {
-        if (clipboard == null)
-            throw new IllegalArgumentException("Invalid Clipboard");
+    public static void pasteSchematic(Clipboard clipboard, World world, BlockVector3 location) {
+        Objects.requireNonNull(clipboard);
+        Objects.requireNonNull(world);
+        Objects.requireNonNull(location);
 
-        try (EditSession editSession = WorldEdit.getInstance().newEditSession(clipboard.getRegion().getWorld())) {
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)
                     .to(location)

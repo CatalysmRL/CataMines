@@ -14,7 +14,7 @@ public class BukkitBlockApplicationManager extends BlockApplicator {
 
     @Override
     public void start() {
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::handleQueue, 0L, 1L);
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, this::handleQueue, 0L, 1L);
     }
 
     @Override

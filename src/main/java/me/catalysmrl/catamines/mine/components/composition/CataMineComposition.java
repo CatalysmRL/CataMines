@@ -1,6 +1,7 @@
 package me.catalysmrl.catamines.mine.components.composition;
 
 import com.sk89q.worldedit.function.pattern.RandomPattern;
+import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
 import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
@@ -9,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -25,33 +25,16 @@ public class CataMineComposition implements Rewardable, Identifiable, Choice, Se
     private String name;
     private double chance;
 
-    private final List<CataMineBlock> blocks;
+    private List<CataMineBlock> blocks = new ArrayList<>();
     private RandomPattern randomPattern;
 
     public CataMineComposition(String name) {
         this.name = name;
-        this.blocks = new ArrayList<>();
-    }
-
-    public CataMineComposition(String name, final List<CataMineBlock> blocks) {
-        this.name = name;
-        if (blocks == null) {
-            this.blocks = new ArrayList<>();
-            return;
-        }
-
-        this.blocks = new ArrayList<>(blocks);
-        updateRandomPattern();
     }
 
     public void add(CataMineBlock block) {
         Objects.requireNonNull(block);
-
         blocks.removeIf(cataMineBlock -> block.getBaseBlock().equals(cataMineBlock.getBaseBlock()));
-
-        double sum = getChanceSum();
-        if (sum + block.getChance() > 100) block.setChance(100 - sum);
-
         blocks.add(block);
         updateRandomPattern();
     }
@@ -89,6 +72,15 @@ public class CataMineComposition implements Rewardable, Identifiable, Choice, Se
         return blocks.stream().mapToDouble(CataMineBlock::getChance).sum();
     }
 
+    public List<CataMineBlock> getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(List<CataMineBlock> blocks) {
+        this.blocks = blocks;
+        updateRandomPattern();
+    }
+
     public RandomPattern getRandomPattern() {
         return randomPattern;
     }
@@ -97,11 +89,36 @@ public class CataMineComposition implements Rewardable, Identifiable, Choice, Se
     public void serialize(ConfigurationSection section) {
         section.set("name", name);
         section.set("chance", chance);
-        section.set("blocks", blocks);
+        ConfigurationSection blocksSection = section.createSection("blocks");
+        for (int i = 0; i < blocks.size(); i++) {
+            blocks.get(i).serialize(blocksSection.createSection("block-" + i));
+        }
     }
 
-    public static CataMineComposition deserialize(Map<String, Object> serializedComp) {
-        return null;
+    public static CataMineComposition deserialize(ConfigurationSection section) throws DeserializationException {
+        String name = section.getString("name");
+        if (name == null) throw new DeserializationException("Name not specified");
+
+        double chance = section.getDouble("chance", 0d);
+
+        ConfigurationSection blocksSection = section.getConfigurationSection("blocks");
+
+        List<CataMineBlock> blockList = new ArrayList<>();
+        if (blocksSection != null) {
+            for (String key : blocksSection.getKeys(false)) {
+                ConfigurationSection blockSection = blocksSection.getConfigurationSection(key);
+                if (blockSection == null) continue;
+
+                CataMineBlock block = CataMineBlock.deserialize(blockSection);
+                blockList.add(block);
+            }
+        }
+
+        CataMineComposition composition = new CataMineComposition(name);
+        composition.setChance(chance);
+        composition.setBlocks(blockList);
+
+        return composition;
     }
 
     @Override

@@ -1,29 +1,41 @@
 package me.catalysmrl.catamines.mine.components.region.impl;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.world.World;
+import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.mine.components.region.AbstractCataMineRegion;
+import me.catalysmrl.catamines.utils.worldedit.VectorParser;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.SerializableAs;
 
-@SerializableAs("SchematicRegion")
 public class SchematicRegion extends AbstractCataMineRegion {
 
-    String schemName;
-    BlockVector3 location;
-    Clipboard clipboard;
+    private String schematicName;
+    private World world;
+    private BlockVector3 location;
+    private Clipboard clipboard;
 
-    public SchematicRegion(String name, String schemName, BlockVector3 location) {
+    public SchematicRegion(String name, String schematicName, World world, BlockVector3 location) {
         super(name);
-        this.schemName = schemName;
+        this.schematicName = schematicName;
+        this.world = world;
         this.location = location;
-        this.clipboard = WorldEditUtils.loadSchematic(schemName);
+        this.clipboard = WorldEditUtils.loadSchematic(schematicName);
+    }
+
+    public void redefine(String schematicName, World world, BlockVector3 location) {
+        this.schematicName = schematicName;
+        this.world = world;
+        this.location = location;
+        this.clipboard = WorldEditUtils.loadSchematic(schematicName);
     }
 
     @Override
     public void fill() {
-        WorldEditUtils.pasteSchematic(clipboard, location);
+        WorldEditUtils.pasteSchematic(clipboard, world, location);
     }
 
     @Override
@@ -38,17 +50,44 @@ public class SchematicRegion extends AbstractCataMineRegion {
 
     @Override
     public void serialize(ConfigurationSection section) {
-
+        super.serialize(section);
+        section.set("schematic-name", schematicName);
+        section.set("world", world.getName());
+        section.set("location", location.toParserString());
+        serializeCompositions(section.createSection("compositions"));
     }
 
-    public static SelectionRegion deserialize(ConfigurationSection section) {
-        return null;
+    public static SchematicRegion deserialize(ConfigurationSection section) throws DeserializationException {
+
+        String name = section.getString("name");
+        if (name == null) throw new DeserializationException("No name specified");
+
+        String schematicName = section.getString("schematic-name");
+        if (schematicName == null) throw new DeserializationException("No schematic specified");
+
+        String worldName = section.getString("world");
+        if (worldName == null) throw new DeserializationException("No world specified");
+
+        org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
+        if (bukkitWorld == null) throw new DeserializationException("World " + worldName + " not found");
+
+        World worldEditWorld = BukkitAdapter.adapt(bukkitWorld);
+
+        BlockVector3 location;
+        try {
+            location = VectorParser.asBlockVector3(section.getString("location"));
+        } catch (IllegalArgumentException exception) {
+            throw new DeserializationException("Invalid location", exception);
+        }
+
+        return new SchematicRegion(name, schematicName, worldEditWorld, location);
     }
+
 
     @Override
     public String toString() {
         return "SchematicRegion{" +
-                "schemName='" + schemName + '\'' +
+                "schemName='" + schematicName + '\'' +
                 ", location=" + location +
                 ", clipboard=" + clipboard +
                 "} " + super.toString();

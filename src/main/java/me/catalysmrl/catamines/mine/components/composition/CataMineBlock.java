@@ -44,12 +44,11 @@ public class CataMineBlock implements Choice, SectionSerializable {
     public void serialize(ConfigurationSection section) {
         section.set("block", baseBlock.toString());
         section.set("chance", chance);
-        section.set("drop_type", dropType);
+        section.set("drop-type", dropType.toString());
 
+        ConfigurationSection lootTableSection = section.createSection("loot-table");
         for (int i = 0; i < items.size(); i++) {
-            ConfigurationSection itemSection = section.createSection("item_" + i);
-            CataMineItem item = items.get(i);
-            item.serialize(itemSection);
+            items.get(i).serialize(lootTableSection.createSection("item-" + i));
         }
     }
 
@@ -67,9 +66,9 @@ public class CataMineBlock implements Choice, SectionSerializable {
 
         double chance = section.getDouble("chance", 0d);
 
-        DropType dropType = DropType.valueOf(section.getString("drop_type", "CUSTOM"));
+        DropType dropType = DropType.valueOf(section.getString("drop-type", "CUSTOM"));
 
-        ConfigurationSection itemsSection = section.getConfigurationSection("loot_table");
+        ConfigurationSection itemsSection = section.getConfigurationSection("loot-table");
         List<CataMineItem> itemList = new ArrayList<>();
         if (itemsSection != null) {
             for (String key : itemsSection.getKeys(false)) {

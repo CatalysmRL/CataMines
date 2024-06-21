@@ -15,7 +15,7 @@ public class ReloadCommand extends AbstractCommand {
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException {
-
+        plugin.getMineManager().loadMinesFromFolder(plugin.getMineManager().getMinesPath());
     }
 
     @Override

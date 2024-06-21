@@ -41,6 +41,7 @@ public class CommandManager implements TabExecutor {
                 .put("set", new SetCommand())
                 .put("rename", new RenameCommand())
                 .put("displayname", new DisplayNameCommand())
+                .put("timer", new TimerCommand())
                 .put("regions", new RegionsCommand())
                 .build();
     }
