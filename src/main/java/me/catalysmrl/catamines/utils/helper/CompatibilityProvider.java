@@ -2,7 +2,7 @@ package me.catalysmrl.catamines.utils.helper;
 
 import org.bukkit.Bukkit;
 
-public class CompatibilityProvider {
+public final class CompatibilityProvider {
 
     private CompatibilityProvider() {
         //no instance

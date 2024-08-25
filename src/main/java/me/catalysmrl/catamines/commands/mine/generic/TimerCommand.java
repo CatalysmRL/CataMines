@@ -36,6 +36,7 @@ public class TimerCommand extends AbstractMineCommand {
         if (args.size() == 2) {
             String timeFormat = args.get(1).toLowerCase(Locale.ROOT);
             switch (timeFormat) {
+                case "seconds" -> {}
                 case "minutes" -> timeToSetInSeconds *= 60;
                 case "hours" -> timeToSetInSeconds *= 3600;
                 case "days" -> timeToSetInSeconds *= 86400;

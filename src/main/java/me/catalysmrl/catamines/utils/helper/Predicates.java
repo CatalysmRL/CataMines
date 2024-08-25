@@ -13,8 +13,4 @@ public final class Predicates {
         return range::contains;
     }
 
-    public static Predicate<Integer> notInRange(int start, int end) {
-        return inRange(start, end).negate();
-    }
-
 }
