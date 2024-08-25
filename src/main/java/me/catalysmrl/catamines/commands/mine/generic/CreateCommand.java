@@ -37,7 +37,7 @@ public class CreateCommand extends AbstractCommand {
             return;
         }
 
-        CataMine cataMine = new AdvancedCataMine(name);
+        CataMine cataMine = new AdvancedCataMine(plugin, name);
 
         if (sender instanceof Player player) {
             RegionSelector regionSelector = WorldEditUtils.getSelector(player);

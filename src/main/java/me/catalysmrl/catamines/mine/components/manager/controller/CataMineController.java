@@ -19,15 +19,16 @@ public class CataMineController implements SectionSerializable {
         this.mine = mine;
     }
 
-    public boolean tick() {
+    public void tick() {
         switch (resetMode) {
             case TIME -> tickTime();
             case PERCENTAGE -> tickPercentage();
             case TIME_PERCENTAGE -> {
-                return tickTime() || tickPercentage();
+                if (!tickTime()) {
+                    tickPercentage();
+                }
             }
         }
-        return false;
     }
 
     public boolean tickTime() {
@@ -35,7 +36,7 @@ public class CataMineController implements SectionSerializable {
 
         if (countdown <= 0) {
             countdown = resetDelay;
-            mine.reset();
+            mine.reset(mine.getPlugin());
             return true;
         }
 

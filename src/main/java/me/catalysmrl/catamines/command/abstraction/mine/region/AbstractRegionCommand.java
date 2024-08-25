@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -50,7 +51,9 @@ public abstract class AbstractRegionCommand extends AbstractMineCommand {
 
     public abstract void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine, CataMineRegion region);
 
-    public abstract List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args, CataMine mine, CataMineRegion region);
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args, CataMine mine, CataMineRegion region) {
+        return Collections.emptyList();
+    }
 
     @Override
     public String getDescription() {

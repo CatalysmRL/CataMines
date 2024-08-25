@@ -1,5 +1,6 @@
 package me.catalysmrl.catamines.api.mine;
 
+import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
 import me.catalysmrl.catamines.mine.components.manager.controller.CataMineController;
@@ -12,6 +13,8 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
  * @author CatalysmRL
  */
 public interface CataMine extends SectionSerializable {
+
+    CataMines getPlugin();
 
     /**
      * Ticks the mine and notifys it to perform various actions
@@ -28,7 +31,7 @@ public interface CataMine extends SectionSerializable {
      */
     void tick();
 
-    void reset();
+    void reset(CataMines plugin);
 
     /**
      * Gets the name of the mine which is used as a unique identifier.

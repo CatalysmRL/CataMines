@@ -23,7 +23,7 @@ public class ResetCommand extends AbstractMineCommand {
         }
 
         // TODO: Silent resetting and other flags
-        mine.reset();
+        mine.reset(plugin);
         Message.RESET_SUCCESS.send(sender, mine.getName());
     }
 

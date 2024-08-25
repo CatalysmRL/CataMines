@@ -5,6 +5,7 @@ import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.command.abstraction.mine.ParentMineCommand;
 import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionCreateCommand;
 import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionDeleteCommand;
+import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionResetCommand;
 
 public class RegionsCommand extends ParentMineCommand {
 
@@ -12,6 +13,7 @@ public class RegionsCommand extends ParentMineCommand {
         super("regions", ImmutableList.<AbstractMineCommand>builder()
                 .add(new RegionCreateCommand())
                 .add(new RegionDeleteCommand())
+                .add(new RegionResetCommand())
                 .build());
     }
 

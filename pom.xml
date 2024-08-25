@@ -27,6 +27,7 @@
                         <configuration>
                             <outputDirectory>C:\Users\c4t4l\Desktop\CataMines dev\plugins</outputDirectory>
                         </configuration>
+                        <version>3.3.0</version>
                     </plugin>
                 </plugins>
             </build>

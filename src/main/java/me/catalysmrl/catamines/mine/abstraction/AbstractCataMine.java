@@ -8,12 +8,15 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 
 public abstract class AbstractCataMine implements CataMine {
 
+    private final CataMines plugin;
+
     protected String name;
     protected String displayName;
     protected CataMineController controller;
     protected ChoiceManager<CataMineRegion> regionManager;
 
-    public AbstractCataMine(String name) {
+    public AbstractCataMine(CataMines plugin, String name) {
+        this.plugin = plugin;
         this.name = name;
         this.displayName = "default";
         controller = new CataMineController(this);
@@ -26,8 +29,8 @@ public abstract class AbstractCataMine implements CataMine {
     }
 
     @Override
-    public void reset() {
-        regionManager.getUpcoming().ifPresent(region -> CataMines.getInstance().getMineManager().resetRegion(region));
+    public void reset(CataMines plugin) {
+        regionManager.getUpcoming().ifPresent(region -> plugin.getMineManager().resetRegion(region));
         regionManager.next();
     }
 
@@ -65,5 +68,10 @@ public abstract class AbstractCataMine implements CataMine {
     @Override
     public ChoiceManager<CataMineRegion> getRegionManager() {
         return regionManager;
+    }
+
+    @Override
+    public CataMines getPlugin() {
+        return plugin;
     }
 }

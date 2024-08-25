@@ -164,7 +164,7 @@ public class MineManager {
     private Optional<CataMine> deserializeCataMine(ConfigurationSection section) {
         CataMine mine = null;
         try {
-            mine = AdvancedCataMine.deserialize(section);
+            mine = AdvancedCataMine.deserialize(plugin, section);
         } catch (DeserializationException e) {
             // ignore
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package me.catalysmrl.catamines.mine.mines;
 
+import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.mine.abstraction.AbstractCataMine;
 import me.catalysmrl.catamines.mine.components.manager.controller.CataMineController;
@@ -10,8 +11,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class AdvancedCataMine extends AbstractCataMine {
 
-    public AdvancedCataMine(String name) {
-        super(name);
+    public AdvancedCataMine(CataMines plugin, String name) {
+        super(plugin, name);
     }
 
     @Override
@@ -25,11 +26,11 @@ public class AdvancedCataMine extends AbstractCataMine {
         }
     }
 
-    public static AdvancedCataMine deserialize(ConfigurationSection section) throws DeserializationException {
+    public static AdvancedCataMine deserialize(CataMines plugin, ConfigurationSection section) throws DeserializationException {
         String name = section.getString("name");
         if (name == null) throw new DeserializationException();
 
-        AdvancedCataMine cataMine = new AdvancedCataMine(name);
+        AdvancedCataMine cataMine = new AdvancedCataMine(plugin, name);
 
         String displayName = section.getString("display-name", name);
         cataMine.setDisplayName(displayName);
