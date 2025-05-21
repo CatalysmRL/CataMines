@@ -206,12 +206,12 @@ public final class CataMines extends JavaPlugin {
     }
 
     public EditSession getEditSession(World world) {
-        if (!worldToEditSession.containsKey(world.getId())) {
+        if (!worldToEditSession.containsKey(world.id())) {
             EditSession session = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
             session.setReorderMode(EditSession.ReorderMode.FAST);
-            worldToEditSession.put(world.getId(), session);
+            worldToEditSession.put(world.id(), session);
         }
 
-        return worldToEditSession.get(world.getId());
+        return worldToEditSession.get(world.id());
     }
 }

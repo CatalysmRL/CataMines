@@ -4,5 +4,9 @@ prefix: "&6[&bCata&aMines&6] &7"
 # Should the plugin update you about newer versions?
 announceUpdate: true
 
+# Should the plugin optimize mines that have not been touched?
+# Can cause problems if blocks are broken abnormally.
+optimizeMines: true
+
 # Current supported languages: EN, CUSTOM, ES, CN
 language: EN

@@ -17,8 +17,8 @@ import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu.bl
 import de.c4t4lysm.catamines.utils.menusystem.menus.minemenus.compositionmenu.blockloottable.LootItemMenu;
 import de.c4t4lysm.catamines.utils.mine.AbstractCataMine;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrSubstitutor;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrSubstitutor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -71,12 +71,12 @@ public class Utils {
 
         if (region.getWorld() == null) return null;
         reg += region.getWorld().getName() + ";";
-        reg += region.getMinimumPoint().getX() + ";";
-        reg += region.getMinimumPoint().getY() + ";";
-        reg += region.getMinimumPoint().getZ() + ";";
-        reg += region.getMaximumPoint().getX() + ";";
-        reg += region.getMaximumPoint().getY() + ";";
-        reg += region.getMaximumPoint().getZ() + ";";
+        reg += region.getMinimumPoint().x() + ";";
+        reg += region.getMinimumPoint().y() + ";";
+        reg += region.getMinimumPoint().z() + ";";
+        reg += region.getMaximumPoint().x() + ";";
+        reg += region.getMaximumPoint().y() + ";";
+        reg += region.getMaximumPoint().z() + ";";
 
         return reg;
     }
@@ -88,12 +88,12 @@ public class Utils {
         strings[0] = region.getWorld().getName();
         BlockVector3 minP = region.getMinimumPoint();
         BlockVector3 maxP = region.getMaximumPoint();
-        strings[1] = String.valueOf(minP.getX());
-        strings[2] = String.valueOf(minP.getY());
-        strings[3] = String.valueOf(minP.getZ());
-        strings[4] = String.valueOf(maxP.getX());
-        strings[5] = String.valueOf(maxP.getY());
-        strings[6] = String.valueOf(maxP.getZ());
+        strings[1] = String.valueOf(minP.x());
+        strings[2] = String.valueOf(minP.y());
+        strings[3] = String.valueOf(minP.z());
+        strings[4] = String.valueOf(maxP.x());
+        strings[5] = String.valueOf(maxP.y());
+        strings[6] = String.valueOf(maxP.z());
 
         return strings;
     }

@@ -143,7 +143,7 @@ public class CompositionMenu extends PaginatedMenu {
             }
         }
 
-        inventory.setItem(53, ItemStackBuilder.buildItem(Material.SIGN, plugin.getLangString("GUI.Composition-Menu.Items.Info.Name"),
+        inventory.setItem(53, ItemStackBuilder.buildItem(Material.OAK_SIGN, plugin.getLangString("GUI.Composition-Menu.Items.Info.Name"),
                 plugin.getLangStringList("GUI.Composition-Menu.Items.Info.Lore")));
     }
 }

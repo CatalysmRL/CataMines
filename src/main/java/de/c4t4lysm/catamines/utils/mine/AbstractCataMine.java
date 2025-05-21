@@ -14,7 +14,7 @@ import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -140,15 +140,18 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void reset() {
 
-        if (blockCount != getTotalBlocks()) {
-            EditSession editSession = CataMines.getInstance().getEditSession(region.getWorld());
-            blockCount = getTotalBlocks();
-            if (!replaceMode) {
-                editSession.setBlocks(region, randomPattern);
-            } else {
-                editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
-            }
+        if (CataMines.getInstance().getConfig().getBoolean("optimizeMines", true) && blockCount == getTotalBlocks()) {
+            return;
         }
+
+        EditSession editSession = CataMines.getInstance().getEditSession(region.getWorld());
+        blockCount = getTotalBlocks();
+        if (!replaceMode) {
+            editSession.setBlocks(region, randomPattern);
+        } else {
+            editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
+        }
+
 
         if (warn) {
             broadcastResetMessage();
@@ -366,7 +369,7 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void teleportPlayers() {
         if (!teleportPlayersToResetLocation) {
-            getPlayersInRegion().forEach(player -> player.teleport(new Location(player.getWorld(), player.getLocation().getX(), region.getMaximumPoint().getY() + 1,
+            getPlayersInRegion().forEach(player -> player.teleport(new Location(player.getWorld(), player.getLocation().getX(), region.getMaximumPoint().y() + 1,
                     player.getLocation().getZ(), player.getLocation().getYaw(), player.getLocation().getPitch())));
         } else {
             if (teleportResetLocation == null) {
@@ -385,12 +388,12 @@ public abstract class AbstractCataMine implements Cloneable {
         return Bukkit.getOnlinePlayers().stream().filter(player -> Objects.equals(region.getWorld().getName(), player.getWorld().getName()) &&
                 player.getBoundingBox().overlaps(
                         new BoundingBox(
-                                region.getMinimumPoint().getX(),
-                                region.getMinimumPoint().getY(),
-                                region.getMinimumPoint().getZ(),
-                                region.getMaximumPoint().getX() + 1,
-                                region.getMaximumPoint().getY() + 1,
-                                region.getMaximumPoint().getZ() + 1)
+                                region.getMinimumPoint().x(),
+                                region.getMinimumPoint().y(),
+                                region.getMinimumPoint().z(),
+                                region.getMaximumPoint().x() + 1,
+                                region.getMaximumPoint().y() + 1,
+                                region.getMaximumPoint().z() + 1)
                                 .expand(warnDistance))).collect(Collectors.toList());
     }
 

@@ -4,7 +4,7 @@ import de.c4t4lysm.catamines.CataMines;
 import de.c4t4lysm.catamines.commands.CommandInterface;
 import de.c4t4lysm.catamines.schedulers.MineManager;
 import de.c4t4lysm.catamines.utils.mine.mines.CuboidCataMine;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
