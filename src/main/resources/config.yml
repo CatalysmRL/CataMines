@@ -1,6 +1,8 @@
 # Customize the prefix of the plugin
 prefix: "&6[&bCata&aMines&6] &7"
 
+optimizeMines: true
+
 # Should the plugin update you about newer versions?
 announceUpdate: true
 

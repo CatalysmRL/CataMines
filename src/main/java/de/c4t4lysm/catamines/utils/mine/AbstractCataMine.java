@@ -140,7 +140,7 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void reset() {
 
-        if (blockCount != getTotalBlocks()) {
+        if (blockCount != getTotalBlocks() && CataMines.getInstance().getConfig().getBoolean("optimizeMines")) {
             EditSession editSession = CataMines.getInstance().getEditSession(region.getWorld());
             blockCount = getTotalBlocks();
             if (!replaceMode) {
@@ -366,7 +366,7 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void teleportPlayers() {
         if (!teleportPlayersToResetLocation) {
-            getPlayersInRegion().forEach(player -> player.teleport(new Location(player.getWorld(), player.getLocation().getX(), region.getMaximumPoint().getY() + 1,
+            getPlayersInRegion().forEach(player -> player.teleport(new Location(player.getWorld(), player.getLocation().getX(), region.getMaximumPoint().y() + 1,
                     player.getLocation().getZ(), player.getLocation().getYaw(), player.getLocation().getPitch())));
         } else {
             if (teleportResetLocation == null) {
@@ -385,12 +385,12 @@ public abstract class AbstractCataMine implements Cloneable {
         return Bukkit.getOnlinePlayers().stream().filter(player -> Objects.equals(region.getWorld().getName(), player.getWorld().getName()) &&
                 player.getBoundingBox().overlaps(
                         new BoundingBox(
-                                region.getMinimumPoint().getX(),
-                                region.getMinimumPoint().getY(),
-                                region.getMinimumPoint().getZ(),
-                                region.getMaximumPoint().getX() + 1,
-                                region.getMaximumPoint().getY() + 1,
-                                region.getMaximumPoint().getZ() + 1)
+                                region.getMinimumPoint().x(),
+                                region.getMinimumPoint().y(),
+                                region.getMinimumPoint().z(),
+                                region.getMaximumPoint().x() + 1,
+                                region.getMaximumPoint().y() + 1,
+                                region.getMaximumPoint().z() + 1)
                                 .expand(warnDistance))).collect(Collectors.toList());
     }
 
