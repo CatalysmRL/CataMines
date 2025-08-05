@@ -266,8 +266,8 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
             Player player = event.getPlayer();
             int efficiencyLvl = 0;
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
-            if (itemInHand.containsEnchantment(Enchantment.DIG_SPEED)) {
-                efficiencyLvl = itemInHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
+            if (itemInHand.containsEnchantment(Enchantment.EFFICIENCY)) {
+                efficiencyLvl = itemInHand.getEnchantmentLevel(Enchantment.EFFICIENCY);
             }
 
             if (efficiencyLvl < getMinEfficiencyLvl()) {
@@ -308,8 +308,8 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
                 Location location = event.getBlock().getLocation();
                 if (lootItem.isFortune()) {
                     ItemStack usedTool = event.getPlayer().getInventory().getItemInMainHand();
-                    if (usedTool.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
-                        item.setAmount(lootItem.getDropCount(usedTool.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS)));
+                    if (usedTool.containsEnchantment(Enchantment.FORTUNE)) {
+                        item.setAmount(lootItem.getDropCount(usedTool.getEnchantmentLevel(Enchantment.FORTUNE)));
                     }
                 }
                 location.getWorld().dropItemNaturally(location, item);
@@ -347,7 +347,7 @@ public class CuboidCataMine extends AbstractCataMine implements Cloneable, Confi
     public Location getTeleportLocation() {
         if (teleportLocation == null) {
             if (region != null) {
-                return new Location(BukkitAdapter.adapt(region.getWorld()), region.getCenter().getX() + 0.5, region.getMaximumPoint().getY() + 1, region.getCenter().getZ() + 0.5);
+                return new Location(BukkitAdapter.adapt(region.getWorld()), region.getCenter().x() + 0.5, region.getMaximumPoint().y() + 1, region.getCenter().z() + 0.5);
             }
         }
 

@@ -14,7 +14,7 @@ import de.c4t4lysm.catamines.utils.mine.components.CataMineBlock;
 import de.c4t4lysm.catamines.utils.mine.components.CataMineResetMode;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
