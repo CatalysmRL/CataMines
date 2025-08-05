@@ -2,8 +2,10 @@ package me.catalysmrl.catamines.command.abstraction.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.utils.message.Message;
-import me.catalysmrl.catamines.utils.message.Messages;
+import me.catalysmrl.catamines.command.abstraction.CommandContext;
+import me.catalysmrl.catamines.command.abstraction.CommandException;
+import me.catalysmrl.catamines.command.utils.ArgumentException;
+import me.catalysmrl.catamines.utils.message.LegacyMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
@@ -21,7 +23,7 @@ public abstract class ParentMineCommand extends AbstractMineCommand {
     private final List<AbstractMineCommand> children;
 
     public ParentMineCommand(String name, List<AbstractMineCommand> children) {
-        super(name, null, integer -> true, false);
+        super(name, "catamines.regions", integer -> true, false);
         this.children = children;
     }
 
@@ -30,44 +32,40 @@ public abstract class ParentMineCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
 
-        if (args.isEmpty()) {
-            Messages.send(sender, getUsage());
-            return;
-        }
+        if (!ctx.hasNext()) throw new ArgumentException.Usage();
+
+        String subCmdName = ctx.peek();
 
         AbstractMineCommand sub = getChildren().stream()
-                .filter(s -> s.getName().equalsIgnoreCase(args.get(0)) || s.getAliases().contains(args.get(0).toLowerCase(Locale.ROOT)))
+                .filter(s -> s.getName().equalsIgnoreCase(subCmdName) || s.getAliases().contains(subCmdName.toLowerCase(Locale.ROOT)))
                 .findFirst()
                 .orElse(null);
 
         if (sub == null) {
-            Message.UNKNOWN_COMMAND.send(sender);
+            LegacyMessage.UNKNOWN_COMMAND.send(sender);
             return;
         }
 
         if (sub.onlyPlayers() && !(sender instanceof Player)) {
-            Message.ONLY_PLAYERS.send(sender);
+            LegacyMessage.ONLY_PLAYERS.send(sender);
             return;
         }
 
         if (!sub.isAuthorized(sender)) {
-            Message.NO_PERMISSION.send(sender);
+            LegacyMessage.NO_PERMISSION.send(sender);
             return;
         }
 
-        if (!sub.checkArgLength().test(args.size())) {
-            Messages.send(sender, sub.getUsage());
-            return;
-        }
+        ctx.next();
 
-        sub.execute(plugin, sender, args.subList(1, args.size()), mine);
+        sub.execute(plugin, sender, ctx, mine);
     }
 
     @Override
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
-        if (args.size() == 1) {
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) {
+        if (ctx.remaining() == 1) {
             List<String> availableSubCommands = new ArrayList<>();
 
             children.stream()
@@ -77,18 +75,20 @@ public abstract class ParentMineCommand extends AbstractMineCommand {
                         availableSubCommands.addAll(c.getAliases());
                     });
 
-            return StringUtil.copyPartialMatches(args.get(0), availableSubCommands, new ArrayList<>());
+            return StringUtil.copyPartialMatches(ctx.peek(), availableSubCommands, new ArrayList<>());
         } else {
             Optional<AbstractMineCommand> subCommand = children.stream()
                     .filter(c -> c.isAuthorized(sender))
-                    .filter(c -> c.getName().equalsIgnoreCase(args.get(0)) || c.getAliases().contains(args.get(0).toLowerCase(Locale.ROOT)))
+                    .filter(c -> c.getName().equalsIgnoreCase(ctx.peek()) || c.getAliases().contains(ctx.peek().toLowerCase(Locale.ROOT)))
                     .findAny();
 
             if (subCommand.isEmpty()) {
                 return Collections.emptyList();
             }
 
-            return subCommand.get().tabComplete(plugin, sender, args.subList(1, args.size()), mine);
+            ctx.next();
+
+            return subCommand.get().tabComplete(plugin, sender, ctx, mine);
         }
     }
 }

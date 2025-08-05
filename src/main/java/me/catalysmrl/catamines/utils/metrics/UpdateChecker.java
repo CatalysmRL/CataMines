@@ -83,7 +83,7 @@ public class UpdateChecker implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
         if (event.getPlayer().isOp()) {
-            Messages.send(event.getPlayer(),
+            Messages.sendPrefixed(event.getPlayer(),
                     "An update for &bCata&aMines &6(v" + spigotVersion + ")",
                     "&7is available at: &dhttps://spigotmc.org/resources/96457/");
         }

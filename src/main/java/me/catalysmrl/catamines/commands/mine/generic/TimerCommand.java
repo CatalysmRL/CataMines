@@ -2,12 +2,14 @@ package me.catalysmrl.catamines.commands.mine.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.command.abstraction.CommandContext;
+import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.message.LegacyMessage;
 import org.bukkit.command.CommandSender;
 
-import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,37 +25,50 @@ public class TimerCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+        assertArgLength(ctx);
 
         int timeToSetInSeconds;
         try {
-            timeToSetInSeconds = Integer.parseInt(args.get(0));
+            timeToSetInSeconds = Integer.parseInt(ctx.next());
         } catch (NumberFormatException e) {
-            Message.SET_INVALID_NUMBER.send(sender, args.get(0));
+            LegacyMessage.SET_INVALID_NUMBER.send(sender, ctx.peek());
             return;
         }
 
-        if (args.size() == 2) {
-            String timeFormat = args.get(1).toLowerCase(Locale.ROOT);
+        if (ctx.hasNext()) {
+            String timeFormat = ctx.peek().toLowerCase(Locale.ROOT);
             switch (timeFormat) {
-                case "seconds" -> {}
-                case "minutes" -> timeToSetInSeconds *= 60;
-                case "hours" -> timeToSetInSeconds *= 3600;
-                case "days" -> timeToSetInSeconds *= 86400;
+                case "seconds", "s" -> {
+                }
+                case "minutes", "m" -> timeToSetInSeconds *= 60;
+                case "hours", "h" -> timeToSetInSeconds *= 3600;
+                case "days", "d" -> timeToSetInSeconds *= 86400;
                 default -> {
-                    Message.TIMER_INVALID_FORMAT.send(sender);
+                    LegacyMessage.TIMER_INVALID_FORMAT.send(sender);
                     return;
                 }
             }
         }
 
         mine.getController().setResetDelay(timeToSetInSeconds);
-        Message.TIMER_SUCCESS.send(sender);
+        LegacyMessage.TIMER_SUCCESS.send(sender);
 
-        try {
-            plugin.getMineManager().saveMine(mine);
-        } catch (IOException e) {
-            Message.MINE_SAVE_EXCEPTION.send(sender);
+        requireSave();
+    }
+
+    @Override
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) {
+        switch (ctx.remaining()) {
+            case 1 -> {
+                return List.of("Number");
+            }
+            case 2 -> {
+                return List.of("seconds", "minutes", "hours", "days", "s", "m", "h", "d");
+            }
+            default -> {
+                return Collections.emptyList();
+            }
         }
     }
 

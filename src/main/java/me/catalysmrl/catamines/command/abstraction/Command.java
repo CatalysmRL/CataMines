@@ -61,22 +61,23 @@ public interface Command {
 
     /**
      * Executing the command
-     * @param plugin the plugin instance
-     * @param sender the command sender
-     * @param args   the command arguments
+     *
+     * @param plugin  the plugin instance
+     * @param sender  the command sender
+     * @param context the command context
      * @throws CommandException if there is an exception when executing the command
      */
-    void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException;
+    void execute(CataMines plugin, CommandSender sender, CommandContext context) throws CommandException;
 
     /**
      * Returns a list of command completions applicable for this command
      *
-     * @param plugin the plugin instance
-     * @param sender the command sender
-     * @param args   the command arguments
+     * @param plugin  the plugin instance
+     * @param sender  the command sender
+     * @param context the command arguments
      * @return a list of command completions
      */
-    default List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args) {
+    default List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext context) {
         return Collections.emptyList();
     }
 

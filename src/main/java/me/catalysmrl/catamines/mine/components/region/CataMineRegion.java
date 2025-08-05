@@ -1,5 +1,6 @@
 package me.catalysmrl.catamines.mine.components.region;
 
+import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
@@ -14,6 +15,8 @@ public interface CataMineRegion extends Rewardable, Identifiable, Choice, Sectio
     void setName(String name);
 
     void fill();
+
+    void redefineRegion(RegionSelector selector);
 
     RegionType getType();
 

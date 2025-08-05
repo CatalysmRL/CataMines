@@ -9,7 +9,7 @@ import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationM
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
-import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.message.LegacyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,6 +19,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -42,6 +43,12 @@ public class MineManager {
     public MineManager(CataMines plugin) {
         this.plugin = plugin;
         minesPath = plugin.getDataFolder().toPath().resolve("mines");
+        try {
+            createDirectoriesIfNotExists(minesPath);
+        } catch (IOException e) {
+            plugin.getLogger().severe("Could not create mines directory");
+            return;
+        }
         Bukkit.getScheduler().runTaskLater(plugin, () -> loadMinesFromFolder(minesPath), 2L);
         start();
     }
@@ -59,7 +66,7 @@ public class MineManager {
             try {
                 saveMine(mine);
             } catch (IOException e) {
-                plugin.getLogger().severe(Message.MINE_SAVE_EXCEPTION.getMessage(mine.getName()));
+                plugin.getLogger().severe(LegacyMessage.MINE_SAVE_EXCEPTION.getMessage(mine.getName()));
             }
         }
     }
@@ -269,5 +276,17 @@ public class MineManager {
 
     public Path getMinesPath() {
         return minesPath;
+    }
+
+    private static void createDirectoriesIfNotExists(Path path) throws IOException {
+        if (Files.exists(path) && (Files.isDirectory(path) || Files.isSymbolicLink(path))) {
+            return;
+        }
+
+        try {
+            Files.createDirectories(path);
+        } catch (FileAlreadyExistsException e) {
+            // ignore
+        }
     }
 }

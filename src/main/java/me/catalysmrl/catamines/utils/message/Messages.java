@@ -3,6 +3,8 @@ package me.catalysmrl.catamines.utils.message;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,22 +21,8 @@ public class Messages {
     public static String PREFIX = "&6[&bCata&aMines&6]";
 
 
-    /**
-     * Sends a colorized message with the plugin prefix to the sender
-     *
-     * @param sender  the sender receiving the message
-     * @param message the message to prefix and colorize
-     */
-    public static void send(CommandSender sender, String message) {
-        sender.sendMessage(colorize(PREFIX + "&7 " + message));
-    }
-
-    public static void send(CommandSender sender, String... messages) {
-        if (messages.length == 0) {
-            return;
-        }
-
-        send(sender, String.join("\n", messages));
+    public static String prefix(String message) {
+        return colorize(PREFIX + " &7" + message);
     }
 
     /**
@@ -48,12 +36,29 @@ public class Messages {
     }
 
     /**
+     * Sends a colorized message with the plugin prefix to the sender
+     *
+     * @param sender  the sender receiving the message
+     * @param message the message to prefix and colorize
+     */
+    public static void sendPrefixed(CommandSender sender, String message) {
+        sender.sendMessage(colorize(PREFIX + " &7" + message));
+    }
+
+    public static void sendPrefixed(CommandSender sender, String... messages) {
+        if (messages.length == 0) {
+            return;
+        }
+
+        sendPrefixed(sender, String.join("\n", messages));
+    }
+
+    /**
      * Translates color codes in the given input string.
      *
      * @param string the string to "colorize"
      * @return the colorized string
      */
-
     public static String colorize(String string) {
         if (string == null) {
             return "null";
@@ -74,6 +79,13 @@ public class Messages {
 
         // Translate from '&' to '§' (section symbol)
         return ChatColor.translateAlternateColorCodes('&', sb.toString());
+    }
+
+    public static List<String> colorize(List<String> inputList) {
+        if (inputList == null) return Collections.emptyList();
+        return inputList.stream()
+                .map(Messages::colorize)
+                .toList();
     }
 
 }

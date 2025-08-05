@@ -3,6 +3,7 @@ package me.catalysmrl.catamines.command;
 import com.google.common.collect.ImmutableMap;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.Command;
+import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.commands.generic.HelpCommand;
 import me.catalysmrl.catamines.commands.generic.ListCommand;
@@ -10,7 +11,6 @@ import me.catalysmrl.catamines.commands.generic.ReloadCommand;
 import me.catalysmrl.catamines.commands.mine.generic.*;
 import me.catalysmrl.catamines.commands.mine.regions.RegionsCommand;
 import me.catalysmrl.catamines.utils.message.Message;
-import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -33,15 +33,18 @@ public class CommandManager implements TabExecutor {
                 .put("help", new HelpCommand())
                 .put("list", new ListCommand())
                 .put("reload", new ReloadCommand())
-                .put("info", new InfoCommand())
-                .put("debug", new DebugCommand())
                 .put("create", new CreateCommand())
+                .put("debug", new DebugCommand())
                 .put("delete", new DeleteCommand())
-                .put("reset", new ResetCommand())
-                .put("set", new SetCommand())
-                .put("rename", new RenameCommand())
                 .put("displayname", new DisplayNameCommand())
+                .put("info", new InfoCommand())
+                .put("redefine", new RedefineCommand())
+                .put("rename", new RenameCommand())
+                .put("reset", new ResetCommand())
+                .put("resetmode", new ResetModeCommand())
+                .put("set", new SetCommand())
                 .put("timer", new TimerCommand())
+                .put("unset", new UnsetCommand())
                 .put("regions", new RegionsCommand())
                 .build();
     }
@@ -73,18 +76,12 @@ public class CommandManager implements TabExecutor {
             return true;
         }
 
-        List<String> strippedArgs = new ArrayList<>(Arrays.asList(args));
-        if (!strippedArgs.isEmpty()) {
-            strippedArgs.remove(0);
-        }
-
-        if (!cataCommand.checkArgLength().test(strippedArgs.size())) {
-            Messages.send(sender, cataCommand.getUsage());
-            return true;
-        }
+        List<String> rawArgs = Arrays.asList(args);
+        List<String> subArgs = rawArgs.size() > 1 ? rawArgs.subList(1, rawArgs.size()) : List.of();
+        CommandContext ctx = new CommandContext(subArgs);
 
         try {
-            cataCommand.execute(plugin, sender, strippedArgs);
+            cataCommand.execute(plugin, sender, ctx);
         } catch (CommandException e) {
             e.handle(sender, cataCommand);
         } catch (Throwable e) {
@@ -108,7 +105,7 @@ public class CommandManager implements TabExecutor {
             return commands.stream()
                     .filter(c -> c.getName().equalsIgnoreCase(args[0]) || c.getAliases().contains(args[0].toLowerCase(Locale.ROOT)))
                     .findFirst()
-                    .map(c -> c.tabComplete(plugin, commandSender, Arrays.asList(Arrays.copyOfRange(args, 1, args.length))))
+                    .map(c -> c.tabComplete(plugin, commandSender, new CommandContext(Arrays.asList(Arrays.copyOfRange(args, 1, args.length)))))
                     .orElse(Collections.emptyList());
         }
 

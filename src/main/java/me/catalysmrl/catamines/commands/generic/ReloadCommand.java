@@ -2,11 +2,10 @@ package me.catalysmrl.catamines.commands.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
+import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import org.bukkit.command.CommandSender;
-
-import java.util.List;
 
 public class ReloadCommand extends AbstractCommand {
     public ReloadCommand() {
@@ -14,7 +13,8 @@ public class ReloadCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
+        assertArgLength(ctx);
         plugin.getMineManager().loadMinesFromFolder(plugin.getMineManager().getMinesPath());
     }
 

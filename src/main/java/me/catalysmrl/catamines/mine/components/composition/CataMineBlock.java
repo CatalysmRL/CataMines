@@ -6,7 +6,7 @@ import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import me.catalysmrl.catamines.mine.components.composition.drop.CataMineItem;
 import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
-import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.message.LegacyMessage;
 import me.catalysmrl.catamines.utils.worldedit.BaseBlockParser;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -31,7 +31,7 @@ public class CataMineBlock implements Choice, SectionSerializable {
 
     public CataMineBlock(BaseBlock baseBlock, double chance, DropType dropType, List<CataMineItem> items) {
         if (chance < 0 || chance > 100) {
-            throw new IllegalArgumentException(Message.SET_INVALID_CHANCE.getMessage());
+            throw new IllegalArgumentException(LegacyMessage.SET_INVALID_CHANCE.getMessage());
         }
 
         this.baseBlock = baseBlock;

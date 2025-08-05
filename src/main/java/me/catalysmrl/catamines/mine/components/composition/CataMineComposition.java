@@ -26,22 +26,32 @@ public class CataMineComposition implements Rewardable, Identifiable, Choice, Se
     private double chance;
 
     private List<CataMineBlock> blocks = new ArrayList<>();
-    private RandomPattern randomPattern;
+    private RandomPattern randomPattern = new RandomPattern();
 
     public CataMineComposition(String name) {
         this.name = name;
     }
 
-    public void add(CataMineBlock block) {
+    public boolean canReset() {
+        return !blocks.isEmpty();
+    }
+
+    public void addBlock(CataMineBlock block) {
         Objects.requireNonNull(block);
         blocks.removeIf(cataMineBlock -> block.getBaseBlock().equals(cataMineBlock.getBaseBlock()));
         blocks.add(block);
         updateRandomPattern();
     }
 
-    public void remove(CataMineBlock block) throws IllegalArgumentException {
+    public void removeBlock(CataMineBlock block) throws IllegalArgumentException {
         if (!blocks.remove(block))
             throw new IllegalArgumentException("Block is not in composition");
+        updateRandomPattern();
+    }
+
+    public void clearBlocks() {
+        blocks.clear();
+        updateRandomPattern();
     }
 
     private void updateRandomPattern() {

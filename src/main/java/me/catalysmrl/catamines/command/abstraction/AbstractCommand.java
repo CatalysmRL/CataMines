@@ -1,5 +1,7 @@
 package me.catalysmrl.catamines.command.abstraction;
 
+import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.command.utils.ArgumentException;
 import org.bukkit.command.CommandSender;
 
 import java.util.Optional;
@@ -21,7 +23,10 @@ public abstract class AbstractCommand implements Command {
         this.argumentCheck = argumentCheck;
         this.onlyPlayers = onlyPlayers;
     }
-    
+
+    @Override
+    public abstract void execute(CataMines plugin, CommandSender sender, CommandContext context) throws CommandException;
+
     @Override
     public String getName() {
         return name;
@@ -45,5 +50,9 @@ public abstract class AbstractCommand implements Command {
     @Override
     public boolean isAuthorized(CommandSender sender) {
         return permission == null || sender.hasPermission(permission);
+    }
+
+    protected void assertArgLength(CommandContext ctx) throws ArgumentException.Usage {
+        if (!checkArgLength().test(ctx.remaining())) throw new ArgumentException.Usage();
     }
 }

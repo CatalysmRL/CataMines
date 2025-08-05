@@ -15,7 +15,7 @@ public abstract class ArgumentException extends CommandException {
 
         @Override
         public void handle(CommandSender sender, Command command) {
-            Messages.send(sender, command.getUsage());
+            Messages.sendPrefixed(sender, command.getUsage());
         }
     }
 

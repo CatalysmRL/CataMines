@@ -1,0 +1,4 @@
+command:
+  unknown-command: "Unknown command"
+  only-players: "&cOnly players can execute this command!"
+  no-permission: "&cYou don't have permission to perform this command!"

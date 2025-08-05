@@ -16,24 +16,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>export-to-test-server</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <configuration>
-                            <outputDirectory>C:\Users\c4t4l\Desktop\CataMines dev\plugins</outputDirectory>
-                        </configuration>
-                        <version>3.3.0</version>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
             <plugin>
@@ -56,7 +38,8 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>me.catalysmrl.catamines.utils.metrics</shadedPattern>
+                            <!-- Replace this with your package! -->
+                            <shadedPattern>me.catalysmrl.catamines.shaded.metrics</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -80,12 +63,12 @@
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>enginehub</id>
+            <url>https://maven.enginehub.org/repo/</url>
         </repository>
         <repository>
             <id>sonatype</id>
@@ -102,7 +85,7 @@
             <dependency>
                 <groupId>com.intellectualsites.bom</groupId>
                 <artifactId>bom-newest</artifactId> <!--  Ref: https://github.com/IntellectualSites/bom -->
-                <version>1.45</version>
+                <version>1.52</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -111,9 +94,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.20.4-R0.1-SNAPSHOT</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.7-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -2,7 +2,7 @@ package me.catalysmrl.catamines.mine.placeholders;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.message.LegacyMessage;
 import me.catalysmrl.catamines.utils.message.Messages;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -26,12 +26,12 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return plugin.getDescription().getAuthors().toString();
+        return plugin.getPluginMeta().getAuthors().toString();
     }
 
     @Override
     public @NotNull String getVersion() {
-        return plugin.getDescription().getVersion();
+        return plugin.getPluginMeta().getVersion();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
 
         Optional<CataMine> mineOptional = plugin.getMineManager().getMine(args[mineIndex]);
         if (mineOptional.isEmpty()) {
-            return Message.MINE_NOT_EXISTS.getMessage();
+            return LegacyMessage.MINE_NOT_EXISTS.getMessage();
         }
 
         CataMine mine = mineOptional.get();

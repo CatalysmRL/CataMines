@@ -3,13 +3,16 @@ package me.catalysmrl.catamines.command.abstraction.mine;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
+import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.utils.ArgumentException;
+import me.catalysmrl.catamines.utils.message.LegacyMessage;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +20,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public abstract class AbstractMineCommand extends AbstractCommand {
+
+    private boolean needsSave = false;
 
     public AbstractMineCommand(String name, String permission, Predicate<Integer> argumentCheck, boolean onlyPlayers) {
         super(name, permission, argumentCheck, onlyPlayers);
@@ -28,17 +33,13 @@ public abstract class AbstractMineCommand extends AbstractCommand {
      *
      * @param plugin The CataMines plugin instance
      * @param sender The command sender
-     * @param args   The command arguments passed by the sender
+     * @param ctx    The command context
      * @throws CommandException If there is an error during command execution
      */
     @Override
-    public final void execute(CataMines plugin, CommandSender sender, List<String> args) throws CommandException {
-
-        if (args.isEmpty()) {
-            throw new ArgumentException.Usage();
-        }
-
-        String mineID = args.get(0);
+    public final void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
+        String mineID = ctx.next();
+        if (mineID == null) throw new ArgumentException.Usage();
 
         if ("*".equals(mineID)) {
             if (!sender.hasPermission("catamines.admin")) {
@@ -47,14 +48,14 @@ public abstract class AbstractMineCommand extends AbstractCommand {
             }
 
             List<CataMine> mines = new ArrayList<>(plugin.getMineManager().getMines());
-            List<String> strippedArgs = args.subList(1, args.size());
 
             for (CataMine mine : mines) {
-                execute(plugin, sender, strippedArgs, mine);
+                Messages.sendPrefixed(sender, "&7>> &f" + mine.getName());
+                execute(plugin, sender, ctx.copy(), mine);
             }
 
             sender.sendMessage("");
-            Message.QUERY_ALL.send(sender, mines.size());
+            LegacyMessage.QUERY_ALL.send(sender, mines.size());
             sender.sendMessage("");
             return;
         }
@@ -62,29 +63,57 @@ public abstract class AbstractMineCommand extends AbstractCommand {
         Optional<CataMine> mineOptional = plugin.getMineManager().getMine(mineID);
 
         if (mineOptional.isEmpty()) {
-            Message.MINE_NOT_EXISTS.send(sender, mineID);
+            LegacyMessage.MINE_NOT_EXISTS.send(sender, mineID);
             return;
         }
 
-        execute(plugin, sender, args.subList(1, args.size()), mineOptional.get());
-    }
+        CataMine mine = mineOptional.get();
 
-    public abstract void execute(CataMines plugin, CommandSender sender, List<String> args, CataMine mine);
+        execute(plugin, sender, ctx, mine);
 
-    @Override
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args) {
-        if (args.size() == 1) {
-            return StringUtil.copyPartialMatches(args.get(0), plugin.getMineManager().getMineList(), new ArrayList<>());
-        } else {
-            Optional<CataMine> optionalCataMine = plugin.getMineManager().getMine(args.get(0));
-            if (optionalCataMine.isEmpty()) return List.of(Messages.colorize("&cUnknown mine"));
-            CataMine mine = optionalCataMine.get();
-
-            return tabComplete(plugin, sender, args.subList(1, args.size()), mine);
+        if (needsSave) {
+            try {
+                plugin.getMineManager().saveMine(mine);
+            } catch (IOException e) {
+                LegacyMessage.MINE_SAVE_EXCEPTION.send(sender);
+            }
         }
     }
 
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, List<String> args, CataMine mine) {
+    public abstract void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException;
+
+    @Override
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx) {
+        if (ctx.remaining() == 1) {
+            return StringUtil.copyPartialMatches(ctx.peek(), plugin.getMineManager().getMineList(), new ArrayList<>());
+        }
+
+        String mineId = ctx.peek();
+        if ("*".equals(mineId)) {
+            Optional<CataMine> mineOptional = plugin.getMineManager().getMines().stream().findAny();
+            if (mineOptional.isEmpty())
+                return Collections.singletonList(Message.of("command.mine-not-exists").format(sender));
+
+            ctx.next();
+
+            return tabComplete(plugin, sender, ctx.copy(), mineOptional.get());
+        }
+
+        Optional<CataMine> optionalCataMine = plugin.getMineManager().getMine(mineId);
+        if (optionalCataMine.isEmpty()) {
+            return Collections.singletonList(Message.of("command.mine-not-exists").format(sender));
+        }
+
+        ctx.next();
+
+        return tabComplete(plugin, sender, ctx, optionalCataMine.get());
+    }
+
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext context, CataMine mine) {
         return Collections.emptyList();
+    }
+
+    protected void requireSave() {
+        this.needsSave = true;
     }
 }

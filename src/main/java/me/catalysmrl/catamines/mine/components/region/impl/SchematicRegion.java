@@ -3,6 +3,7 @@ package me.catalysmrl.catamines.mine.components.region.impl;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.world.World;
 import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.mine.components.region.AbstractCataMineRegion;
@@ -18,19 +19,31 @@ public class SchematicRegion extends AbstractCataMineRegion {
     private BlockVector3 location;
     private Clipboard clipboard;
 
+    public SchematicRegion(String name, String schematicName, RegionSelector selector) {
+        super(name);
+        define(schematicName, selector);
+    }
+
     public SchematicRegion(String name, String schematicName, World world, BlockVector3 location) {
         super(name);
-        this.schematicName = schematicName;
+        define(schematicName, world, location);
+    }
+
+    public void define(String schematicName, World world, BlockVector3 location) {
+        this.schematicName = name;
         this.world = world;
         this.location = location;
         this.clipboard = WorldEditUtils.loadSchematic(schematicName);
     }
 
-    public void redefine(String schematicName, World world, BlockVector3 location) {
-        this.schematicName = schematicName;
-        this.world = world;
-        this.location = location;
-        this.clipboard = WorldEditUtils.loadSchematic(schematicName);
+    public void define(String schematicName, RegionSelector selector) {
+        define(schematicName, selector.getWorld(), selector.getPrimaryPosition());
+    }
+
+    @Override
+    public void redefineRegion(RegionSelector selector) {
+        this.world = selector.getWorld();
+        this.location = selector.getPrimaryPosition();
     }
 
     @Override
