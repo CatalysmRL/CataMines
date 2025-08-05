@@ -140,14 +140,16 @@ public abstract class AbstractCataMine implements Cloneable {
 
     public void reset() {
 
-        if (blockCount != getTotalBlocks() && CataMines.getInstance().getConfig().getBoolean("optimizeMines", true)) {
-            EditSession editSession = CataMines.getInstance().getEditSession(region.getWorld());
-            blockCount = getTotalBlocks();
-            if (!replaceMode) {
-                editSession.setBlocks(region, randomPattern);
-            } else {
-                editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
-            }
+        if (blockCount == getTotalBlocks() && CataMines.getInstance().getConfig().getBoolean("optimizeMines", true)) {
+            return;
+        }
+
+        EditSession editSession = CataMines.getInstance().getEditSession(region.getWorld());
+        blockCount = getTotalBlocks();
+        if (!replaceMode) {
+            editSession.setBlocks(region, randomPattern);
+        } else {
+            editSession.replaceBlocks(region, Collections.singleton(BlockTypes.AIR.getDefaultState().toBaseBlock()), randomPattern);
         }
 
         if (warn) {
