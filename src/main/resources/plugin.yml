@@ -1,9 +1,9 @@
-name: CataMines
-version: '${project.version}'
+name: ${pluginName}
+version: ${version}
 main: me.catalysmrl.catamines.CataMines
 api-version: 1.16
 authors: [ CatalysmRL (C4t4lysm) ]
-description: Mines management plugin
+description: ${description}
 load: POSTWORLD
 depend: [ WorldEdit ]
 softdepend: [ PlaceholderAPI , MultiverseCore ]

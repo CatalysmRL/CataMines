@@ -4,9 +4,11 @@ import me.catalysmrl.catamines.command.CommandManager;
 import me.catalysmrl.catamines.listeners.BlockListeners;
 import me.catalysmrl.catamines.managers.MineManager;
 import me.catalysmrl.catamines.mine.placeholders.CataMinePlaceHolders;
-import me.catalysmrl.catamines.shaded.metrics.Metrics;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
 import me.catalysmrl.catamines.utils.message.LocaleBootstrap;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -58,10 +60,10 @@ public final class CataMines extends JavaPlugin {
 
     private void setupMetrics() {
         final Metrics metrics = new Metrics(this, 12889);
-        metrics.addCustomChart(new Metrics.SimplePie("we_implementation", () ->
+        metrics.addCustomChart(new SimplePie("we_implementation", () ->
                 CompatibilityProvider.isFaweEnabled() ? "FastAsyncWorldEdit" : "WorldEdit"));
 
-        metrics.addCustomChart(new Metrics.SingleLineChart("mines", () -> mineManager.getMines().size()));
+        metrics.addCustomChart(new SingleLineChart("mines", () -> mineManager.getMines().size()));
     }
 
     private void registerCommands() {
