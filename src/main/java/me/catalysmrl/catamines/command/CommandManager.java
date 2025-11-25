@@ -46,6 +46,18 @@ public class CommandManager implements TabExecutor {
                 .put("timer", new TimerCommand())
                 .put("unset", new UnsetCommand())
                 .put("regions", new RegionsCommand())
+                .put("gui", new GuiCommand())
+                .put("resetpercentage", new ResetPercentageCommand())
+                .put("start", new StartCommand())
+                .put("starttasks", new StartTasksCommand())
+                .put("stop", new StopCommand())
+                .put("stoptasks", new StopTasksCommand())
+                .put("sync", new SyncCommand())
+                .put("teleport", new TeleportCommand())
+                .put("teleportplayers", new TeleportPlayersCommand())
+                .put("warn", new WarnCommand())
+                .put("setteleport", new SetTeleportCommand())
+                .put("setresetteleport", new SetResetTeleportCommand())
                 .build();
     }
 

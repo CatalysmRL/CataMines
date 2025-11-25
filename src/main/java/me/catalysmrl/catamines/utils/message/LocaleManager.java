@@ -11,6 +11,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LocaleManager {
 
@@ -46,14 +47,22 @@ public class LocaleManager {
 
     public String getMessage(Locale locale, String key) {
         YamlConfiguration config = localeFiles.getOrDefault(locale, localeFiles.get(defaultLocale));
-        return config.getString(key, "§cMissing message: " + key);
+        String raw = config.getString(key, "§cMissing message: " + key);
+
+        return raw.replace("%p", Messages.PREFIX);
     }
 
     public List<String> getList(Locale locale, String key) {
         YamlConfiguration config = localeFiles.getOrDefault(locale, localeFiles.get(defaultLocale));
         List<String> list = config.getStringList(key);
-        if (list.isEmpty()) return Collections.singletonList(Messages.colorize("&cMissing list: " + key));
-        return list;
+
+        if (list.isEmpty()) {
+            return Collections.singletonList("§cMissing list: " + key);
+        }
+
+        return list.stream()
+                .map(line -> line.replace("%p", Messages.PREFIX))
+                .collect(Collectors.toList());
     }
 
     public String getFormatted(Locale locale, String key, Object... replacements) {

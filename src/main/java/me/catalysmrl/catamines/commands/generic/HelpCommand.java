@@ -5,7 +5,7 @@ import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
 
@@ -29,7 +29,7 @@ public class HelpCommand extends AbstractCommand {
         }
 
         StringBuilder sb = new StringBuilder(100);
-        sb.append(LegacyMessage.HELP_HEADER.getMessage(plugin.getPluginMeta().getVersion()));
+        sb.append(Message.HELP_HEADER.format(sender, plugin.getPluginMeta().getVersion()));
         sb.append("\n");
         plugin.getCommandManager().getCommandMap().forEach((k, v) -> sb
                 .append("&7&l- &6")
@@ -43,7 +43,7 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return LegacyMessage.HELP_DESCRIPTION.getMessage();
+        return Message.HELP_DESCRIPTION.getKey();
     }
 
     @Override

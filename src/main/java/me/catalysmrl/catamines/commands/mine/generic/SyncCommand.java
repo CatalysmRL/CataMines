@@ -1,32 +1,32 @@
-package me.catalysmrl.catamines.commands.generic;
+package me.catalysmrl.catamines.commands.mine.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
 
-public class ListCommand extends AbstractCommand {
-    public ListCommand() {
-        super("list", "catamines.list", Predicates.any(), false);
+public class SyncCommand extends AbstractCommand {
+
+    public SyncCommand() {
+        super("sync", "catamines.sync", Predicates.any(), false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
-        Message.LIST_MINES_HEADER.send(sender);
-        Messages.sendColorized(sender, "&a" + String.join("&d, &a", plugin.getMineManager().getMineList()));
+        plugin.getMineManager().loadMinesFromFolder(plugin.getMineManager().getMinesPath());
+        Messages.sendPrefixed(sender, "&aMines synced!");
     }
 
     @Override
     public String getDescription() {
-        return Message.LIST_DESCRIPTION.getKey();
+        return "Syncs mines from disk";
     }
 
     @Override
     public String getUsage() {
-        return "/cm list";
+        return "/cm sync";
     }
 }

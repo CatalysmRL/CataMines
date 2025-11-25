@@ -10,7 +10,7 @@ import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
 import org.bukkit.command.CommandSender;
@@ -31,21 +31,21 @@ public class RegionCreateCommand extends AbstractMineCommand {
         String regionName = ctx.peek();
 
         if (mine.getRegionManager().get(regionName).isPresent()) {
-            LegacyMessage.REGION_EXISTS.send(sender);
+            Message.REGION_EXISTS.send(sender);
             return;
         }
 
         Player player = (Player) sender;
         RegionSelector regionSelector = WorldEditUtils.getSelector(player);
         if (!regionSelector.isDefined()) {
-            LegacyMessage.INCOMPLETE_REGION.send(sender);
+            Message.INCOMPLETE_REGION.send(sender);
             return;
         }
 
         CataMineRegion region = new SelectionRegion(regionName, regionSelector);
         region.getCompositionManager().add(new CataMineComposition("default"));
         mine.getRegionManager().add(region);
-        LegacyMessage.REGION_CREATE_SUCCESS.send(sender);
+        Message.REGION_CREATE_SUCCESS.send(sender);
 
         requireSave();
     }
@@ -57,7 +57,7 @@ public class RegionCreateCommand extends AbstractMineCommand {
 
     @Override
     public String getDescription() {
-        return LegacyMessage.REGION_CREATE_DESCRIPTION.getMessage();
+        return Message.REGION_CREATE_DESCRIPTION.getKey();
     }
 
     @Override

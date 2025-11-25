@@ -12,7 +12,7 @@ import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.BlockUtil;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import me.catalysmrl.catamines.utils.worldedit.BaseBlockParser;
 import org.bukkit.command.CommandSender;
@@ -37,7 +37,7 @@ public class SetCommand extends AbstractMineCommand {
         try {
             baseBlock = BaseBlockParser.parseInput(ctx.next());
         } catch (InputParseException e) {
-            LegacyMessage.SET_INVALID_BLOCKSTATE.send(sender);
+            Message.SET_INVALID_BLOCKSTATE.send(sender);
             return;
         }
 
@@ -48,12 +48,12 @@ public class SetCommand extends AbstractMineCommand {
                 chance = Double.parseDouble(chanceRaw);
                 ctx.next();
             } catch (NumberFormatException e) {
-                LegacyMessage.SET_INVALID_NUMBER.send(sender, ctx.next());
+                Message.SET_INVALID_NUMBER.send(sender, ctx.next());
                 return;
             }
 
             if (chance < 0 || chance > 100) {
-                LegacyMessage.SET_INVALID_CHANCE.send(sender);
+                Message.SET_INVALID_CHANCE.send(sender);
                 return;
             }
         }
@@ -70,7 +70,7 @@ public class SetCommand extends AbstractMineCommand {
 
         Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
         if (regionOptional.isEmpty()) {
-            LegacyMessage.SET_INVALID_REGION.send(sender);
+            Message.SET_INVALID_REGION.send(sender);
             return;
         }
 
@@ -78,7 +78,7 @@ public class SetCommand extends AbstractMineCommand {
 
         Optional<CataMineComposition> compositionOptional = region.getCompositionManager().get(compositionName);
         if (compositionOptional.isEmpty()) {
-            LegacyMessage.SET_INVALID_COMPOSITION.send(sender);
+            Message.SET_INVALID_COMPOSITION.send(sender);
             return;
         }
 
@@ -86,7 +86,7 @@ public class SetCommand extends AbstractMineCommand {
         CataMineBlock block = new CataMineBlock(baseBlock, chance);
         composition.addBlock(block);
 
-        LegacyMessage.SET_SUCCESS.send(sender, baseBlockName, block.getChance(), mine.getName());
+        Message.SET_SUCCESS.send(sender, baseBlockName, block.getChance(), mine.getName());
 
         requireSave();
     }

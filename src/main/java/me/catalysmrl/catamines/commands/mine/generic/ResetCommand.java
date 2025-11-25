@@ -6,7 +6,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
@@ -32,7 +32,7 @@ public class ResetCommand extends AbstractMineCommand {
 
         // TODO: Silent resetting and other flags
         mine.reset(plugin);
-        LegacyMessage.RESET_SUCCESS.send(sender, mine.getName());
+        Message.RESET_SUCCESS.send(sender, mine.getName());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ResetCommand extends AbstractMineCommand {
 
     @Override
     public String getDescription() {
-        return LegacyMessage.RESET_DESCRIPTION.getMessage();
+        return Message.RESET_DESCRIPTION.getKey();
     }
 
     @Override

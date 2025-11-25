@@ -8,7 +8,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class RedefineCommand extends AbstractMineCommand {
         String regionName = ctx.hasNext() ? ctx.peek() : "default";
         Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
         if (regionOptional.isEmpty()) {
-            LegacyMessage.REGION_NOT_EXISTS.send(sender);
+            Message.REGION_NOT_EXISTS.send(sender);
             return;
         }
 

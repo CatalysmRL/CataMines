@@ -6,7 +6,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 public class DisplayNameCommand extends AbstractMineCommand {
@@ -22,7 +22,7 @@ public class DisplayNameCommand extends AbstractMineCommand {
         String displayName = String.join(" ", ctx.getRemainingArgs());
         mine.setDisplayName(displayName);
 
-        LegacyMessage.DISPLAYNAME_SUCCESS.send(sender, oldDisplayName, displayName);
+        Message.DISPLAYNAME_SUCCESS.send(sender, oldDisplayName, displayName);
 
         requireSave();
     }

@@ -6,7 +6,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class RenameCommand extends AbstractMineCommand {
         try {
             plugin.getMineManager().saveMine(mine);
         } catch (IOException e) {
-            LegacyMessage.MINE_SAVE_EXCEPTION.send(sender, mine.getName());
+            Message.MINE_SAVE_EXCEPTION.send(sender, mine.getName());
             mine.setName(oldMineName);
             return;
         }
@@ -36,16 +36,16 @@ public class RenameCommand extends AbstractMineCommand {
         try {
             Files.delete(mineFileToDelete);
         } catch (IOException e) {
-            LegacyMessage.MINE_DELETE_EXCEPTION.send(sender, mine.getName());
+            Message.MINE_DELETE_EXCEPTION.send(sender, mine.getName());
             return;
         }
 
-        LegacyMessage.RENAME_SUCCESS.send(sender, oldMineName, mine.getName());
+        Message.RENAME_SUCCESS.send(sender, oldMineName, mine.getName());
     }
 
     @Override
     public String getDescription() {
-        return LegacyMessage.RENAME_DESCRIPTION.getMessage();
+        return Message.RENAME_DESCRIPTION.getKey();
     }
 
     @Override

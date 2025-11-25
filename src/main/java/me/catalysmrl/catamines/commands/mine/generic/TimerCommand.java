@@ -6,7 +6,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -32,7 +32,7 @@ public class TimerCommand extends AbstractMineCommand {
         try {
             timeToSetInSeconds = Integer.parseInt(ctx.next());
         } catch (NumberFormatException e) {
-            LegacyMessage.SET_INVALID_NUMBER.send(sender, ctx.peek());
+            Message.SET_INVALID_NUMBER.send(sender, ctx.peek());
             return;
         }
 
@@ -45,14 +45,14 @@ public class TimerCommand extends AbstractMineCommand {
                 case "hours", "h" -> timeToSetInSeconds *= 3600;
                 case "days", "d" -> timeToSetInSeconds *= 86400;
                 default -> {
-                    LegacyMessage.TIMER_INVALID_FORMAT.send(sender);
+                    Message.TIMER_INVALID_FORMAT.send(sender);
                     return;
                 }
             }
         }
 
         mine.getController().setResetDelay(timeToSetInSeconds);
-        LegacyMessage.TIMER_SUCCESS.send(sender);
+        Message.TIMER_SUCCESS.send(sender);
 
         requireSave();
     }

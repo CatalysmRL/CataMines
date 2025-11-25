@@ -9,7 +9,7 @@ import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationM
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -66,7 +66,8 @@ public class MineManager {
             try {
                 saveMine(mine);
             } catch (IOException e) {
-                plugin.getLogger().severe(LegacyMessage.MINE_SAVE_EXCEPTION.getMessage(mine.getName()));
+                plugin.getLogger().severe(Message.MINE_SAVE_EXCEPTION.format(plugin.getServer().getConsoleSender(), mine.getName()));
+                plugin.getLogger().severe(e.getMessage());
             }
         }
     }
@@ -81,19 +82,23 @@ public class MineManager {
         logger.info("Starting BlockApplicationManager...");
 
         if (blockApplicator != null) {
-            logger.warning("BlockApplicationManager already running. Cancelling manager");
+            logger.warning("BlockApplicationManager already running. Cancelling and running new manager.");
             blockApplicator.cancel();
         }
 
         if (CompatibilityProvider.isFaweEnabled()) {
-            logger.info("Initializing FastAsyncBlockApplicationManager");
+            logger.info("Initializing FastAsyncBlockApplicationManager...");
             blockApplicator = new FastAsyncBlockApplicationManager(plugin);
         } else {
-            logger.info("Initializing BukkitBlockApplicationManager");
+            logger.info("Initializing BukkitBlockApplicationManager...");
             blockApplicator = new BukkitBlockApplicationManager(plugin);
         }
 
+        logger.info("Done initializing BlockApplicationManager.");
+
+        logger.info("Starting BlockApplicationManager...");
         blockApplicator.start();
+        logger.info("BlockApplicationManager started.");
     }
 
     /**
@@ -108,7 +113,7 @@ public class MineManager {
             logger.warning("Mine task already running. Overriding old mine task.");
             minesTask.cancel();
         }
-
+        
         this.minesTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
 
             for (CataMine cataMine : mines) {
@@ -133,10 +138,8 @@ public class MineManager {
      * List of CataMines. If the directory does not exist, is not a folder or
      * does not contain any files ending with '.yml', then an empty
      * ArrayList is returned. Otherwise, attempts to load mines from all files
-     * ending with '.yml' and containing the key 'Mine' in the root
-     * ConfigurationSection inside the directory. Note that only direct children
-     * files of the folder are affected. Another folder inside the folder will
-     * be ignored.
+     * ending with '.yml'. Note that only direct children files of the folder are
+     * affected. Another folder inside the folder will be ignored.
      *
      * @param folder the path to load the mines from
      * @return A list of successfully loaded mines of direct children paths
@@ -191,7 +194,7 @@ public class MineManager {
     }
 
     public void callBlockBreak(BlockBreakEvent event) {
-
+        
     }
 
     public void callBlockPlace(BlockPlaceEvent event) {

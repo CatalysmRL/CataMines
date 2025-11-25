@@ -61,4 +61,39 @@ public interface CataMine extends SectionSerializable {
 
     ChoiceManager<CataMineRegion> getRegionManager();
 
+    boolean isStopped();
+
+    void setStopped(boolean stopped);
+
+    org.bukkit.Location getTeleportLocation();
+
+    void setTeleportLocation(org.bukkit.Location location);
+
+    org.bukkit.Location getResetTeleportLocation();
+
+    void setResetTeleportLocation(org.bukkit.Location location);
+
+    boolean isWarn();
+
+    void setWarn(boolean warn);
+
+    boolean isWarnHotbar();
+
+    void setWarnHotbar(boolean warnHotbar);
+
+    boolean isWarnGlobal();
+
+    void setWarnGlobal(boolean warnGlobal);
+
+    int getWarnSeconds();
+
+    void setWarnSeconds(int warnSeconds);
+
+    int getWarnDistance();
+
+    void setWarnDistance(int warnDistance);
+
+    boolean isTeleportPlayers();
+
+    void setTeleportPlayers(boolean teleportPlayers);
 }

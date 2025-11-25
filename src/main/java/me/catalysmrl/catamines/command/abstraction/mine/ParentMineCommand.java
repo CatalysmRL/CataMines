@@ -5,7 +5,7 @@ import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.utils.ArgumentException;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
@@ -44,17 +44,17 @@ public abstract class ParentMineCommand extends AbstractMineCommand {
                 .orElse(null);
 
         if (sub == null) {
-            LegacyMessage.UNKNOWN_COMMAND.send(sender);
+            Message.UNKNOWN_COMMAND.send(sender);
             return;
         }
 
         if (sub.onlyPlayers() && !(sender instanceof Player)) {
-            LegacyMessage.ONLY_PLAYERS.send(sender);
+            Message.ONLY_PLAYERS.send(sender);
             return;
         }
 
         if (!sub.isAuthorized(sender)) {
-            LegacyMessage.NO_PERMISSION.send(sender);
+            Message.NO_PERMISSION.send(sender);
             return;
         }
 

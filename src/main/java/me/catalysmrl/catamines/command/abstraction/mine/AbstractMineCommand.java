@@ -6,7 +6,6 @@ import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.utils.ArgumentException;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
 import org.bukkit.command.CommandSender;
@@ -55,7 +54,7 @@ public abstract class AbstractMineCommand extends AbstractCommand {
             }
 
             sender.sendMessage("");
-            LegacyMessage.QUERY_ALL.send(sender, mines.size());
+            Message.QUERY_ALL.send(sender, mines.size());
             sender.sendMessage("");
             return;
         }
@@ -63,7 +62,7 @@ public abstract class AbstractMineCommand extends AbstractCommand {
         Optional<CataMine> mineOptional = plugin.getMineManager().getMine(mineID);
 
         if (mineOptional.isEmpty()) {
-            LegacyMessage.MINE_NOT_EXISTS.send(sender, mineID);
+            Message.MINE_NOT_EXISTS.send(sender, mineID);
             return;
         }
 
@@ -75,7 +74,7 @@ public abstract class AbstractMineCommand extends AbstractCommand {
             try {
                 plugin.getMineManager().saveMine(mine);
             } catch (IOException e) {
-                LegacyMessage.MINE_SAVE_EXCEPTION.send(sender);
+                Message.MINE_SAVE_EXCEPTION.send(sender);
             }
         }
     }

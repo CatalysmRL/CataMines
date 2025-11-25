@@ -1,4 +1,404 @@
-command:
-  unknown-command: "Unknown command"
-  only-players: "&cOnly players can execute this command!"
-  no-permission: "&cYou don't have permission to perform this command!"
+catamines:
+  universal:
+    mine:
+      save-exception: "%p &cCould not save mine {0}!"
+      delete-exception: "%p &cCould not delete mine {0}!"
+
+  commandsystem:
+    unknown-command: "%p &7Unknown command."
+    only-players: "%p &cOnly players may execute this command!"
+    no-permission: "%p &cYou do not have the permissions to do that!"
+    mine-not-exist: "%p &cMine does not exist!"
+    query-all: "%p &aFound {0} mines."
+
+  command:
+    generic:
+      help:
+        header: "&8&m----------------&r &6CataMines &7v{0} &8&m----------------"
+        description: "&7Shows this help message."
+      list:
+        header: "&8&m----------------&r &6Mines &8&m----------------"
+        description: "Lists all mines."
+
+    mine:
+      create:
+        mine-exists: "%p &cMine already exists!"
+        incomplete-region: "%p &cYou must select a region!"
+        invalid-name: "%p &cInvalid mine name!"
+        success: "%p Mine &b{0} &7has been created."
+        description: "Creates a new mine."
+
+      delete:
+        io-exception: "%p &cCould not delete mine file!"
+        success: "%p Mine &b{0} &7has been deleted."
+        description: "Deletes a mine."
+
+      reset:
+        success: "%p Mine &b{0} &7has been reset."
+        description: "Resets a mine."
+
+      set:
+        invalid-blockstate: "%p &cMaterial not found or invalid!"
+        invalid-number: "%p &cYour chance must be a number!"
+        invalid-chance: "%p &cYour chance must be between 0 and 100%!"
+        invalid-region: "%p &cRegion is invalid!"
+        invalid-composition: "%p &cComposition is invalid!"
+        success: "%p &b{0} &7set for &a{1}&7. You have &6{2}%% &7left over."
+
+    rename:
+      success: "%p Renamed &b{0} &7to &a{1}&7."
+      description: "Renames a mine."
+
+    displayname:
+      success: "%p Display name of &b{0} &7set to &a{1}&7."
+      description: "Sets the display name of a mine."
+
+    timer:
+      invalid-format: "%p &cInvalid time format!"
+      success: "%p Set reset delay."
+
+    resetmode:
+      invalid: "%p &cInvalid reset mode!"
+
+    region:
+      create:
+        region-exists: "%p &cRegion already exists!"
+        success: "%p Region created."
+        description: "Creates a region."
+      delete:
+        success: "%p Region deleted."
+        description: "Deletes a region."
+      region-not-exists: "%p &cRegion does not exist!"
+
+    warn:
+      description: "Configures warning settings."
+    teleport:
+      description: "Teleports to a mine."
+    sync:
+      description: "&7Syncs mines."
+    start:
+      description: "&7Starts a mine."
+    stop:
+      description: "&7Stops a mine."
+
+GUI:
+  Universal:
+    Previous-Page:
+      Name: "&6&lPrevious Page"
+      Lore:
+        - ""
+        - "&7Opens the previous page if there is one"
+    Next-Page:
+      Name: "&6&lNext Page"
+      Lore:
+        - ""
+        - "&7Opens the next page if there is one"
+    Close:
+      Name: "&4&lClose"
+      Lore:
+        - ""
+        - "&7Closes the menu"
+    Back-To-Mine-Menu:
+      Name: "&6&lBack"
+      Lore:
+        - ""
+        - "&7Goes back to mine menu"
+    Back-To-Composition-Menu:
+      Name: "&6&lBack"
+      Lore:
+        - ""
+        - "&7Goes back to composition menu"
+    Back-To-Block-Menu:
+      Name: "&6&lBack"
+      Lore:
+        - ""
+        - "&7Goes back to block menu"
+    Increase-By: "&aIncrease by %number%"
+    Decrease-By: "&cDecrease by %number%"
+  Mine-List-Menu:
+    Title: "&bMines"
+  Mine-Menu:
+    Title: "&b%mine%"
+    Items:
+      Configure-Composition:
+        Name: "&6Configure composition"
+        Lore:
+          - ""
+          - "&bComposition: &c%chance%%"
+      Configure-Delay:
+        Name: "&6Configure reset delay"
+        Lore:
+          - "&fReset by delay"
+          - ""
+          - "&bReset delay: &c%delay%"
+          - "&bReset percentage: &c%percentage%"
+          - ""
+          - "&a&lRight click to switch modes"
+      Configure-Percentage:
+        Name: "&6Configure reset percentage"
+        Lore:
+          - "&fReset by percentage"
+          - ""
+          - "&bReset delay: &c%delay%"
+          - "&bReset percentage: &c%percentage%"
+          - ""
+          - "&a&lRight click to switch modes"
+      Configure-TimePercentage:
+        Name: "&6TIME-PERCENTAGE"
+        Lore:
+          - "&fReset by delay and percentage"
+          - ""
+          - "&bReset delay: &c%delay%"
+          - "&bReset percentage: &c%percentage%"
+          - ""
+          - "&a&lRight click to switch modes"
+      Flag-Menu:
+        Name: "&6Configure flags"
+        Lore:
+          - ""
+          - "&eWarns: &f%warn%"
+          - "  &eGlobal: &f%global%"
+          - "  &eActionbar: &f%actionbar%"
+          - "  &eDistance: &c%warndistance%"
+          - "&eTeleports: &f%teleports%"
+          - "  &eTo resettp: &f%resettp%"
+          - "&eReplaces: &f%replacemode%"
+      Efficiency-Lvl:
+        Name: "&6Efficiency Lvl"
+        Lore:
+          - ""
+          - "&bLevel: &c%level%"
+          - ""
+          - "&fEff. Lvl required to break"
+          - "&fmine blocks."
+          - ""
+          - "&fPermission &6catamines.break"
+          - "&fbypasses this check!"
+      Reset-Mine:
+        Name: "&cReset mine"
+      Teleport:
+        Name: "&5Teleport to mine"
+        Lore:
+          - "&bTeleports you to the mine"
+      Delete:
+        Name: "&4&lDelete mine"
+      Start-Stop:
+        Active:
+          Name: "&aMine turned on"
+        Inactive:
+          Name: "&7Mine turned off"
+        Lore:
+          - "&bSelect if mine should reset automatically"
+      Back:
+        Name: "&4&lBack"
+        Lore:
+          - ""
+          - "&7Goes back to the mine menu"
+      Running:
+        Active:
+          Name: "&aMine is currently running"
+          Lore:
+            - "&7Displays if the mine is currently running."
+            - "&7If its not, then it will display why not."
+        Inactive:
+          Name: "&7Mine is not running because:"
+          Reasons:
+            Invalid-Region: "&cIts region is invalid"
+            Stopped: "&cIt is stopped"
+            No-Composition: "&cIt has no composition"
+            Invalid-Delay: "&cIts reset delay is %delay%"
+  Composition-Menu:
+    Title: "&bComposition: &c%chance%%"
+    Items:
+      Composition-Block:
+        Name: "%!unchangeable! internal material name%"
+        Lore:
+          - "&f%blockdata%"
+          - ""
+          - "&bSpawning chance: &c%chance%%"
+          - ""
+          - "&aLeft click me to configure"
+      Info:
+        Name: "&6Info:"
+        Lore:
+          - "&aAdd items by left/right"
+          - "&aclicking them in your inventory."
+          - ""
+          - "&cRemove items by right clicking"
+          - "&cthem in the composition list"
+  Composition-Block-Menu:
+    Title: "&bBlock chance: &c%blockChance%% / %compChance%%"
+    Items:
+      Current-Block:
+        Name: "%!unchangeable! internal material name%"
+        Lore:
+          - "&f%blockdata%"
+          - ""
+          - "&bBlock chance: &c%blockChance%%"
+          - "&bComposition chance: &c%compChance%%"
+      Change-Table:
+        Name: "&6Change loot table"
+      Configure-Table:
+        Name: "&6Configure drop chances of loot table"
+      Add-Loot-Table:
+        Active:
+          Name: "&a&lCustom drops are added"
+          Lore:
+            - ""
+            - "&fCustom drops are added on top"
+            - "&fof the default drops"
+        Inactive:
+          Name: "&7Custom drops override"
+          Lore:
+            - ""
+            - "&fDefault drops get cleared."
+            - "&fBlock only drops custom drops."
+  Change-Loot-Table-Menu:
+    Title: "&bInsert items into loot table"
+    Items:
+      Save-Table:
+        Name: "&aSave loot table"
+        Message: "%p &aSaved loot table."
+  Loot-Table-List-Menu:
+    Title: "&bConfigure item drop chances"
+    Items:
+      Drop-Item:
+        Name: "!unchangeable! internal material name"
+        Lore:
+          - ""
+          - "&bDrop chance: &c%chance%%"
+  Configure-Item-Drop-Chances-Menu:
+    Title: "&bDrop chance: &c%itemChance%/100%"
+    Items:
+      Current-Item: "!unchangeable! internal item"
+      Fortune:
+        Active:
+          Name: "&a&lFortune"
+          Lore:
+            - ""
+            - "&fFortune level will influence"
+            - "&fthe drop amount of this item"
+        Inactive:
+          Name: "&7Fortune"
+          Lore:
+            - ""
+            - "&fItem will not be"
+            - "&finfluenced by fortune"
+  Reset-Delay-Menu:
+    Title: "&bCurrent delay: &c%delay%"
+    Items:
+      Current-Delay:
+        Name: "&bCurrent delay: &c%delay%"
+      Switch:
+        Name: "&6Switch page"
+        Lore:
+          - ""
+          - "&bSwitch page to &6PERCENTAGE"
+  Reset-Percentage-Menu:
+    Title: "&bCurrent percentage: &c%percentage%%"
+    Items:
+      Current-Percentage:
+        Name: "&bCurrent percentage: &c%percentage%"
+      Switch:
+        Name: "&6Switch page"
+        Lore:
+          - ""
+          - "&bSwitch page to &6TIME"
+  Flags-Menu:
+    Title: "&6&lSetup mine flags"
+    Items:
+      Warn:
+        Active:
+          Name: "&a&lWarn"
+          Lore:
+            - ""
+            - "&fMine now warns on specified reset"
+            - "&fseconds and on reset"
+        Inactive:
+          Name: "&7Warn"
+          Lore:
+            - ""
+            - "&fMine does not warn"
+      Warn-Global:
+        Active:
+          Name: "&a&lWarn globally"
+          Lore:
+            - ""
+            - "&fIf &a&l'Warn' &fis enabled"
+            - "&fit now warns globally"
+        Inactive:
+          Name: "&7Warn globally"
+          Lore:
+            - ""
+            - "&fMine does not warn globally"
+      Warn-Hotbar:
+        Active:
+          Name: "&a&lBroadcast Actionbar"
+          Lore:
+            - ""
+            - "&fDisplay mine information in"
+            - "&fplayers actionbar"
+        Inactive:
+          Name: "&7Broadcast Actionbar"
+          Lore:
+            - ""
+            - "&fDisplay mine information in"
+            - "&fplayers actionbar"
+      Teleport-Players:
+        Active:
+          Name: "&a&lTeleport players"
+          Lore:
+            - ""
+            - "&fActivates teleports on reset"
+            - "&fYou can choose tp on top or"
+            - "&fto reset location of mine"
+        Inactive:
+          Name: "&7Teleport players"
+          Lore:
+            - ""
+            - "&fActivates teleports on reset"
+            - "&fYou can choose tp on top or"
+            - "&fto reset location of mine"
+      Teleport-Players-To-Reset-Location:
+        Active:
+          Name: "&aTeleport location"
+          Lore:
+            - ""
+            - "&fCurrently teleports to reset"
+            - "&flocation if specified by using"
+            - "&f/cm setresettp <mine>"
+        Inactive:
+          Name: "&2Teleport location"
+          Lore:
+            - ""
+            - "&fCurrently teleports to the"
+            - "&ftop of the mine on reset"
+      Replace-Mode:
+        Active:
+          Name: "&a&lReplaces air"
+          Lore:
+            - ""
+            - "&fOnly resets empty blocks of the mine"
+        Inactive:
+          Name: "&7Replaces all"
+          Lore:
+            - ""
+            - "&fResets all blocks of the mine"
+      Warn-Distance:
+        Name: "&6Configure warn distance"
+        Lore:
+          - "&bWarn distance: &c%distance%"
+  Efficiency-Menu:
+    Title: "&bLevel: &c%level%"
+    Items:
+      Current-Level:
+        Name: "&bEfficiency Lvl: &c%level%"
+        Lore:
+          - ""
+          - "&fPermission &6catamines.break"
+          - "&fbypasses this check!"
+  Warn-Distance-Menu:
+    Title: "&bWarn distance: &c%distance%"
+    Items:
+      Current-Distance:
+        Name: "&bCurrent distance: &c%distance%"

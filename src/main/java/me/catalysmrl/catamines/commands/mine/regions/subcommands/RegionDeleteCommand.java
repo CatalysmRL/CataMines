@@ -7,7 +7,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.region.AbstractRegionCommand;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -23,7 +23,7 @@ public class RegionDeleteCommand extends AbstractRegionCommand {
         assertArgLength(ctx);
 
         mine.getRegionManager().remove(region);
-        LegacyMessage.REGION_DELETE_SUCCESS.send(sender);
+        Message.REGION_DELETE_SUCCESS.send(sender);
 
         requireSave();
     }
@@ -35,7 +35,7 @@ public class RegionDeleteCommand extends AbstractRegionCommand {
 
     @Override
     public String getDescription() {
-        return LegacyMessage.REGION_DELETE_DESCRIPTION.getMessage();
+        return Message.REGION_DELETE_DESCRIPTION.getKey();
     }
 
     @Override

@@ -11,7 +11,7 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,12 +31,12 @@ public class CreateCommand extends AbstractCommand {
         String name = ctx.peek();
 
         if ("*".equals(name)) {
-            LegacyMessage.MINE_INVALID_NAME.send(sender);
+            Message.MINE_INVALID_NAME.send(sender);
             return;
         }
 
         if (plugin.getMineManager().containsMine(name)) {
-            LegacyMessage.MINE_EXISTS.send(sender, name);
+            Message.MINE_EXISTS.send(sender, name);
             return;
         }
 
@@ -50,24 +50,24 @@ public class CreateCommand extends AbstractCommand {
                 region.getCompositionManager().add(new CataMineComposition("default"));
                 cataMine.getRegionManager().add(region);
             } else {
-                LegacyMessage.INCOMPLETE_REGION.send(sender);
+                Message.INCOMPLETE_REGION.send(sender);
             }
         }
 
 
         plugin.getMineManager().registerMine(cataMine);
-        LegacyMessage.CREATE_SUCCESS.send(sender, name);
+        Message.CREATE_SUCCESS.send(sender, name);
 
         try {
             plugin.getMineManager().saveMine(cataMine);
         } catch (IOException e) {
-            LegacyMessage.MINE_SAVE_EXCEPTION.send(sender, name);
+            Message.MINE_SAVE_EXCEPTION.send(sender, name);
         }
     }
 
     @Override
     public String getDescription() {
-        return LegacyMessage.CREATE_DESCRIPTION.getMessage();
+        return Message.CREATE_DESCRIPTION.getKey();
     }
 
     @Override

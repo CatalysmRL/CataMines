@@ -6,7 +6,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.LegacyMessage;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
@@ -23,16 +23,16 @@ public class DeleteCommand extends AbstractMineCommand {
         try {
             plugin.getMineManager().deleteMine(mine);
         } catch (IOException e) {
-            LegacyMessage.DELETE_EXCEPTION.send(sender);
+            Message.DELETE_EXCEPTION.send(sender);
             return;
         }
 
-        LegacyMessage.DELETE_SUCCESS.send(sender, mine.getName());
+        Message.DELETE_SUCCESS.send(sender, mine.getName());
     }
 
     @Override
     public String getDescription() {
-        return LegacyMessage.DELETE_DESCRIPTION.getMessage();
+        return Message.DELETE_DESCRIPTION.getKey();
     }
 
     @Override
