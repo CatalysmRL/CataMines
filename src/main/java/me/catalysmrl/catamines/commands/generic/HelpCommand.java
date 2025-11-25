@@ -33,21 +33,21 @@ public class HelpCommand extends AbstractCommand {
         sb.append("\n");
         plugin.getCommandManager().getCommandMap().forEach((k, v) -> sb
                 .append("&7&l- &6")
-                .append(v.getUsage())
+                .append(v.getUsage().format(sender))
                 .append("&7 - &f")
-                .append(v.getDescription())
+                .append(v.getDescription().format(sender))
                 .append("\n"));
 
         Messages.sendColorized(sender, sb.toString());
     }
 
     @Override
-    public String getDescription() {
-        return Message.HELP_DESCRIPTION.getKey();
+    public Message getDescription() {
+        return Message.HELP_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm help";
+    public Message getUsage() {
+        return Message.HELP_USAGE;
     }
 }

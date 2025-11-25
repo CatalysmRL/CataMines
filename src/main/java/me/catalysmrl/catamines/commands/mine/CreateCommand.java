@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.CataMines;
@@ -54,7 +54,6 @@ public class CreateCommand extends AbstractCommand {
             }
         }
 
-
         plugin.getMineManager().registerMine(cataMine);
         Message.CREATE_SUCCESS.send(sender, name);
 
@@ -66,12 +65,12 @@ public class CreateCommand extends AbstractCommand {
     }
 
     @Override
-    public String getDescription() {
-        return Message.CREATE_DESCRIPTION.getKey();
+    public Message getDescription() {
+        return Message.CREATE_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm create <mine>";
+    public Message getUsage() {
+        return Message.CREATE_USAGE;
     }
 }

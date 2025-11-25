@@ -19,27 +19,29 @@ public class RegionDeleteCommand extends AbstractRegionCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine, CataMineRegion region) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine,
+            CataMineRegion region) throws CommandException {
         assertArgLength(ctx);
 
         mine.getRegionManager().remove(region);
-        Message.REGION_DELETE_SUCCESS.send(sender);
+        Message.REGIONS_DELETE_SUCCESS.send(sender);
 
         requireSave();
     }
 
     @Override
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine, CataMineRegion region) {
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine,
+            CataMineRegion region) {
         return Collections.emptyList();
     }
 
     @Override
-    public String getDescription() {
-        return Message.REGION_DELETE_DESCRIPTION.getKey();
+    public Message getDescription() {
+        return Message.REGIONS_DELETE_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm regions <mine> delete <name>";
+    public Message getUsage() {
+        return Message.REGIONS_DELETE_USAGE;
     }
 }

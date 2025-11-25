@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -6,7 +6,6 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
@@ -22,7 +21,8 @@ public class ResetCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
 
         if (!sender.hasPermission("catamines.command.reset." + mine.getName())) {
@@ -32,7 +32,7 @@ public class ResetCommand extends AbstractMineCommand {
 
         // TODO: Silent resetting and other flags
         mine.reset(plugin);
-        Message.RESET_SUCCESS.send(sender, mine.getName());
+        Message.RESET_SUCCESS.send(sender, mine.getDisplayName());
     }
 
     @Override
@@ -56,12 +56,12 @@ public class ResetCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return Message.RESET_DESCRIPTION.getKey();
+    public Message getDescription() {
+        return Message.RESET_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm reset <mine> (-s)";
+    public Message getUsage() {
+        return Message.RESET_USAGE;
     }
 }

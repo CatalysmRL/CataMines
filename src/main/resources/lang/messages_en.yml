@@ -5,37 +5,83 @@ catamines:
       delete-exception: "%p &cCould not delete mine {0}!"
 
   commandsystem:
-    unknown-command: "%p &7Unknown command."
+    unknown-command: "%p &7&7Unknown command."
     only-players: "%p &cOnly players may execute this command!"
     no-permission: "%p &cYou do not have the permissions to do that!"
     mine-not-exist: "%p &cMine does not exist!"
-    query-all: "%p &aFound {0} mines."
+    query-all: "%p &7&aFound {0} mines."
 
   command:
     generic:
       help:
         header: "&8&m----------------&r &6CataMines &7v{0} &8&m----------------"
-        description: "&7Shows this help message."
+        description: "Shows this help message."
+        usage: "/cm help"
       list:
         header: "&8&m----------------&r &6Mines &8&m----------------"
         description: "Lists all mines."
+        usage: "/cm list"
+      reload:
+        success: "%p &7&aReloaded CataMines."
+        description: "Reloads CataMines."
+        usage: "/cm reload"
 
     mine:
       create:
         mine-exists: "%p &cMine already exists!"
         incomplete-region: "%p &cYou must select a region!"
         invalid-name: "%p &cInvalid mine name!"
-        success: "%p Mine &b{0} &7has been created."
+        success: "%p &7Mine &b{0} &7has been created."
         description: "Creates a new mine."
+        usage: "/cm create <mine>"
+
+      debug:
+        description: "Debugs a mine."
+        usage: "/cm debug <mine>"
 
       delete:
         io-exception: "%p &cCould not delete mine file!"
-        success: "%p Mine &b{0} &7has been deleted."
+        success: "%p &7Mine &b{0} &7has been deleted."
         description: "Deletes a mine."
+        usage: "/cm delete <mine>"
+
+      displayname:
+        success: "%p &7Display name of &b{0} &7set to &a{1}&7."
+        description: "Sets the display name of a mine."
+        usage: "/cm displayname <mine> <displayname>"
+      
+      gui:
+        description: "Opens the mine list gui or gui of a mine."
+        usage: "/cm gui [mine]"
+      
+      info:
+        description: "Shows information about a mine."
+        usage: "/cm info <mine>"
+
+      redefine:
+        success: "%p &7Region &b{0} &7has been redefined."
+        description: "Redefines a region of a mine."
+        usage: "/cm redefine <mine> [region]"
+
+      rename:
+        success: "%p &7Mine &b{0} &7has been renamed to &a{1}&7."
+        description: "Renames a mine."
+        usage: "/cm rename <mine> <new-name>"
 
       reset:
-        success: "%p Mine &b{0} &7has been reset."
+        success: "%p &7Mine &b{0} &7has been reset."
         description: "Resets a mine."
+        usage: "/cm reset <mine>"
+      
+      resetmode:
+        invalid: "%p &cInvalid reset mode!"
+        description: "Sets the reset mode of a mine."
+        usage: "/cm resetmode <mine> <mode>"
+      
+      resetpercentage:
+        invalid: "%p &cInvalid reset percentage!"
+        description: "Sets the reset percentage of a mine."
+        usage: "/cm resetpercentage <mine> <percentage>"
 
       set:
         invalid-blockstate: "%p &cMaterial not found or invalid!"
@@ -43,43 +89,79 @@ catamines:
         invalid-chance: "%p &cYour chance must be between 0 and 100%!"
         invalid-region: "%p &cRegion is invalid!"
         invalid-composition: "%p &cComposition is invalid!"
-        success: "%p &b{0} &7set for &a{1}&7. You have &6{2}%% &7left over."
+        success: "%p &7&b{0} &7set for &a{1}&7. You have &6{2}%% &7left over."
+        description: "Sets a mine's composition."
+        usage: "/cm set <mine> <block> <chance> [region] [composition]"
+      
+      setresetteleport:
+        success: "%p &7Reset teleport set for &b{0}&7."
+        description: "Sets the reset teleport of a mine."
+        usage: "/cm setresetteleport <mine>"
+      
+      setteleport:
+        success: "%p &7Teleport set for &b{0}&7."
+        description: "Sets the teleport of a mine."
+        usage: "/cm setteleport <mine>"
+      
+      start:
+        success: "%p &7Mine &b{0} &7has been started."
+        description: "Starts a mine."
+        usage: "/cm start <mine>"
 
-    rename:
-      success: "%p Renamed &b{0} &7to &a{1}&7."
-      description: "Renames a mine."
+      starttasks:
+        success: "%p &7Started all mine tasks."
+        description: "Starts all mine tasks."
+        usage: "/cm starttasks <mine>"
+      
+      stop:
+        success: "%p &7Mine &b{0} &7has been stopped."
+        description: "Stops a mine."
+        usage: "/cm stop <mine>"
 
-    displayname:
-      success: "%p Display name of &b{0} &7set to &a{1}&7."
-      description: "Sets the display name of a mine."
+      stoptasks:
+        success: "%p &7Stopped all mine tasks."
+        description: "Stops all mine tasks."
+        usage: "/cm stoptasks <mine>"
 
-    timer:
-      invalid-format: "%p &cInvalid time format!"
-      success: "%p Set reset delay."
+      sync:
+        success: "%p &7Synced all mines."
+        description: "Syncs all mines."
+        usage: "/cm sync"
+      
+      teleport:
+        success: "%p &7Teleported to mine &b{0}&7."
+        description: "Teleports to a mine."
+        usage: "/cm teleport <mine>"
+      
+      timer:
+        invalid-format: "%p &cInvalid time format!"
+        success: "%p &7Set reset delay."
+        description: "Sets the reset delay of a mine."
+        usage: "/cm timer <mine> <delay>"
+      
+      unset:
+        success: "%p &7Unset {0} of {1}."
+        description: "Unsets a block of a mines composition."
+        usage: "/cm unset <mine> <block>"
+      
+      warn:
+        success: "%p &7Set warning settings."
+        description: "Configures warning settings."
+        usage: "/cm warn <mine> <...>"
 
-    resetmode:
-      invalid: "%p &cInvalid reset mode!"
-
-    region:
-      create:
-        region-exists: "%p &cRegion already exists!"
-        success: "%p Region created."
-        description: "Creates a region."
-      delete:
-        success: "%p Region deleted."
-        description: "Deletes a region."
-      region-not-exists: "%p &cRegion does not exist!"
-
-    warn:
-      description: "Configures warning settings."
-    teleport:
-      description: "Teleports to a mine."
-    sync:
-      description: "&7Syncs mines."
-    start:
-      description: "&7Starts a mine."
-    stop:
-      description: "&7Stops a mine."
+      regions:
+        create:
+          region-exists: "%p &cRegion already exists!"
+          success: "%p &7Region created."
+          description: "Creates a region."
+          usage: "/cm regions <mine> create <region>"
+        delete:
+          success: "%p &7Region deleted."
+          description: "Deletes a region."
+          usage: "/cm regions <mine> delete <region>"
+        region-not-exists: "%p &cRegion does not exist!"
+        description: "Manages regions."
+        usage: "/cm regions <mine>"
 
 GUI:
   Universal:
@@ -258,7 +340,7 @@ GUI:
     Items:
       Save-Table:
         Name: "&aSave loot table"
-        Message: "%p &aSaved loot table."
+        Message: "%p &7&aSaved loot table."
   Loot-Table-List-Menu:
     Title: "&bConfigure item drop chances"
     Items:

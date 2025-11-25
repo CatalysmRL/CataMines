@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.CataMines;
@@ -21,13 +21,14 @@ public class RedefineCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
 
         String regionName = ctx.hasNext() ? ctx.peek() : "default";
         Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
         if (regionOptional.isEmpty()) {
-            Message.REGION_NOT_EXISTS.send(sender);
+            Message.REGIONS_NOT_EXISTS.send(sender);
             return;
         }
 
@@ -35,20 +36,24 @@ public class RedefineCommand extends AbstractMineCommand {
         CataMineRegion region = regionOptional.get();
         RegionSelector regionSelector = WorldEditUtils.getSelector(player);
 
-        if (regionSelector.isDefined()) {
-            region.redefineRegion(regionSelector);
+        if (!regionSelector.isDefined()) {
+            Message.SET_INVALID_REGION.send(player);
+            return;
         }
+
+        region.redefineRegion(regionSelector);
+        Message.REDEFINE_SUCCESS.send(player, regionName);
 
         requireSave();
     }
 
     @Override
-    public String getDescription() {
-        return "";
+    public Message getDescription() {
+        return Message.REDEFINE_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "";
+    public Message getUsage() {
+        return Message.REDEFINE_USAGE;
     }
 }

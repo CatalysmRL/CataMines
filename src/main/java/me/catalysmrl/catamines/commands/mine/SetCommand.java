@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import com.sk89q.worldedit.extension.input.InputParseException;
 import com.sk89q.worldedit.world.block.BaseBlock;
@@ -29,7 +29,8 @@ public class SetCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
 
         String baseBlockName = ctx.peek();
@@ -96,10 +97,12 @@ public class SetCommand extends AbstractMineCommand {
         List<String> remainingArgs = context.getRemainingArgs();
         switch (remainingArgs.size()) {
             case 1 -> {
-                return StringUtil.copyPartialMatches(remainingArgs.get(0), BlockUtil.getAllPlaceableBlockNames(), new ArrayList<>());
+                return StringUtil.copyPartialMatches(remainingArgs.get(0), BlockUtil.getAllPlaceableBlockNames(),
+                        new ArrayList<>());
             }
             case 2 -> {
-                return StringUtil.copyPartialMatches(remainingArgs.get(1), Collections.singletonList("%"), new ArrayList<>());
+                return StringUtil.copyPartialMatches(remainingArgs.get(1), Collections.singletonList("%"),
+                        new ArrayList<>());
             }
             case 3 -> {
                 List<String> regionNames = mine.getRegionManager().getChoices()
@@ -110,7 +113,8 @@ public class SetCommand extends AbstractMineCommand {
             }
             case 4 -> {
                 Optional<CataMineRegion> region = mine.getRegionManager().get(remainingArgs.get(2));
-                if (region.isEmpty()) return Collections.singletonList(Messages.colorize("&cUnknown region"));
+                if (region.isEmpty())
+                    return Collections.singletonList(Messages.colorize("&cUnknown region"));
 
                 List<String> compositionNames = region.get().getCompositionManager().getChoices()
                         .stream()
@@ -126,12 +130,12 @@ public class SetCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Sets a block into the composition";
+    public Message getDescription() {
+        return Message.SET_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm set <mine> <blockData> [0-100%] [region] [composition]";
+    public Message getUsage() {
+        return Message.SET_USAGE;
     }
 }

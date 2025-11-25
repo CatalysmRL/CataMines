@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -17,7 +17,8 @@ public class DeleteCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
 
         try {
@@ -31,12 +32,12 @@ public class DeleteCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return Message.DELETE_DESCRIPTION.getKey();
+    public Message getDescription() {
+        return Message.DELETE_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm delete <mine>";
+    public Message getUsage() {
+        return Message.DELETE_USAGE;
     }
 }

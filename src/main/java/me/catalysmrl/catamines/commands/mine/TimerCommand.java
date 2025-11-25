@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -25,7 +25,8 @@ public class TimerCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
 
         int timeToSetInSeconds;
@@ -66,6 +67,7 @@ public class TimerCommand extends AbstractMineCommand {
             case 2 -> {
                 return List.of("seconds", "minutes", "hours", "days", "s", "m", "h", "d");
             }
+
             default -> {
                 return Collections.emptyList();
             }
@@ -73,12 +75,12 @@ public class TimerCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return null;
+    public Message getDescription() {
+        return Message.TIMER_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm delay <mine> <value> [format]";
+    public Message getUsage() {
+        return Message.TIMER_USAGE;
     }
 }

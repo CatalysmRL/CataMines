@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -7,6 +7,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Messages;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 public class ResetPercentageCommand extends AbstractMineCommand {
@@ -16,9 +17,10 @@ public class ResetPercentageCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
-        
+
         String percentageRaw = ctx.next().replace("%", "");
         double percentage;
         try {
@@ -39,12 +41,12 @@ public class ResetPercentageCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Sets the reset percentage of a mine";
+    public Message getDescription() {
+        return Message.RESETPERCENTAGE_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm resetpercentage <mine> <percentage>";
+    public Message getUsage() {
+        return Message.RESETPERCENTAGE_USAGE;
     }
 }

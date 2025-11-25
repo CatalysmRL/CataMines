@@ -1,6 +1,7 @@
 package me.catalysmrl.catamines.command.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -86,12 +87,12 @@ public interface Command {
      *
      * @return the commands description
      */
-    String getDescription();
+    Message getDescription();
 
     /**
      * Gets the usage of this command
      *
      * @return the commands usage
      */
-    String getUsage();
+    Message getUsage();
 }

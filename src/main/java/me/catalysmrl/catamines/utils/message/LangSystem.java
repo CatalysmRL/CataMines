@@ -33,25 +33,29 @@ public class LangSystem {
     }
 
     /**
-     * Gets the desired translated message from a key. Messages are saved in yml files.
+     * Gets the desired translated message from a key. Messages are saved in yml
+     * files.
      * A static FileConfiguration file is loaded when plugin is enabled.
-     * TODO: When translations are robust and reliable, consider using player specific locales.
+     * TODO: When translations are robust and reliable, consider using player
+     * specific locales.
      *
      * @param key the translation key
      * @return message retrieved from the key stored in a properties file
      */
     public static String getTranslatedMessage(String key) {
-        if (langFile == null) return "Failed to load language file";
+        if (langFile == null)
+            return "Failed to load language file";
         return langFile.getString(key, "Missing " + key);
     }
 
     public static List<String> getTranslatedList(String key) {
-        if (langFile == null) return Collections.singletonList("Failed to load language file");
+        if (langFile == null)
+            return Collections.singletonList("Failed to load language file");
         return langFile.contains(key) ? langFile.getStringList(key) : Collections.singletonList("Missing " + key);
     }
 
     public void reloadLang() {
-        locale = new Locale(plugin.getConfig().getString("language", "en"));
+        locale = Locale.of(plugin.getConfig().getString("language", "en"));
 
         try {
             createDirectoriesIfNotExists(langDirectory);

@@ -1,16 +1,13 @@
 package me.catalysmrl.catamines.command;
 
-import com.google.common.collect.ImmutableMap;
-import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.command.abstraction.Command;
-import me.catalysmrl.catamines.command.abstraction.CommandContext;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
-import me.catalysmrl.catamines.commands.generic.HelpCommand;
-import me.catalysmrl.catamines.commands.generic.ListCommand;
-import me.catalysmrl.catamines.commands.generic.ReloadCommand;
-import me.catalysmrl.catamines.commands.mine.generic.*;
-import me.catalysmrl.catamines.commands.mine.regions.RegionsCommand;
-import me.catalysmrl.catamines.utils.message.Message;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -18,8 +15,41 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableMap;
+
+import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.command.abstraction.Command;
+import me.catalysmrl.catamines.command.abstraction.CommandContext;
+import me.catalysmrl.catamines.command.abstraction.CommandException;
+import me.catalysmrl.catamines.commands.generic.HelpCommand;
+import me.catalysmrl.catamines.commands.generic.ListCommand;
+import me.catalysmrl.catamines.commands.generic.ReloadCommand;
+import me.catalysmrl.catamines.commands.mine.CreateCommand;
+import me.catalysmrl.catamines.commands.mine.DebugCommand;
+import me.catalysmrl.catamines.commands.mine.DeleteCommand;
+import me.catalysmrl.catamines.commands.mine.DisplayNameCommand;
+import me.catalysmrl.catamines.commands.mine.GuiCommand;
+import me.catalysmrl.catamines.commands.mine.InfoCommand;
+import me.catalysmrl.catamines.commands.mine.RedefineCommand;
+import me.catalysmrl.catamines.commands.mine.RenameCommand;
+import me.catalysmrl.catamines.commands.mine.ResetCommand;
+import me.catalysmrl.catamines.commands.mine.ResetModeCommand;
+import me.catalysmrl.catamines.commands.mine.ResetPercentageCommand;
+import me.catalysmrl.catamines.commands.mine.SetCommand;
+import me.catalysmrl.catamines.commands.mine.SetResetTeleportCommand;
+import me.catalysmrl.catamines.commands.mine.SetTeleportCommand;
+import me.catalysmrl.catamines.commands.mine.StartCommand;
+import me.catalysmrl.catamines.commands.mine.StartTasksCommand;
+import me.catalysmrl.catamines.commands.mine.StopCommand;
+import me.catalysmrl.catamines.commands.mine.StopTasksCommand;
+import me.catalysmrl.catamines.commands.mine.SyncCommand;
+import me.catalysmrl.catamines.commands.mine.TeleportCommand;
+import me.catalysmrl.catamines.commands.mine.TeleportPlayersCommand;
+import me.catalysmrl.catamines.commands.mine.TimerCommand;
+import me.catalysmrl.catamines.commands.mine.UnsetCommand;
+import me.catalysmrl.catamines.commands.mine.WarnCommand;
+import me.catalysmrl.catamines.commands.mine.regions.RegionsCommand;
+import me.catalysmrl.catamines.utils.message.Message;
 
 public class CommandManager implements TabExecutor {
 
@@ -39,13 +69,13 @@ public class CommandManager implements TabExecutor {
                 .put("displayname", new DisplayNameCommand())
                 .put("info", new InfoCommand())
                 .put("redefine", new RedefineCommand())
+                .put("regions", new RegionsCommand())
                 .put("rename", new RenameCommand())
                 .put("reset", new ResetCommand())
                 .put("resetmode", new ResetModeCommand())
                 .put("set", new SetCommand())
                 .put("timer", new TimerCommand())
                 .put("unset", new UnsetCommand())
-                .put("regions", new RegionsCommand())
                 .put("gui", new GuiCommand())
                 .put("resetpercentage", new ResetPercentageCommand())
                 .put("start", new StartCommand())
@@ -54,7 +84,6 @@ public class CommandManager implements TabExecutor {
                 .put("stoptasks", new StopTasksCommand())
                 .put("sync", new SyncCommand())
                 .put("teleport", new TeleportCommand())
-                .put("teleportplayers", new TeleportPlayersCommand())
                 .put("warn", new WarnCommand())
                 .put("setteleport", new SetTeleportCommand())
                 .put("setresetteleport", new SetResetTeleportCommand())
@@ -62,7 +91,8 @@ public class CommandManager implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command,
+            @NotNull String label, @NotNull String[] args) {
 
         String subCmd;
 
@@ -105,19 +135,23 @@ public class CommandManager implements TabExecutor {
 
     @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command,
+            @NotNull String label, @NotNull String[] args) {
 
         final List<Command> commands = commandMap.values().stream()
                 .filter(c -> c.isAuthorized(commandSender))
                 .toList();
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], commands.stream().map(Command::getName).collect(Collectors.toList()), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0],
+                    commands.stream().map(Command::getName).collect(Collectors.toList()), new ArrayList<>());
         } else if (args.length > 1) {
             return commands.stream()
-                    .filter(c -> c.getName().equalsIgnoreCase(args[0]) || c.getAliases().contains(args[0].toLowerCase(Locale.ROOT)))
+                    .filter(c -> c.getName().equalsIgnoreCase(args[0])
+                            || c.getAliases().contains(args[0].toLowerCase(Locale.ROOT)))
                     .findFirst()
-                    .map(c -> c.tabComplete(plugin, commandSender, new CommandContext(Arrays.asList(Arrays.copyOfRange(args, 1, args.length)))))
+                    .map(c -> c.tabComplete(plugin, commandSender,
+                            new CommandContext(Arrays.asList(Arrays.copyOfRange(args, 1, args.length)))))
                     .orElse(Collections.emptyList());
         }
 
@@ -125,7 +159,8 @@ public class CommandManager implements TabExecutor {
     }
 
     public Command getCommand(String commandName) {
-        if (commandMap.containsKey(commandName)) return commandMap.get(commandName);
+        if (commandMap.containsKey(commandName))
+            return commandMap.get(commandName);
 
         return commandMap.values().stream()
                 .filter(command -> command.getName().equals(commandName))

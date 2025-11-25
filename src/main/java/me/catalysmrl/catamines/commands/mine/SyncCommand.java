@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
@@ -6,27 +6,28 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Messages;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
-public class StartTasksCommand extends AbstractCommand {
+public class SyncCommand extends AbstractCommand {
 
-    public StartTasksCommand() {
-        super("starttasks", "catamines.starttasks", Predicates.any(), false);
+    public SyncCommand() {
+        super("sync", "catamines.sync", Predicates.any(), false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
-        plugin.getMineManager().start();
-        Messages.sendPrefixed(sender, "&aMine tasks started.");
+        plugin.getMineManager().loadMinesFromFolder(plugin.getMineManager().getMinesPath());
+        Messages.sendPrefixed(sender, "&aMines synced!");
     }
 
     @Override
-    public String getDescription() {
-        return "Starts the mine manager tasks";
+    public Message getDescription() {
+        return Message.SYNC_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm starttasks";
+    public Message getUsage() {
+        return Message.SYNC_USAGE;
     }
 }

@@ -18,18 +18,20 @@ import java.util.function.Predicate;
 
 public abstract class AbstractRegionCommand extends AbstractMineCommand {
 
-    public AbstractRegionCommand(String name, String permission, Predicate<Integer> argumentCheck, boolean onlyPlayers) {
+    public AbstractRegionCommand(String name, String permission, Predicate<Integer> argumentCheck,
+            boolean onlyPlayers) {
         super(name, permission, argumentCheck, onlyPlayers);
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         String regionName = ctx.next();
 
         Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
 
         if (regionOptional.isEmpty()) {
-            Message.REGION_NOT_EXISTS.send(sender, regionName);
+            Message.REGIONS_NOT_EXISTS.send(sender, regionName);
             return;
         }
 
@@ -42,26 +44,21 @@ public abstract class AbstractRegionCommand extends AbstractMineCommand {
             return StringUtil.copyPartialMatches(ctx.peek(),
                     mine.getRegionManager().getChoices().stream()
                             .map(CataMineRegion::getName)
-                            .toList(), new ArrayList<>());
+                            .toList(),
+                    new ArrayList<>());
         } else {
             Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(ctx.peek());
-            if (regionOptional.isEmpty()) return List.of(Messages.colorize("&cUnknown region"));
+            if (regionOptional.isEmpty())
+                return List.of(Messages.colorize("&cUnknown region"));
             ctx.next();
             return tabComplete(plugin, sender, ctx, mine, regionOptional.get());
         }
     }
 
-    public abstract void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine, CataMineRegion region) throws CommandException;
+    public abstract void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine,
+            CataMineRegion region) throws CommandException;
 
-    public abstract List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine, CataMineRegion region);
+    public abstract List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine,
+            CataMineRegion region);
 
-    @Override
-    public String getDescription() {
-        return "";
-    }
-
-    @Override
-    public String getUsage() {
-        return "";
-    }
 }

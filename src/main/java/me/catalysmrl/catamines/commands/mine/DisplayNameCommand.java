@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -15,7 +15,8 @@ public class DisplayNameCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
 
         String oldDisplayName = mine.getDisplayName();
 
@@ -28,12 +29,12 @@ public class DisplayNameCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return null;
+    public Message getDescription() {
+        return Message.DISPLAYNAME_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return null;
+    public Message getUsage() {
+        return Message.DISPLAYNAME_USAGE;
     }
 }

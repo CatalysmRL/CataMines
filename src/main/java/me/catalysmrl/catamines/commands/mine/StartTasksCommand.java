@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
@@ -6,27 +6,28 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Messages;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
-public class ReloadCommand extends AbstractCommand {
+public class StartTasksCommand extends AbstractCommand {
 
-    public ReloadCommand() {
-        super("reload", "catamines.reload", Predicates.any(), false);
+    public StartTasksCommand() {
+        super("starttasks", "catamines.starttasks", Predicates.any(), false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
-        // plugin.reload();
-        Messages.sendPrefixed(sender, "&aPlugin reloaded!");
+        plugin.getMineManager().start();
+        Messages.sendPrefixed(sender, "&aMine tasks started.");
     }
 
     @Override
-    public String getDescription() {
-        return "Reloads the plugin";
+    public Message getDescription() {
+        return Message.STARTTASKS_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm reload";
+    public Message getUsage() {
+        return Message.STARTTASKS_USAGE;
     }
 }

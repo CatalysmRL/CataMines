@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -7,6 +7,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Messages;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
@@ -19,13 +20,14 @@ public class WarnCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         String subCommand = ctx.next().toLowerCase();
-        
+
         // Legacy: /cm warn <mine> true/false -> enable/disable warning
         // Refactored: /cm warn <mine> <setting> <value>
         // Settings: enable, distance, global, hotbar, seconds
-        
+
         // Handle boolean toggle for "warn" directly if 2nd arg is boolean?
         // Legacy was /cm warn <mine> <true/false>
         if (subCommand.equals("true") || subCommand.equals("false")) {
@@ -98,12 +100,12 @@ public class WarnCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Configures warning settings for a mine";
+    public Message getDescription() {
+        return Message.WARN_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm warn <mine> <setting> <value>";
+    public Message getUsage() {
+        return Message.WARN_USAGE;
     }
 }

@@ -5,6 +5,8 @@ import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
+import me.catalysmrl.catamines.utils.message.Message;
+
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand extends AbstractCommand {
@@ -19,12 +21,12 @@ public class ReloadCommand extends AbstractCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Reloads the plugin";
+    public Message getDescription() {
+        return Message.RELOAD_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm reload [arg]";
+    public Message getUsage() {
+        return Message.RELOAD_USAGE;
     }
 }

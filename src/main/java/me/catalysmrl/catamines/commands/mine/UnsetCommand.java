@@ -1,12 +1,12 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
-import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.utils.helper.Predicates;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 
 public class UnsetCommand extends AbstractMineCommand {
@@ -15,20 +15,18 @@ public class UnsetCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
-
-        mine.getRegionManager().getChoices().forEach(region -> region.getCompositionManager().getChoices().forEach(CataMineComposition::clearBlocks));
-        requireSave();
     }
 
     @Override
-    public String getDescription() {
-        return "";
+    public Message getDescription() {
+        return Message.UNSET_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "";
+    public Message getUsage() {
+        return Message.UNSET_USAGE;
     }
 }

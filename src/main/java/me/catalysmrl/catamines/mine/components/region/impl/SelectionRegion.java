@@ -105,7 +105,8 @@ public class SelectionRegion extends AbstractCataMineRegion {
             }
             case CONVEXPOLYHEDRAL -> {
                 ConvexPolyhedralRegion convexPolyhedralRegion = (ConvexPolyhedralRegion) region;
-                List<String> vertices = convexPolyhedralRegion.getVertices().stream().map(BlockVector3::toParserString).toList();
+                List<String> vertices = convexPolyhedralRegion.getVertices().stream().map(BlockVector3::toParserString)
+                        .toList();
                 section.set("vertices", vertices);
             }
             default -> section.set("parameters", "undefined");
@@ -115,12 +116,14 @@ public class SelectionRegion extends AbstractCataMineRegion {
     public static SelectionRegion deserialize(ConfigurationSection section) throws DeserializationException {
 
         String name = section.getString("name");
-        if (name == null) throw new DeserializationException("No name specified");
+        if (name == null)
+            throw new DeserializationException("No name specified");
 
         double chance = section.getDouble("chance", 0d);
 
         String worldName = section.getString("world");
-        if (worldName == null) throw new DeserializationException("No world specified in region " + name);
+        if (worldName == null)
+            throw new DeserializationException("No world specified in region " + name);
 
         org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
         if (bukkitWorld == null)
@@ -133,7 +136,8 @@ public class SelectionRegion extends AbstractCataMineRegion {
             throw new DeserializationException("Invalid selection type in region " + name);
 
         ConfigurationSection selectionSection = section.getConfigurationSection("selection");
-        if (selectionSection == null) throw new DeserializationException();
+        if (selectionSection == null)
+            throw new DeserializationException();
 
         Region region = new NullRegion();
         try {
@@ -150,11 +154,14 @@ public class SelectionRegion extends AbstractCataMineRegion {
                         VectorParser.asBlockVector3(selectionSection.getString("center")),
                         VectorParser.asVector3(selectionSection.getString("radius")));
                 case POLYGONAL2D -> {
-                    List<BlockVector2> points = selectionSection.getStringList("points").stream().map(VectorParser::asBlockVector2).toList();
-                    region = new Polygonal2DRegion(worldEditWorld, points, selectionSection.getInt("minY"), selectionSection.getInt("maxY"));
+                    List<BlockVector2> points = selectionSection.getStringList("points").stream()
+                            .map(VectorParser::asBlockVector2).toList();
+                    region = new Polygonal2DRegion(worldEditWorld, points, selectionSection.getInt("minY"),
+                            selectionSection.getInt("maxY"));
                 }
                 case CONVEXPOLYHEDRAL -> {
-                    List<BlockVector3> vertices = selectionSection.getStringList("vertices").stream().map(VectorParser::asBlockVector3).toList();
+                    List<BlockVector3> vertices = selectionSection.getStringList("vertices").stream()
+                            .map(VectorParser::asBlockVector3).toList();
                     ConvexPolyhedralRegion convexRegion = new ConvexPolyhedralRegion(worldEditWorld);
 
                     for (BlockVector3 blockVector3 : vertices) {
@@ -163,6 +170,7 @@ public class SelectionRegion extends AbstractCataMineRegion {
 
                     region = convexRegion;
                 }
+                default -> throw new IllegalArgumentException("Unexpected value: " + selectionType);
             }
         } catch (IllegalArgumentException exception) {
             throw new DeserializationException("Could not deserialize region " + region, exception);
@@ -173,7 +181,8 @@ public class SelectionRegion extends AbstractCataMineRegion {
 
         ConfigurationSection compositionsSection = section.getConfigurationSection("compositions");
         if (compositionsSection != null) {
-            deserializeCompositions(compositionsSection).forEach(composition -> selectionRegion.getCompositionManager().add(composition));
+            deserializeCompositions(compositionsSection)
+                    .forEach(composition -> selectionRegion.getCompositionManager().add(composition));
         }
 
         return selectionRegion;

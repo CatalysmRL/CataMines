@@ -18,8 +18,7 @@ public class Messages {
     /**
      * Plugin prefix
      */
-    public static String PREFIX = "&6[&bCata&aMines&6]";
-
+    public static String PREFIX = "&6[&bCata&aMines&6]&r";
 
     public static String prefix(String message) {
         return colorize(PREFIX + " &7" + message);
@@ -42,7 +41,7 @@ public class Messages {
      * @param message the message to prefix and colorize
      */
     public static void sendPrefixed(CommandSender sender, String message) {
-        sender.sendMessage(colorize(PREFIX + " &7" + message));
+        sender.sendMessage(prefix(message));
     }
 
     public static void sendPrefixed(CommandSender sender, String... messages) {
@@ -64,7 +63,8 @@ public class Messages {
             return "null";
         }
 
-        // Convert from the '&#rrggbb' hex color format to the '&x&r&r&g&g&b&b' one used by Bukkit.
+        // Convert from the '&#rrggbb' hex color format to the '&x&r&r&g&g&b&b' one used
+        // by Bukkit.
         Matcher matcher = HEX_COLOR_PATTERN.matcher(string);
         StringBuilder sb = new StringBuilder();
 
@@ -82,7 +82,8 @@ public class Messages {
     }
 
     public static List<String> colorize(List<String> inputList) {
-        if (inputList == null) return Collections.emptyList();
+        if (inputList == null)
+            return Collections.emptyList();
         return inputList.stream()
                 .map(Messages::colorize)
                 .toList();

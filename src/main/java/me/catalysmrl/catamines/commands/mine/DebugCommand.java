@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -7,6 +7,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import org.bukkit.command.CommandSender;
+import me.catalysmrl.catamines.utils.message.Message;
 
 public class DebugCommand extends AbstractMineCommand {
     public DebugCommand() {
@@ -14,17 +15,18 @@ public class DebugCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         sender.sendMessage(mine.toString());
     }
 
     @Override
-    public String getDescription() {
-        return null;
+    public Message getDescription() {
+        return Message.DEBUG_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm debug <mine>";
+    public Message getUsage() {
+        return Message.DEBUG_USAGE;
     }
 }

@@ -7,6 +7,8 @@ import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionCreateCom
 import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionDeleteCommand;
 import me.catalysmrl.catamines.commands.mine.regions.subcommands.RegionResetCommand;
 
+import me.catalysmrl.catamines.utils.message.Message;
+
 public class RegionsCommand extends ParentMineCommand {
 
     public RegionsCommand() {
@@ -18,13 +20,12 @@ public class RegionsCommand extends ParentMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return null;
+    public Message getDescription() {
+        return Message.REGIONS_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm regions <mine>";
+    public Message getUsage() {
+        return Message.REGIONS_USAGE;
     }
-
 }

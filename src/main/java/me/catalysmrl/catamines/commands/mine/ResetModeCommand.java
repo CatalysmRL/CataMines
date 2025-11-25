@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -16,7 +16,8 @@ public class ResetModeCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
 
         CataMineController.ResetMode resetMode;
@@ -34,12 +35,12 @@ public class ResetModeCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "";
+    public Message getDescription() {
+        return Message.RESETMODE_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "";
+    public Message getUsage() {
+        return Message.RESETMODE_USAGE;
     }
 }

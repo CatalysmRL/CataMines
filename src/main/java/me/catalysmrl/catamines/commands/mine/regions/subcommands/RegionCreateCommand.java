@@ -25,13 +25,14 @@ public class RegionCreateCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         assertArgLength(ctx);
 
         String regionName = ctx.peek();
 
         if (mine.getRegionManager().get(regionName).isPresent()) {
-            Message.REGION_EXISTS.send(sender);
+            Message.REGIONS_EXISTS.send(sender);
             return;
         }
 
@@ -45,7 +46,7 @@ public class RegionCreateCommand extends AbstractMineCommand {
         CataMineRegion region = new SelectionRegion(regionName, regionSelector);
         region.getCompositionManager().add(new CataMineComposition("default"));
         mine.getRegionManager().add(region);
-        Message.REGION_CREATE_SUCCESS.send(sender);
+        Message.REGIONS_CREATE_SUCCESS.send(sender);
 
         requireSave();
     }
@@ -56,12 +57,12 @@ public class RegionCreateCommand extends AbstractMineCommand {
     }
 
     @Override
-    public String getDescription() {
-        return Message.REGION_CREATE_DESCRIPTION.getKey();
+    public Message getDescription() {
+        return Message.REGIONS_CREATE_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm regions <mine> create <name>";
+    public Message getUsage() {
+        return Message.REGIONS_CREATE_USAGE;
     }
 }

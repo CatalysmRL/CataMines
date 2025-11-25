@@ -21,12 +21,12 @@ public class ListCommand extends AbstractCommand {
     }
 
     @Override
-    public String getDescription() {
-        return Message.LIST_DESCRIPTION.getKey();
+    public Message getDescription() {
+        return Message.LIST_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm list";
+    public Message getUsage() {
+        return Message.LIST_USAGE;
     }
 }

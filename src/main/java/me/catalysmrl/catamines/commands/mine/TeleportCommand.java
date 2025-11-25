@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.commands.mine.generic;
+package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -7,6 +7,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Messages;
+import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +19,8 @@ public class TeleportCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+            throws CommandException {
         if (mine.getTeleportLocation() == null) {
             Messages.sendPrefixed(sender, "Teleport location not set for this mine!");
             return;
@@ -38,18 +40,16 @@ public class TeleportCommand extends AbstractMineCommand {
                 Messages.sendPrefixed(sender, "Only players can use this command!");
                 return;
             }
-            ((Player) sender).teleport(mine.getTeleportLocation());
-            Messages.sendPrefixed(sender, "Teleported to mine " + mine.getName());
         }
     }
 
     @Override
-    public String getDescription() {
-        return "Teleports to a mine";
+    public Message getDescription() {
+        return Message.TELEPORT_DESCRIPTION;
     }
 
     @Override
-    public String getUsage() {
-        return "/cm tp <mine> [player]";
+    public Message getUsage() {
+        return Message.TELEPORT_USAGE;
     }
 }
