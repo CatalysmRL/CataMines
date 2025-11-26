@@ -31,7 +31,8 @@ public class WorldEditUtils {
     }
 
     public static RegionSelector getSelector(Player player) {
-        return WorldEdit.getInstance().getSessionManager().get(BukkitAdapter.adapt(player)).getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
+        return WorldEdit.getInstance().getSessionManager().get(BukkitAdapter.adapt(player))
+                .getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
     }
 
     public static void pasteRegion(Region region, Pattern pattern) {
@@ -42,13 +43,15 @@ public class WorldEditUtils {
                 .world(region.getWorld())
                 .build()) {
 
-            editSession.setReorderMode(EditSession.ReorderMode.FAST);
             editSession.setBlocks(region, pattern);
         } catch (MaxChangedBlocksException exception) {
             exception.printStackTrace();
         }
     }
 
+    // Suppressing resource leak warning: Operations.complete() handles resource
+    // management internally
+    @SuppressWarnings("resource")
     public static void pasteSchematic(Clipboard clipboard, World world, BlockVector3 location) {
         Objects.requireNonNull(clipboard);
         Objects.requireNonNull(world);

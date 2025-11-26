@@ -33,6 +33,7 @@ public class Message {
     // Mine commands
     public static final Message MINE_EXISTS = Message.of("catamines.command.mine.create.mine-exists");
     public static final Message INCOMPLETE_REGION = Message.of("catamines.command.mine.create.incomplete-region");
+    public static final Message INVALID_SCHEMATIC = Message.of("catamines.command.mine.create.invalid-schematic");
     public static final Message MINE_INVALID_NAME = Message.of("catamines.command.mine.create.invalid-name");
     public static final Message CREATE_SUCCESS = Message.of("catamines.command.mine.create.success");
     public static final Message CREATE_USAGE = Message.of("catamines.command.mine.create.usage");

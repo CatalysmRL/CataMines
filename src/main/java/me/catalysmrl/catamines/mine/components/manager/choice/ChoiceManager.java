@@ -24,23 +24,23 @@ public class ChoiceManager<T extends Identifiable & Choice> {
     public void next() {
         current = upcoming;
 
-        double randomDouble = ThreadLocalRandom.current().nextDouble();
+        double randomValue = ThreadLocalRandom.current().nextDouble() * max;
         double offset = 0;
 
         for (T choice : choices) {
-            if (randomDouble <= (offset + choice.getChance()) / max) {
+            offset += choice.getChance();
+            if (randomValue < offset) {
                 upcoming = choice;
                 return;
             }
-
-            offset += choice.getChance();
         }
     }
 
     public void add(T choice) {
         choices.add(choice);
         max += choice.getChance();
-        if (upcoming == null) upcoming = choice;
+        if (upcoming == null)
+            upcoming = choice;
     }
 
     public void remove(T choice) {

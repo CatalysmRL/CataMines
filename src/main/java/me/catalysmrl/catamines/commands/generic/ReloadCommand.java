@@ -6,18 +6,19 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.message.Messages;
 
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand extends AbstractCommand {
     public ReloadCommand() {
-        super("reload", "catamines.reload", Predicates.inRange(0, 1), false);
+        super("reload", "catamines.reload", Predicates.any(), false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
         assertArgLength(ctx);
-        plugin.getMineManager().loadMinesFromFolder(plugin.getMineManager().getMinesPath());
+        Messages.sendPrefixed(sender, "&cNot supported yet!");
     }
 
     @Override

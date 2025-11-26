@@ -19,7 +19,7 @@ public class StopCommand extends AbstractMineCommand {
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
             throws CommandException {
-        mine.setStopped(true);
+        mine.getFlags().setStopped(true);
         Messages.sendPrefixed(sender, "&aMine stopped: " + mine.getName());
         requireSave();
     }

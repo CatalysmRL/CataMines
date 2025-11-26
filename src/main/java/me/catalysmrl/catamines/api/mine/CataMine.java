@@ -2,6 +2,7 @@ package me.catalysmrl.catamines.api.mine;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
+import me.catalysmrl.catamines.mine.components.MineFlags;
 import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
 import me.catalysmrl.catamines.mine.components.manager.controller.CataMineController;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
@@ -61,39 +62,5 @@ public interface CataMine extends SectionSerializable {
 
     ChoiceManager<CataMineRegion> getRegionManager();
 
-    boolean isStopped();
-
-    void setStopped(boolean stopped);
-
-    org.bukkit.Location getTeleportLocation();
-
-    void setTeleportLocation(org.bukkit.Location location);
-
-    org.bukkit.Location getResetTeleportLocation();
-
-    void setResetTeleportLocation(org.bukkit.Location location);
-
-    boolean isWarn();
-
-    void setWarn(boolean warn);
-
-    boolean isWarnHotbar();
-
-    void setWarnHotbar(boolean warnHotbar);
-
-    boolean isWarnGlobal();
-
-    void setWarnGlobal(boolean warnGlobal);
-
-    int getWarnSeconds();
-
-    void setWarnSeconds(int warnSeconds);
-
-    int getWarnDistance();
-
-    void setWarnDistance(int warnDistance);
-
-    boolean isTeleportPlayers();
-
-    void setTeleportPlayers(boolean teleportPlayers);
+    MineFlags getFlags();
 }

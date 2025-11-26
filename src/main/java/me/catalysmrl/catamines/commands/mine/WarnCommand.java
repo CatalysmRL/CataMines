@@ -32,7 +32,7 @@ public class WarnCommand extends AbstractMineCommand {
         // Legacy was /cm warn <mine> <true/false>
         if (subCommand.equals("true") || subCommand.equals("false")) {
             boolean value = Boolean.parseBoolean(subCommand);
-            mine.setWarn(value);
+            mine.getFlags().setWarn(value);
             Messages.sendPrefixed(sender, "Warn enabled set to " + value + " for mine " + mine.getName());
             requireSave();
             return;
@@ -49,14 +49,14 @@ public class WarnCommand extends AbstractMineCommand {
         switch (subCommand) {
             case "enable":
                 boolean enable = Boolean.parseBoolean(valueStr);
-                mine.setWarn(enable);
+                mine.getFlags().setWarn(enable);
                 Messages.sendPrefixed(sender, "Warn enabled set to " + enable + " for mine " + mine.getName());
                 requireSave();
                 break;
             case "distance":
                 try {
                     int distance = Integer.parseInt(valueStr);
-                    mine.setWarnDistance(distance);
+                    mine.getFlags().setWarnDistance(distance);
                     Messages.sendPrefixed(sender, "Warn distance set to " + distance + " for mine " + mine.getName());
                     requireSave();
                 } catch (NumberFormatException e) {
@@ -65,19 +65,19 @@ public class WarnCommand extends AbstractMineCommand {
                 break;
             case "global":
                 boolean global = Boolean.parseBoolean(valueStr);
-                mine.setWarnGlobal(global);
+                mine.getFlags().setWarnGlobal(global);
                 Messages.sendPrefixed(sender, "Warn global set to " + global + " for mine " + mine.getName());
                 requireSave();
                 break;
             case "hotbar":
                 boolean hotbar = Boolean.parseBoolean(valueStr);
-                mine.setWarnHotbar(hotbar);
+                mine.getFlags().setWarnHotbar(hotbar);
                 Messages.sendPrefixed(sender, "Warn hotbar set to " + hotbar + " for mine " + mine.getName());
                 break;
             case "seconds":
                 try {
                     int seconds = Integer.parseInt(valueStr);
-                    mine.setWarnSeconds(seconds);
+                    mine.getFlags().setWarnSeconds(seconds);
                     Messages.sendPrefixed(sender, "Warn seconds set to " + seconds + " for mine " + mine.getName());
                     requireSave();
                 } catch (NumberFormatException e) {

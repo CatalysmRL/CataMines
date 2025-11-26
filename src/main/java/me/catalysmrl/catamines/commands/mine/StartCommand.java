@@ -19,7 +19,7 @@ public class StartCommand extends AbstractMineCommand {
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
             throws CommandException {
-        mine.setStopped(false);
+        mine.getFlags().setStopped(false);
         Messages.sendPrefixed(sender, "&aMine started: " + mine.getName());
         requireSave();
     }

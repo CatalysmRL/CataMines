@@ -30,7 +30,7 @@ public class SchematicRegion extends AbstractCataMineRegion {
     }
 
     public void define(String schematicName, World world, BlockVector3 location) {
-        this.schematicName = name;
+        this.schematicName = schematicName;
         this.world = world;
         this.location = location;
         this.clipboard = WorldEditUtils.loadSchematic(schematicName);
@@ -73,16 +73,22 @@ public class SchematicRegion extends AbstractCataMineRegion {
     public static SchematicRegion deserialize(ConfigurationSection section) throws DeserializationException {
 
         String name = section.getString("name");
-        if (name == null) throw new DeserializationException("No name specified");
+        if (name == null)
+            throw new DeserializationException("No name specified");
+
+        double chance = section.getDouble("chance", 0d);
 
         String schematicName = section.getString("schematic-name");
-        if (schematicName == null) throw new DeserializationException("No schematic specified");
+        if (schematicName == null)
+            throw new DeserializationException("No schematic specified");
 
         String worldName = section.getString("world");
-        if (worldName == null) throw new DeserializationException("No world specified");
+        if (worldName == null)
+            throw new DeserializationException("No world specified");
 
         org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) throw new DeserializationException("World " + worldName + " not found");
+        if (bukkitWorld == null)
+            throw new DeserializationException("World " + worldName + " not found");
 
         World worldEditWorld = BukkitAdapter.adapt(bukkitWorld);
 
@@ -93,9 +99,11 @@ public class SchematicRegion extends AbstractCataMineRegion {
             throw new DeserializationException("Invalid location", exception);
         }
 
-        return new SchematicRegion(name, schematicName, worldEditWorld, location);
-    }
+        SchematicRegion schematicRegion = new SchematicRegion(name, schematicName, worldEditWorld, location);
+        schematicRegion.setChance(chance);
 
+        return schematicRegion;
+    }
 
     @Override
     public String toString() {

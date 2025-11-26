@@ -29,7 +29,7 @@ public class TeleportPlayersCommand extends AbstractMineCommand {
         }
 
         boolean value = Boolean.parseBoolean(valueStr);
-        mine.setTeleportPlayers(value);
+        mine.getFlags().setTeleportPlayers(value);
         Messages.sendPrefixed(sender, "Teleport players set to " + value + " for mine " + mine.getName());
         requireSave();
     }

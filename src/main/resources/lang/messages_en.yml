@@ -89,7 +89,7 @@ catamines:
         invalid-chance: "%p &cYour chance must be between 0 and 100%!"
         invalid-region: "%p &cRegion is invalid!"
         invalid-composition: "%p &cComposition is invalid!"
-        success: "%p &7&b{0} &7set for &a{1}&7. You have &6{2}%% &7left over."
+        success: "%p &7Set &b{1} &7to &a{2}% &7for mine &6{0} {3} {4}&7. You have &6{5}%&7 left over."
         description: "Sets a mine's composition."
         usage: "/cm set <mine> <block> <chance> [region] [composition]"
       

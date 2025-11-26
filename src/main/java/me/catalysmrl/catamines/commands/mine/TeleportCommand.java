@@ -21,7 +21,7 @@ public class TeleportCommand extends AbstractMineCommand {
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
             throws CommandException {
-        if (mine.getTeleportLocation() == null) {
+        if (mine.getFlags().getTeleportLocation() == null) {
             Messages.sendPrefixed(sender, "Teleport location not set for this mine!");
             return;
         }
@@ -33,7 +33,7 @@ public class TeleportCommand extends AbstractMineCommand {
                 Messages.sendPrefixed(sender, "Player not found: " + playerName);
                 return;
             }
-            target.teleport(mine.getTeleportLocation());
+            target.teleport(mine.getFlags().getTeleportLocation());
             Messages.sendPrefixed(sender, "Teleported " + playerName + " to mine " + mine.getName());
         } else {
             if (!(sender instanceof Player)) {

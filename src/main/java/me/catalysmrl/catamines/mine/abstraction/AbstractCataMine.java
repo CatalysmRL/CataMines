@@ -29,98 +29,9 @@ public abstract class AbstractCataMine implements CataMine {
 
     @Override
     public void tick() {
-        if (flags.isStopped()) return;
+        if (flags.isStopped())
+            return;
         controller.tick();
-    }
-
-    @Override
-    public boolean isStopped() {
-        return flags.isStopped();
-    }
-
-    @Override
-    public void setStopped(boolean stopped) {
-        flags.setStopped(stopped);
-    }
-
-    @Override
-    public org.bukkit.Location getTeleportLocation() {
-        return flags.getTeleportLocation();
-    }
-
-    @Override
-    public void setTeleportLocation(org.bukkit.Location location) {
-        flags.setTeleportLocation(location);
-    }
-
-    @Override
-    public org.bukkit.Location getResetTeleportLocation() {
-        return flags.getResetTeleportLocation();
-    }
-
-    @Override
-    public void setResetTeleportLocation(org.bukkit.Location location) {
-        flags.setResetTeleportLocation(location);
-    }
-
-    @Override
-    public boolean isWarn() {
-        return flags.isWarn();
-    }
-
-    @Override
-    public void setWarn(boolean warn) {
-        flags.setWarn(warn);
-    }
-
-    @Override
-    public boolean isWarnHotbar() {
-        return flags.isWarnHotbar();
-    }
-
-    @Override
-    public void setWarnHotbar(boolean warnHotbar) {
-        flags.setWarnHotbar(warnHotbar);
-    }
-
-    @Override
-    public boolean isWarnGlobal() {
-        return flags.isWarnGlobal();
-    }
-
-    @Override
-    public void setWarnGlobal(boolean warnGlobal) {
-        flags.setWarnGlobal(warnGlobal);
-    }
-
-    @Override
-    public int getWarnSeconds() {
-        return flags.getWarnSeconds();
-    }
-
-    @Override
-    public void setWarnSeconds(int warnSeconds) {
-        flags.setWarnSeconds(warnSeconds);
-    }
-
-    @Override
-    public int getWarnDistance() {
-        return flags.getWarnDistance();
-    }
-
-    @Override
-    public void setWarnDistance(int warnDistance) {
-        flags.setWarnDistance(warnDistance);
-    }
-
-    @Override
-    public boolean isTeleportPlayers() {
-        return flags.isTeleportPlayers();
-    }
-
-    @Override
-    public void setTeleportPlayers(boolean teleportPlayers) {
-        flags.setTeleportPlayers(teleportPlayers);
     }
 
     @Override
@@ -136,7 +47,8 @@ public abstract class AbstractCataMine implements CataMine {
 
     @Override
     public void setName(String name) {
-        if ("*".equals(name)) throw new IllegalArgumentException();
+        if ("*".equals(name))
+            throw new IllegalArgumentException();
         this.name = name;
     }
 
@@ -163,6 +75,11 @@ public abstract class AbstractCataMine implements CataMine {
     @Override
     public ChoiceManager<CataMineRegion> getRegionManager() {
         return regionManager;
+    }
+
+    @Override
+    public MineFlags getFlags() {
+        return flags;
     }
 
     @Override

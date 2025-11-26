@@ -21,8 +21,7 @@ public class SetResetTeleportCommand extends AbstractMineCommand {
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
             throws CommandException {
         Player player = (Player) sender;
-        mine.setResetTeleportLocation(player.getLocation());
-        mine.setTeleportPlayers(true);
+        mine.getFlags().setResetTeleportLocation(player.getLocation());
         Messages.sendPrefixed(sender,
                 "&aReset teleport location set for mine " + mine.getName() + " and teleport players enabled.");
         requireSave();

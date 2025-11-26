@@ -1,5 +1,6 @@
 package me.catalysmrl.catamines.commands.mine;
 
+import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
@@ -8,6 +9,7 @@ import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
+import me.catalysmrl.catamines.mine.components.region.impl.SchematicRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
 import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.Predicates;
@@ -21,14 +23,14 @@ import java.io.IOException;
 public class CreateCommand extends AbstractCommand {
 
     public CreateCommand() {
-        super("create", "catamines.create", Predicates.equals(1), false);
+        super("create", "catamines.create", Predicates.inRange(1, 2), false);
     }
 
     @Override
     public void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
         assertArgLength(ctx);
 
-        String name = ctx.peek();
+        String name = ctx.next();
 
         if ("*".equals(name)) {
             Message.MINE_INVALID_NAME.send(sender);
@@ -45,12 +47,24 @@ public class CreateCommand extends AbstractCommand {
         if (sender instanceof Player player) {
             RegionSelector regionSelector = WorldEditUtils.getSelector(player);
 
-            if (regionSelector.isDefined()) {
-                CataMineRegion region = new SelectionRegion("default", regionSelector);
-                region.getCompositionManager().add(new CataMineComposition("default"));
-                cataMine.getRegionManager().add(region);
+            if (!ctx.hasNext()) {
+                if (regionSelector.isDefined()) {
+                    CataMineRegion region = new SelectionRegion("default", regionSelector);
+                    region.getCompositionManager().add(new CataMineComposition("default"));
+                    cataMine.getRegionManager().add(region);
+                } else {
+                    Message.INCOMPLETE_REGION.send(sender);
+                }
             } else {
-                Message.INCOMPLETE_REGION.send(sender);
+                try {
+                    CataMineRegion region = new SchematicRegion("default", ctx.peek(), regionSelector);
+                    region.getCompositionManager().add(new CataMineComposition("default"));
+                    cataMine.getRegionManager().add(region);
+                } catch (IncompleteRegionException e) {
+                    Message.INCOMPLETE_REGION.send(sender);
+                } catch (IllegalArgumentException e) {
+                    Message.INVALID_SCHEMATIC.send(sender, ctx.peek());
+                }
             }
         }
 

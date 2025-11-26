@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 public class MineManager {
 
     private final Path minesPath;
+    private final Path schematicsPath;
 
     private final CataMines plugin;
     private BukkitTask minesTask;
@@ -43,10 +44,13 @@ public class MineManager {
     public MineManager(CataMines plugin) {
         this.plugin = plugin;
         minesPath = plugin.getDataFolder().toPath().resolve("mines");
+        schematicsPath = plugin.getDataFolder().toPath().resolve("schematics");
         try {
             createDirectoriesIfNotExists(minesPath);
+            createDirectoriesIfNotExists(schematicsPath);
         } catch (IOException e) {
-            plugin.getLogger().severe("Could not create mines directory");
+            plugin.getLogger().severe("Failed to create mines and/or schematics directory");
+            plugin.getLogger().severe(e.getMessage());
             return;
         }
         Bukkit.getScheduler().runTaskLater(plugin, () -> loadMinesFromFolder(minesPath), 2L);
@@ -66,7 +70,8 @@ public class MineManager {
             try {
                 saveMine(mine);
             } catch (IOException e) {
-                plugin.getLogger().severe(Message.MINE_SAVE_EXCEPTION.format(plugin.getServer().getConsoleSender(), mine.getName()));
+                plugin.getLogger().severe(
+                        Message.MINE_SAVE_EXCEPTION.format(plugin.getServer().getConsoleSender(), mine.getName()));
                 plugin.getLogger().severe(e.getMessage());
             }
         }
@@ -113,7 +118,7 @@ public class MineManager {
             logger.warning("Mine task already running. Overriding old mine task.");
             minesTask.cancel();
         }
-        
+
         this.minesTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
 
             for (CataMine cataMine : mines) {
@@ -194,7 +199,7 @@ public class MineManager {
     }
 
     public void callBlockBreak(BlockBreakEvent event) {
-        
+
     }
 
     public void callBlockPlace(BlockPlaceEvent event) {
@@ -258,7 +263,8 @@ public class MineManager {
      * @throws IllegalArgumentException if the mine is already registered
      */
     public void registerMine(CataMine mine) {
-        if (containsMine(mine)) throw new IllegalArgumentException();
+        if (containsMine(mine))
+            throw new IllegalArgumentException();
         mines.add(mine);
     }
 

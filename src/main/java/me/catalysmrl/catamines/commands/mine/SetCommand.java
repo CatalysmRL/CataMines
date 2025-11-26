@@ -87,7 +87,8 @@ public class SetCommand extends AbstractMineCommand {
         CataMineBlock block = new CataMineBlock(baseBlock, chance);
         composition.addBlock(block);
 
-        Message.SET_SUCCESS.send(sender, baseBlockName, block.getChance(), mine.getName());
+        Message.SET_SUCCESS.send(sender, mine.getName(), baseBlockName, block.getChance(), regionName, compositionName,
+                100 - composition.getChanceSum());
 
         requireSave();
     }
