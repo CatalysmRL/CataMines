@@ -1,6 +1,8 @@
-package me.catalysmrl.catamines.command.abstraction;
+package me.catalysmrl.catamines.command.utils;
 
 import org.bukkit.command.CommandSender;
+
+import me.catalysmrl.catamines.command.abstraction.Command;
 
 public abstract class CommandException extends Exception {
 

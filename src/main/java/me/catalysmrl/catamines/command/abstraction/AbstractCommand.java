@@ -2,6 +2,9 @@ package me.catalysmrl.catamines.command.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.utils.ArgumentException;
+import me.catalysmrl.catamines.command.utils.CommandContext;
+import me.catalysmrl.catamines.command.utils.CommandException;
+
 import org.bukkit.command.CommandSender;
 
 import java.util.Optional;

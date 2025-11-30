@@ -2,9 +2,10 @@ package me.catalysmrl.catamines.commands.mine.regions.subcommands;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.CommandContext;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.region.AbstractRegionCommand;
+import me.catalysmrl.catamines.command.utils.CommandContext;
+import me.catalysmrl.catamines.command.utils.CommandException;
+import me.catalysmrl.catamines.command.utils.MineTarget;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
@@ -30,7 +31,7 @@ public class RegionDeleteCommand extends AbstractRegionCommand {
     }
 
     @Override
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine,
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target,
             CataMineRegion region) {
         return Collections.emptyList();
     }

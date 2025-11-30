@@ -9,7 +9,18 @@ catamines:
     only-players: "%p &cOnly players may execute this command!"
     no-permission: "%p &cYou do not have the permissions to do that!"
     mine-not-exist: "%p &cMine does not exist!"
-    query-all: "%p &7&aFound {0} mines."
+    invalid-target: "%p &6{0} &cis an invalid target!"
+    no-mines: "%p &cNo mines found!"
+    query-all:
+      header: 
+        - ""
+        - "&5Querying all mines..."
+        - ""
+      entry: "&7>> &f{0}"
+      footer:
+        - ""
+        - "&5Applied to &a{0} &5targets."
+        - ""
 
   command:
     generic:

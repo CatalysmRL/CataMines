@@ -2,8 +2,8 @@ package me.catalysmrl.catamines.commands.generic;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
-import me.catalysmrl.catamines.command.abstraction.CommandContext;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
+import me.catalysmrl.catamines.command.utils.CommandContext;
+import me.catalysmrl.catamines.command.utils.CommandException;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;

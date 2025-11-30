@@ -1,6 +1,8 @@
 package me.catalysmrl.catamines.command.abstraction;
 
 import me.catalysmrl.catamines.CataMines;
+import me.catalysmrl.catamines.command.utils.CommandContext;
+import me.catalysmrl.catamines.command.utils.CommandException;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 

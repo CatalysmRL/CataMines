@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.command.abstraction;
+package me.catalysmrl.catamines.command.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,10 @@ public class CommandContext {
 
     public List<String> getRemainingArgs() {
         return args.subList(index, args.size());
+    }
+
+    public List<String> args() {
+        return new ArrayList<>(args);
     }
 
     public CommandContext copy() {

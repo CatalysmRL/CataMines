@@ -2,9 +2,10 @@ package me.catalysmrl.catamines.command.abstraction.mine.region;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.CommandContext;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.utils.CommandContext;
+import me.catalysmrl.catamines.command.utils.CommandException;
+import me.catalysmrl.catamines.command.utils.MineTarget;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.message.Messages;
@@ -12,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -53,26 +55,28 @@ public abstract class AbstractRegionCommand extends AbstractMineCommand {
     }
 
     @Override
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) {
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target) {
         if (ctx.remaining() == 1) {
             return StringUtil.copyPartialMatches(ctx.peek(),
-                    mine.getRegionManager().getChoices().stream()
+                    target.getMine().getRegionManager().getChoices().stream()
                             .map(CataMineRegion::getName)
                             .toList(),
                     new ArrayList<>());
         } else {
-            Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(ctx.peek());
+            Optional<CataMineRegion> regionOptional = target.getMine().getRegionManager().get(ctx.peek());
             if (regionOptional.isEmpty())
                 return List.of(Messages.colorize("&cUnknown region"));
             ctx.next();
-            return tabComplete(plugin, sender, ctx, mine, regionOptional.get());
+            return tabComplete(plugin, sender, ctx, target, regionOptional.get());
         }
     }
 
     public abstract void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine,
             CataMineRegion region) throws CommandException;
 
-    public abstract List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine,
-            CataMineRegion region);
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx,
+            MineTarget target, CataMineRegion region) {
+        return Collections.emptyList();
+    }
 
 }

@@ -1,10 +1,10 @@
 package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.api.mine.CataMine;
-import me.catalysmrl.catamines.command.abstraction.CommandContext;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.utils.CommandContext;
+import me.catalysmrl.catamines.command.utils.CommandException;
+import me.catalysmrl.catamines.command.utils.MineTarget;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Messages;
 import me.catalysmrl.catamines.utils.message.Message;
@@ -44,11 +44,11 @@ public class TeleportPlayersCommand extends AbstractMineCommand {
     }
 
     @Override
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) {
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target) {
         if (ctx.remaining() == 1) {
             return Arrays.asList("true", "false");
         }
-        return super.tabComplete(plugin, sender, ctx, mine);
+        return super.tabComplete(plugin, sender, ctx, target);
     }
 
     @Override

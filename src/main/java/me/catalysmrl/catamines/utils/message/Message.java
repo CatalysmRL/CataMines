@@ -14,8 +14,12 @@ public class Message {
     public static final Message UNKNOWN_COMMAND = Message.of("catamines.commandsystem.unknown-command");
     public static final Message ONLY_PLAYERS = Message.of("catamines.commandsystem.only-players");
     public static final Message NO_PERMISSION = Message.of("catamines.commandsystem.no-permission");
+    public static final Message NO_MINES = Message.of("catamines.commandsystem.no-mines");
     public static final Message MINE_NOT_EXISTS = Message.of("catamines.commandsystem.mine-not-exist");
-    public static final Message QUERY_ALL = Message.of("catamines.commandsystem.query-all");
+    public static final Message INVALID_TARGET = Message.of("catamines.commandsystem.invalid-target");
+    public static final Message QUERY_ALL_HEADER = Message.of("catamines.commandsystem.query-all.header");
+    public static final Message QUERY_ALL_ENTRY = Message.of("catamines.commandsystem.query-all.entry");
+    public static final Message QUERY_ALL_FOOTER = Message.of("catamines.commandsystem.query-all.footer");
 
     // Generic commands
     public static final Message HELP_HEADER = Message.of("catamines.command.generic.help.header");
@@ -173,6 +177,10 @@ public class Message {
 
     public void send(CommandSender sender, Object... args) {
         MessageService.send(sender, key, args);
+    }
+
+    public void sendList(CommandSender sender, Object... args) {
+        MessageService.sendList(sender, key, args);
     }
 
     public void sendPrefixed(CommandSender sender, Object... args) {

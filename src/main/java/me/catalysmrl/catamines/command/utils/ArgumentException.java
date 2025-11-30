@@ -1,7 +1,7 @@
 package me.catalysmrl.catamines.command.utils;
 
 import me.catalysmrl.catamines.command.abstraction.Command;
-import me.catalysmrl.catamines.command.abstraction.CommandException;
+
 import org.bukkit.command.CommandSender;
 
 public abstract class ArgumentException extends CommandException {
@@ -17,5 +17,4 @@ public abstract class ArgumentException extends CommandException {
             command.getUsage().sendPrefixed(sender);
         }
     }
-
 }
