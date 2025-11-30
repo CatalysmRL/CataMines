@@ -24,18 +24,32 @@ public abstract class AbstractRegionCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx,
+            me.catalysmrl.catamines.command.utils.MineTarget target)
             throws CommandException {
-        String regionName = ctx.next();
+        CataMine mine = target.getMine();
+        CataMineRegion region;
 
-        Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
+        if (target.getTarget() instanceof CataMineRegion) {
+            region = (CataMineRegion) target.getTarget();
+        } else {
+            if (!ctx.hasNext()) {
+                // If no region specified in args, and target is mine, show usage or error?
+                // The original code expected a region name argument.
+                // We'll assume if it's not in target, it MUST be in args.
+                throw new me.catalysmrl.catamines.command.utils.ArgumentException.Usage();
+            }
+            String regionName = ctx.next();
+            Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
 
-        if (regionOptional.isEmpty()) {
-            Message.REGIONS_NOT_EXISTS.send(sender, regionName);
-            return;
+            if (regionOptional.isEmpty()) {
+                Message.REGIONS_NOT_EXISTS.send(sender, regionName);
+                return;
+            }
+            region = regionOptional.get();
         }
 
-        execute(plugin, sender, ctx, mine, regionOptional.get());
+        execute(plugin, sender, ctx, mine, region);
     }
 
     @Override

@@ -20,7 +20,8 @@ public class TeleportPlayersCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx,
+            me.catalysmrl.catamines.command.utils.MineTarget target)
             throws CommandException {
         String valueStr = ctx.next();
         if (!valueStr.equalsIgnoreCase("true") && !valueStr.equalsIgnoreCase("false")) {
@@ -29,8 +30,16 @@ public class TeleportPlayersCommand extends AbstractMineCommand {
         }
 
         boolean value = Boolean.parseBoolean(valueStr);
-        mine.getFlags().setTeleportPlayers(value);
-        Messages.sendPrefixed(sender, "Teleport players set to " + value + " for mine " + mine.getName());
+        me.catalysmrl.catamines.api.mine.PropertyHolder holder = (me.catalysmrl.catamines.api.mine.PropertyHolder) target
+                .getTarget();
+        holder.setFlag(me.catalysmrl.catamines.api.mine.Flag.TELEPORT_PLAYERS, value);
+
+        String targetName = target.getMine().getName();
+        if (holder instanceof me.catalysmrl.catamines.mine.components.manager.choice.Identifiable) {
+            targetName = ((me.catalysmrl.catamines.mine.components.manager.choice.Identifiable) holder).getName();
+        }
+
+        Messages.sendPrefixed(sender, "Teleport players set to " + value + " for " + targetName);
         requireSave();
     }
 

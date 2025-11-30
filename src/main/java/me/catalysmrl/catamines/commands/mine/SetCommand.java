@@ -7,6 +7,7 @@ import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.utils.MineTarget;
 import me.catalysmrl.catamines.mine.components.composition.CataMineBlock;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
@@ -29,9 +30,11 @@ public class SetCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target)
             throws CommandException {
         assertArgLength(ctx);
+
+        CataMine mine = target.getMine();
 
         String baseBlockName = ctx.peek();
         BaseBlock baseBlock;
@@ -59,36 +62,33 @@ public class SetCommand extends AbstractMineCommand {
             }
         }
 
-        String regionName = "default";
-        if (ctx.hasNext()) {
-            regionName = ctx.next();
+        CataMineRegion region = target.getRegion();
+        if (region == null) {
+            Optional<CataMineRegion> regionOptional = mine.getRegionManager().get("default");
+            if (regionOptional.isPresent()) {
+                region = regionOptional.get();
+            } else {
+                Message.SET_INVALID_REGION.send(sender);
+                return;
+            }
         }
 
-        String compositionName = "default";
-        if (ctx.hasNext()) {
-            compositionName = ctx.next();
+        CataMineComposition composition = target.getComposition();
+        if (composition == null) {
+            Optional<CataMineComposition> compositionOptional = region.getCompositionManager().get("default");
+            if (compositionOptional.isPresent()) {
+                composition = compositionOptional.get();
+            } else {
+                Message.SET_INVALID_COMPOSITION.send(sender);
+                return;
+            }
         }
 
-        Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
-        if (regionOptional.isEmpty()) {
-            Message.SET_INVALID_REGION.send(sender);
-            return;
-        }
-
-        CataMineRegion region = regionOptional.get();
-
-        Optional<CataMineComposition> compositionOptional = region.getCompositionManager().get(compositionName);
-        if (compositionOptional.isEmpty()) {
-            Message.SET_INVALID_COMPOSITION.send(sender);
-            return;
-        }
-
-        CataMineComposition composition = compositionOptional.get();
         CataMineBlock block = new CataMineBlock(baseBlock, chance);
         composition.addBlock(block);
 
-        Message.SET_SUCCESS.send(sender, mine.getName(), baseBlockName, block.getChance(), regionName, compositionName,
-                100 - composition.getChanceSum());
+        Message.SET_SUCCESS.send(sender, mine.getName(), baseBlockName, block.getChance(), region.getName(),
+                composition.getName(), 100 - composition.getChanceSum());
 
         requireSave();
     }

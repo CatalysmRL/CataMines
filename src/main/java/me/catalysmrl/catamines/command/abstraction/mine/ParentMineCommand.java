@@ -32,14 +32,17 @@ public abstract class ParentMineCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine) throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx,
+            me.catalysmrl.catamines.command.utils.MineTarget target) throws CommandException {
 
-        if (!ctx.hasNext()) throw new ArgumentException.Usage();
+        if (!ctx.hasNext())
+            throw new ArgumentException.Usage();
 
         String subCmdName = ctx.peek();
 
         AbstractMineCommand sub = getChildren().stream()
-                .filter(s -> s.getName().equalsIgnoreCase(subCmdName) || s.getAliases().contains(subCmdName.toLowerCase(Locale.ROOT)))
+                .filter(s -> s.getName().equalsIgnoreCase(subCmdName)
+                        || s.getAliases().contains(subCmdName.toLowerCase(Locale.ROOT)))
                 .findFirst()
                 .orElse(null);
 
@@ -60,7 +63,7 @@ public abstract class ParentMineCommand extends AbstractMineCommand {
 
         ctx.next();
 
-        sub.execute(plugin, sender, ctx, mine);
+        sub.execute(plugin, sender, ctx, target);
     }
 
     @Override
@@ -79,7 +82,8 @@ public abstract class ParentMineCommand extends AbstractMineCommand {
         } else {
             Optional<AbstractMineCommand> subCommand = children.stream()
                     .filter(c -> c.isAuthorized(sender))
-                    .filter(c -> c.getName().equalsIgnoreCase(ctx.peek()) || c.getAliases().contains(ctx.peek().toLowerCase(Locale.ROOT)))
+                    .filter(c -> c.getName().equalsIgnoreCase(ctx.peek())
+                            || c.getAliases().contains(ctx.peek().toLowerCase(Locale.ROOT)))
                     .findAny();
 
             if (subCommand.isEmpty()) {

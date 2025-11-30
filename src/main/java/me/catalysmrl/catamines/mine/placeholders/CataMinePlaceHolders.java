@@ -66,17 +66,18 @@ public class CataMinePlaceHolders extends PlaceholderExpansion {
 
         // TODO: Placholders via new CataMine interface
         /*
-        return switch (args[0].toLowerCase()) {
-            case "countdown", "time" -> Utils.secondsToTimeFormat(mine.getCountdown());
-            case "remainingseconds" -> String.valueOf(mine.getCountdown());
-            case "totalblocks" -> String.valueOf(mine.getTotalBlocks());
-            case "remainingblocks" -> String.valueOf(mine.getBlockCount());
-            case "minedblocks" -> String.valueOf(mine.getMinedBlocks());
-            case "remainingblockspercentage", "remainingblocksper" -> String.valueOf(mine.getRemainingBlocksPer());
-            case "resetpercentage" -> String.valueOf(mine.getResetPercentage());
-            case "timestring" -> mine.getFormattedTimeString();
-            default -> null;
-        };
+         * return switch (args[0].toLowerCase()) {
+         * case "countdown", "time" -> Utils.secondsToTimeFormat(mine.getCountdown());
+         * case "remainingseconds" -> String.valueOf(mine.getCountdown());
+         * case "totalblocks" -> String.valueOf(mine.getTotalBlocks());
+         * case "remainingblocks" -> String.valueOf(mine.getBlockCount());
+         * case "minedblocks" -> String.valueOf(mine.getMinedBlocks());
+         * case "remainingblockspercentage", "remainingblocksper" ->
+         * String.valueOf(mine.getRemainingBlocksPer());
+         * case "resetpercentage" -> String.valueOf(mine.getResetPercentage());
+         * case "timestring" -> mine.getFormattedTimeString();
+         * default -> null;
+         * };
          */
 
         return "Not yet implemented";

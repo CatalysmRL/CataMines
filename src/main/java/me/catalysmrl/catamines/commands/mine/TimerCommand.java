@@ -25,8 +25,10 @@ public class TimerCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx,
+            me.catalysmrl.catamines.command.utils.MineTarget target)
             throws CommandException {
+        CataMine mine = target.getMine();
         assertArgLength(ctx);
 
         int timeToSetInSeconds;

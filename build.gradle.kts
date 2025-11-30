@@ -3,7 +3,7 @@ plugins {
     id("com.gradleup.shadow") version "9.2.2"
 }
 
-group = "de.c4t4lysm"
+group = "me.catalysmrl"
 version = "3.0.0"
 description = "Mines management plugin"
 

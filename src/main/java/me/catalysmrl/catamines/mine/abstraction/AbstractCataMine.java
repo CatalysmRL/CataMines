@@ -86,4 +86,24 @@ public abstract class AbstractCataMine implements CataMine {
     public CataMines getPlugin() {
         return plugin;
     }
+
+    @Override
+    public <T> T getFlag(me.catalysmrl.catamines.api.mine.Flag<T> flag) {
+        return flags.get(flag);
+    }
+
+    @Override
+    public <T> void setFlag(me.catalysmrl.catamines.api.mine.Flag<T> flag, T value) {
+        flags.set(flag, value);
+    }
+
+    @Override
+    public boolean hasFlag(me.catalysmrl.catamines.api.mine.Flag<?> flag) {
+        return flags.get(flag) != null;
+    }
+
+    @Override
+    public me.catalysmrl.catamines.api.mine.PropertyHolder getParent() {
+        return null;
+    }
 }

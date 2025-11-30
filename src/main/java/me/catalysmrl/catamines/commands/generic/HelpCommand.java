@@ -34,8 +34,6 @@ public class HelpCommand extends AbstractCommand {
         plugin.getCommandManager().getCommandMap().forEach((k, v) -> sb
                 .append("&7&l- &6")
                 .append(v.getUsage().format(sender))
-                .append("&7 - &f")
-                .append(v.getDescription().format(sender))
                 .append("\n"));
 
         Messages.sendColorized(sender, sb.toString());

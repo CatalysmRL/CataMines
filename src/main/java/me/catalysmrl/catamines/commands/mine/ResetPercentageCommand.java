@@ -5,6 +5,7 @@ import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.utils.MineTarget;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Messages;
 import me.catalysmrl.catamines.utils.message.Message;
@@ -17,9 +18,11 @@ public class ResetPercentageCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target)
             throws CommandException {
         assertArgLength(ctx);
+
+        CataMine mine = target.getMine();
 
         String percentageRaw = ctx.next().replace("%", "");
         double percentage;

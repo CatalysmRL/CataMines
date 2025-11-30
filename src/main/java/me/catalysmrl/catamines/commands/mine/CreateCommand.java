@@ -1,7 +1,5 @@
 package me.catalysmrl.catamines.commands.mine;
 
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
@@ -15,6 +13,8 @@ import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.regions.RegionSelector;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

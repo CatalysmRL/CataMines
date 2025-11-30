@@ -6,6 +6,7 @@ import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.utils.MineTarget;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
@@ -21,19 +22,24 @@ public class RedefineCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target)
             throws CommandException {
         assertArgLength(ctx);
 
-        String regionName = ctx.hasNext() ? ctx.peek() : "default";
-        Optional<CataMineRegion> regionOptional = mine.getRegionManager().get(regionName);
-        if (regionOptional.isEmpty()) {
-            Message.REGIONS_NOT_EXISTS.send(sender);
-            return;
+        CataMine mine = target.getMine();
+        CataMineRegion region = target.getRegion();
+
+        if (region == null) {
+            Optional<CataMineRegion> regionOptional = mine.getRegionManager().get("default");
+            if (regionOptional.isEmpty()) {
+                Message.REGIONS_NOT_EXISTS.send(sender, "default");
+                return;
+            }
+            target.setRegion(regionOptional.get());
+            region = target.getRegion();
         }
 
         Player player = (Player) sender;
-        CataMineRegion region = regionOptional.get();
         RegionSelector regionSelector = WorldEditUtils.getSelector(player);
 
         if (!regionSelector.isDefined()) {
@@ -42,7 +48,7 @@ public class RedefineCommand extends AbstractMineCommand {
         }
 
         region.redefineRegion(regionSelector);
-        Message.REDEFINE_SUCCESS.send(player, regionName);
+        Message.REDEFINE_SUCCESS.send(player, target.toPath());
 
         requireSave();
     }

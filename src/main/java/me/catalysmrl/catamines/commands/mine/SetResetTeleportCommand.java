@@ -1,12 +1,14 @@
 package me.catalysmrl.catamines.commands.mine;
 
 import me.catalysmrl.catamines.CataMines;
-import me.catalysmrl.catamines.api.mine.CataMine;
+import me.catalysmrl.catamines.api.mine.Flag;
+import me.catalysmrl.catamines.api.mine.PropertyHolder;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.utils.MineTarget;
+import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
 import me.catalysmrl.catamines.utils.helper.Predicates;
-import me.catalysmrl.catamines.utils.message.Messages;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,12 +20,18 @@ public class SetResetTeleportCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target)
             throws CommandException {
         Player player = (Player) sender;
-        mine.getFlags().setResetTeleportLocation(player.getLocation());
-        Messages.sendPrefixed(sender,
-                "&aReset teleport location set for mine " + mine.getName() + " and teleport players enabled.");
+        PropertyHolder holder = (PropertyHolder) target.getTarget();
+        holder.setFlag(Flag.RESET_TELEPORT_LOCATION, player.getLocation());
+
+        String targetName = target.getMine().getName();
+        if (holder instanceof Identifiable) {
+            targetName = ((Identifiable) holder).getName();
+        }
+
+        Message.SETRESETTELEPORT_SUCCESS.send(sender, targetName);
         requireSave();
     }
 

@@ -5,15 +5,11 @@ import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.CommandContext;
 import me.catalysmrl.catamines.command.abstraction.CommandException;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
+import me.catalysmrl.catamines.command.utils.MineTarget;
+import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
-import org.bukkit.util.StringUtil;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 public class ResetCommand extends AbstractMineCommand {
     public ResetCommand() {
@@ -21,38 +17,25 @@ public class ResetCommand extends AbstractMineCommand {
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, CataMine mine)
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target)
             throws CommandException {
         assertArgLength(ctx);
+
+        CataMine mine = target.getMine();
 
         if (!sender.hasPermission("catamines.command.reset." + mine.getName())) {
             Message.NO_PERMISSION.send(sender);
             return;
         }
 
-        // TODO: Silent resetting and other flags
-        mine.reset(plugin);
-        Message.RESET_SUCCESS.send(sender, mine.getDisplayName());
-    }
-
-    @Override
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx) {
-        if (ctx.remaining() == 1) {
-            List<String> authorizedMineNames = plugin.getMineManager().getMineList().stream()
-                    .filter(mineName -> sender.hasPermission("catamines.command.reset." + mineName))
-                    .toList();
-
-            return StringUtil.copyPartialMatches(ctx.peek(), authorizedMineNames, new ArrayList<>());
+        if (target.getTarget() instanceof CataMineRegion region) {
+            plugin.getMineManager().resetRegion(region);
+        } else {
+            mine.reset(plugin);
         }
 
-        String mineId = ctx.peek();
-        Optional<CataMine> optionalCataMine = plugin.getMineManager().getMine(mineId);
-        if (optionalCataMine.isEmpty())
-            return Collections.singletonList(Message.of("command.mine-not-exists").format(sender));
+        Message.RESET_SUCCESS.send(sender, target.toPath());
 
-        ctx.next();
-
-        return tabComplete(plugin, sender, ctx, optionalCataMine.get());
     }
 
     @Override

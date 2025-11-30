@@ -41,9 +41,8 @@ public class AdvancedCataMine extends AbstractCataMine {
         cataMine.setDisplayName(displayName);
 
         ConfigurationSection flagsSection = section.getConfigurationSection("flags");
-        if (flagsSection == null)
-            throw new DeserializationException();
-        cataMine.flags = MineFlags.deserialize(flagsSection);
+        if (flagsSection != null)
+            cataMine.flags = MineFlags.deserialize(flagsSection);
 
         ConfigurationSection controllerSection = section.getConfigurationSection("controller");
         if (controllerSection == null)

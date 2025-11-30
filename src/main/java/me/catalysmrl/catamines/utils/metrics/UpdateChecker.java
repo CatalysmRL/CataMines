@@ -24,13 +24,14 @@ public class UpdateChecker implements Listener {
 
     public UpdateChecker(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.pluginVersion = plugin.getDescription().getVersion();
+        this.pluginVersion = plugin.getPluginMeta().getVersion();
     }
 
     public void fetch() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + RESOURCE_ID).openStream();
-                 Scanner scanner = new Scanner(is)) {
+            try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + RESOURCE_ID)
+                    .openStream();
+                    Scanner scanner = new Scanner(is)) {
 
                 if (scanner.hasNext()) {
                     spigotVersion = scanner.next();

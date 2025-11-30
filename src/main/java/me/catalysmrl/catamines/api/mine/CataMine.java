@@ -13,7 +13,7 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
  *
  * @author CatalysmRL
  */
-public interface CataMine extends SectionSerializable {
+public interface CataMine extends SectionSerializable, PropertyHolder, Targetable {
 
     CataMines getPlugin();
 

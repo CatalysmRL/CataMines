@@ -60,8 +60,8 @@ public final class CataMines extends JavaPlugin {
 
     private void setupMetrics() {
         final Metrics metrics = new Metrics(this, 12889);
-        metrics.addCustomChart(new SimplePie("we_implementation", () ->
-                CompatibilityProvider.isFaweEnabled() ? "FastAsyncWorldEdit" : "WorldEdit"));
+        metrics.addCustomChart(new SimplePie("we_implementation",
+                () -> CompatibilityProvider.isFaweEnabled() ? "FastAsyncWorldEdit" : "WorldEdit"));
 
         metrics.addCustomChart(new SingleLineChart("mines", () -> mineManager.getMines().size()));
     }
