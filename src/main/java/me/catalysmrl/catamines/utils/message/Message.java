@@ -34,11 +34,32 @@ public class Message {
     public static final Message RELOAD_DESCRIPTION = Message.of("catamines.command.generic.reload.description");
     public static final Message RELOAD_USAGE = Message.of("catamines.command.generic.reload.usage");
 
+    public static final Message CONFIRM_HEADER = Message.of("catamines.command.generic.confirm.header");
+    public static final Message CONFIRM_FOOTER = Message.of("catamines.command.generic.confirm.footer");
+    public static final Message CONFIRM_DESCRIPTION = Message.of("catamines.command.generic.confirm.description");
+    public static final Message CONFIRM_USAGE = Message.of("catamines.command.generic.confirm.usage");
+
+    public static final Message UNDO_EMPTY = Message.of("catamines.command.generic.undo.empty");
+    public static final Message UNDO_SUCCESS = Message.of("catamines.command.generic.undo.success");
+    public static final Message UNDO_FOOTER = Message.of("catamines.command.generic.undo.footer");
+    public static final Message UNDO_DESCRIPTION = Message.of("catamines.command.generic.undo.description");
+    public static final Message UNDO_USAGE = Message.of("catamines.command.generic.undo.usage");
+
+    public static final Message REDO_EMPTY = Message.of("catamines.command.generic.redo.empty");
+    public static final Message REDO_SUCCESS = Message.of("catamines.command.generic.redo.success");
+    public static final Message REDO_FOOTER = Message.of("catamines.command.generic.redo.footer");
+    public static final Message REDO_DESCRIPTION = Message.of("catamines.command.generic.redo.description");
+    public static final Message REDO_USAGE = Message.of("catamines.command.generic.redo.usage");
+
     // Mine commands
-    public static final Message MINE_EXISTS = Message.of("catamines.command.mine.create.mine-exists");
-    public static final Message INCOMPLETE_REGION = Message.of("catamines.command.mine.create.incomplete-region");
-    public static final Message INVALID_SCHEMATIC = Message.of("catamines.command.mine.create.invalid-schematic");
-    public static final Message MINE_INVALID_NAME = Message.of("catamines.command.mine.create.invalid-name");
+    public static final Message CREATE_MINE_EXISTS = Message.of("catamines.command.mine.create.mine-exists");
+    public static final Message CREATE_INCOMPLETE_REGION = Message.of("catamines.command.mine.create.incomplete-region");
+    public static final Message CREATE_INVALID_SCHEMATIC = Message.of("catamines.command.mine.create.invalid-schematic");
+    public static final Message CREATE_INVALID_NAME = Message.of("catamines.command.mine.create.invalid-name");
+    public static final Message CREATE_REGION_EXISTS = Message.of("catamines.command.mine.create.region-exists");
+    public static final Message CREATE_REGION_SUCCESS = Message.of("catamines.command.mine.create.region-success");
+    public static final Message CREATE_COMPOSITION_EXISTS = Message.of("catamines.command.mine.composition.create.composition-exists");
+    public static final Message CREATE_COMPOSITION_SUCCESS = Message.of("catamines.command.mine.composition.create.success");
     public static final Message CREATE_SUCCESS = Message.of("catamines.command.mine.create.success");
     public static final Message CREATE_USAGE = Message.of("catamines.command.mine.create.usage");
     public static final Message CREATE_DESCRIPTION = Message.of("catamines.command.mine.create.description");
@@ -46,8 +67,11 @@ public class Message {
     public static final Message DEBUG_DESCRIPTION = Message.of("catamines.command.mine.debug.description");
     public static final Message DEBUG_USAGE = Message.of("catamines.command.mine.debug.usage");
 
+    public static final Message DELETE_REGIONS_NOT_EXISTS = Message.of("catamines.command.mine.delete.region-not-exists");
+    public static final Message DELETE_REGIONS_SUCCESS = Message.of("catamines.command.mine.delete.region-success");
     public static final Message DELETE_EXCEPTION = Message.of("catamines.command.mine.delete.io-exception");
     public static final Message DELETE_SUCCESS = Message.of("catamines.command.mine.delete.success");
+    
     public static final Message DELETE_DESCRIPTION = Message.of("catamines.command.mine.delete.description");
     public static final Message DELETE_USAGE = Message.of("catamines.command.mine.delete.usage");
 
@@ -142,23 +166,6 @@ public class Message {
     public static final Message WARN_SUCCESS = Message.of("catamines.command.mine.warn.success");
     public static final Message WARN_DESCRIPTION = Message.of("catamines.command.mine.warn.description");
     public static final Message WARN_USAGE = Message.of("catamines.command.mine.warn.usage");
-
-    // Mine regions commands
-    public static final Message REGIONS_EXISTS = Message.of("catamines.command.mine.regions.create.region-exists");
-
-    public static final Message REGIONS_DESCRIPTION = Message.of("catamines.command.mine.regions.description");
-    public static final Message REGIONS_USAGE = Message.of("catamines.command.mine.regions.usage");
-
-    public static final Message REGIONS_CREATE_SUCCESS = Message.of("catamines.command.mine.regions.create.success");
-    public static final Message REGIONS_CREATE_DESCRIPTION = Message
-            .of("catamines.command.mine.regions.create.description");
-    public static final Message REGIONS_CREATE_USAGE = Message.of("catamines.command.mine.regions.create.usage");
-
-    public static final Message REGIONS_NOT_EXISTS = Message.of("catamines.command.mine.regions.region-not-exists");
-    public static final Message REGIONS_DELETE_SUCCESS = Message.of("catamines.command.mine.regions.delete.success");
-    public static final Message REGIONS_DELETE_DESCRIPTION = Message
-            .of("catamines.command.mine.regions.delete.description");
-    public static final Message REGIONS_DELETE_USAGE = Message.of("catamines.command.mine.regions.delete.usage");
 
     public static final Message REGIONS_RESET_SUCCESS = Message.of("catamines.command.mine.regions.reset.success");
     public static final Message REGIONS_RESET_DESCRIPTION = Message

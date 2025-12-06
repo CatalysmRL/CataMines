@@ -12,7 +12,7 @@ import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class SchematicRegion extends AbstractCataMineRegion {
+public class SchematicRegion extends AbstractCataMineRegion implements Cloneable {
 
     private String schematicName;
     private World world;

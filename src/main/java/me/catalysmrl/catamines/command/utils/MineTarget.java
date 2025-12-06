@@ -83,4 +83,24 @@ public class MineTarget {
 
         return new MineTarget(mine, region, composition);
     }
+
+    public void resolveDefaults() {
+        if (region == null) {
+            Optional<CataMineRegion> regionOpt = mine.getRegionManager().get("default");
+            if (regionOpt.isPresent()) {
+                region = regionOpt.get();
+                if (composition == null) {
+                    Optional<CataMineComposition> compOpt = region.getCompositionManager().get("default");
+                    if (compOpt.isPresent()) {
+                        composition = compOpt.get();
+                    }
+                }
+            }
+        } else if (composition == null) {
+            Optional<CataMineComposition> compOpt = region.getCompositionManager().get("default");
+            if (compOpt.isPresent()) {
+                composition = compOpt.get();
+            }
+        }
+    }
 }

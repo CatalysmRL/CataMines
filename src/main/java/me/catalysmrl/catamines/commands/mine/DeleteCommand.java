@@ -6,6 +6,8 @@ import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
 import me.catalysmrl.catamines.command.utils.CommandContext;
 import me.catalysmrl.catamines.command.utils.CommandException;
 import me.catalysmrl.catamines.command.utils.MineTarget;
+import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
+import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.command.CommandSender;
@@ -23,6 +25,22 @@ public class DeleteCommand extends AbstractMineCommand {
         assertArgLength(ctx);
 
         CataMine mine = target.getMine();
+        CataMineRegion region = target.getRegion();
+        CataMineComposition composition = target.getComposition();
+
+        if (composition != null) {
+            region.getCompositionManager().remove(composition);
+            Message.DELETE_SUCCESS.send(sender, target.toPath());
+            requireSave();
+            return;
+        }
+
+        if (region != null) {
+            mine.getRegionManager().remove(region);
+            Message.DELETE_SUCCESS.send(sender, target.toPath());
+            requireSave();
+            return;
+        }
 
         try {
             plugin.getMineManager().deleteMine(mine);
@@ -31,7 +49,7 @@ public class DeleteCommand extends AbstractMineCommand {
             return;
         }
 
-        Message.DELETE_SUCCESS.send(sender, mine.getName());
+        Message.DELETE_SUCCESS.send(sender, target.toPath());
     }
 
     @Override

@@ -7,7 +7,7 @@ import me.catalysmrl.catamines.mine.components.manager.controller.CataMineContro
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.MineFlags;
 
-public abstract class AbstractCataMine implements CataMine {
+public abstract class AbstractCataMine implements CataMine, Cloneable {
 
     protected final CataMines plugin;
 
@@ -105,5 +105,41 @@ public abstract class AbstractCataMine implements CataMine {
     @Override
     public me.catalysmrl.catamines.api.mine.PropertyHolder getParent() {
         return null;
+    }
+    @Override
+    public CataMine clone() {
+        try {
+            AbstractCataMine clone = (AbstractCataMine) super.clone();
+
+            clone.flags = this.flags.clone();
+
+            // Manually clone controller to ensure the new mine instance is used
+            clone.controller = new CataMineController(clone);
+            clone.controller.setResetMode(this.controller.getResetMode());
+            clone.controller.setResetDelay(this.controller.getResetDelay());
+            clone.controller.setResetPercentage(this.controller.getResetPercentage());
+            clone.controller.setCountdown(this.controller.getCountdown());
+            clone.controller.setBlockCount(this.controller.getBlockCount());
+
+            clone.regionManager = new ChoiceManager<>();
+            for (CataMineRegion region : this.regionManager.getChoices()) {
+                CataMineRegion clonedRegion = region.clone();
+                clonedRegion.setMine(clone);
+                clone.regionManager.add(clonedRegion);
+
+                if (this.regionManager.getCurrent().isPresent() &&
+                        this.regionManager.getCurrent().get().getName().equals(region.getName())) {
+                    clone.regionManager.setCurrent(clonedRegion);
+                }
+                if (this.regionManager.getUpcoming().isPresent() &&
+                        this.regionManager.getUpcoming().get().getName().equals(region.getName())) {
+                    clone.regionManager.setUpcoming(clonedRegion);
+                }
+            }
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

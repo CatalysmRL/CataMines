@@ -1,7 +1,6 @@
 package me.catalysmrl.catamines.commands.mine;
 
 import com.sk89q.worldedit.extension.input.InputParseException;
-import com.sk89q.worldedit.world.block.BaseBlock;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.mine.AbstractMineCommand;
@@ -12,58 +11,36 @@ import me.catalysmrl.catamines.mine.components.composition.CataMineBlock;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.helper.BlockUtil;
+import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
-import me.catalysmrl.catamines.utils.worldedit.BaseBlockParser;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class SetCommand extends AbstractMineCommand {
 
     public SetCommand() {
-        super("set", "catamines.set", args -> args >= 1 && args <= 4, false);
+        super("set", "catamines.set", Predicates.inRange(1, 2), false);
     }
 
     @Override
-    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target)
-            throws CommandException {
+    public void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target) throws CommandException {
+        assertArgLength(ctx);
+
+        target.resolveDefaults();
         CataMine mine = target.getMine();
         CataMineRegion region = target.getRegion();
         CataMineComposition composition = target.getComposition();
 
-        // --- Resolve region & composition if not specified ---
-        if (region == null) {
-            Optional<CataMineRegion> regionOpt = mine.getRegionManager().get("default");
-            if (regionOpt.isEmpty()) {
-                Message.INVALID_TARGET.send(sender, target.toPath());
-                return;
-            }
-            region = regionOpt.get();
-        }
-
-        if (composition == null) {
-            Optional<CataMineComposition> compositionOpt = region.getCompositionManager().get("default");
-            if (compositionOpt.isEmpty()) {
-                Message.INVALID_TARGET.send(sender, target.toPath());
-                return;
-            }
-            composition = compositionOpt.get();
-        }
-
-        // --- Parse block ---
-        String blockInput = ctx.next();
-        BaseBlock baseBlock;
-        try {
-            baseBlock = BaseBlockParser.parseInput(blockInput);
-        } catch (InputParseException e) {
-            Message.SET_INVALID_BLOCKSTATE.send(sender);
+        if (region == null || composition == null) {
+            Message.INVALID_TARGET.send(sender, target.toPath());
             return;
         }
 
-        // --- Parse chance (optional) ---
+        String blockInput = ctx.next();
+
         double chance = 100.0;
         if (ctx.hasNext()) {
             String chanceStr = ctx.next().replace("%", "").trim();
@@ -80,8 +57,18 @@ public class SetCommand extends AbstractMineCommand {
             }
         }
 
-        // --- Apply block ---
-        CataMineBlock block = new CataMineBlock(baseBlock, chance);
+        CataMineBlock block;
+        try {
+            block = new CataMineBlock(blockInput, chance);
+        } catch (InputParseException e) {
+            Message.SET_INVALID_BLOCKSTATE.send(sender);
+            e.printStackTrace();
+            return;
+        } catch (IllegalArgumentException e) {
+            Message.SET_INVALID_BLOCKSTATE.send(sender);
+            e.printStackTrace();
+            return;
+        }
         composition.addBlock(block);
 
         double remaining = 100.0 - composition.getChanceSum();

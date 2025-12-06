@@ -4,16 +4,16 @@ import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.mine.abstraction.AbstractCataMine;
 import me.catalysmrl.catamines.mine.components.MineFlags;
-import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
+
 import me.catalysmrl.catamines.mine.components.manager.controller.CataMineController;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SchematicRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class CataMine extends AbstractCataMine {
+public class AdvancedCataMine extends AbstractCataMine {    
 
-    public CataMine(CataMines plugin, String name) {
+    public AdvancedCataMine(CataMines plugin, String name) {
         super(plugin, name);
     }
 
@@ -30,13 +30,13 @@ public class CataMine extends AbstractCataMine {
         }
     }
 
-    public static CataMine deserialize(CataMines plugin, ConfigurationSection section)
+    public static AdvancedCataMine deserialize(CataMines plugin, ConfigurationSection section)
             throws DeserializationException {
         String name = section.getString("name");
         if (name == null)
             throw new DeserializationException();
 
-        CataMine cataMine = new CataMine(plugin, name);
+        AdvancedCataMine cataMine = new AdvancedCataMine(plugin, name);
 
         String displayName = section.getString("display-name", name);
         cataMine.setDisplayName(displayName);
@@ -72,23 +72,7 @@ public class CataMine extends AbstractCataMine {
         return cataMine;
     }
 
-    @Override
-    public CataMine clone() {
-        CataMine clone = new CataMine(plugin, name);
 
-        clone.displayName = this.displayName;
-        clone.flags = this.flags.clone();
-        clone.controller = this.controller.clone();
-
-        // Deep clone regions
-        for (CataMineRegion region : this.regionManager.getChoices()) {
-            CataMineRegion clonedRegion = region.clone();
-            clonedRegion.setMine(clone); // Fix parent reference!
-            clone.regionManager.add(clonedRegion);
-        }
-
-        return clone;
-    }
 
     @Override
     public String toString() {

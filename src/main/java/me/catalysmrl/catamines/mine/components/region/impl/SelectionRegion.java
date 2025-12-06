@@ -15,7 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 
-public class SelectionRegion extends AbstractCataMineRegion {
+public class SelectionRegion extends AbstractCataMineRegion implements Cloneable {
 
     private SelectionType selectionType;
     private Region region;
@@ -71,7 +71,8 @@ public class SelectionRegion extends AbstractCataMineRegion {
     @Override
     public void serialize(ConfigurationSection section) {
         super.serialize(section);
-        section.set("world", region.getWorld() == null ? "null" : region.getWorld().getName());
+        World world = region.getWorld();
+        section.set("world", world == null ? "null" : world.getName());
         section.set("selection-type", selectionType.toString());
         serializeRegion(section.createSection("selection"));
         serializeCompositions(section.createSection("compositions"));

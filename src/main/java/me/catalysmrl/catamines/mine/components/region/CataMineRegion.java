@@ -2,6 +2,7 @@ package me.catalysmrl.catamines.mine.components.region;
 
 import com.sk89q.worldedit.regions.RegionSelector;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
+import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.api.mine.PropertyHolder;
 import me.catalysmrl.catamines.api.mine.Targetable;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
@@ -11,7 +12,9 @@ import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
 import me.catalysmrl.catamines.mine.reward.Rewardable;
 
 public interface CataMineRegion
-        extends Rewardable, Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable, Cloneable {
+        extends Rewardable, Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable {
+
+    void setMine(CataMine mine);
 
     String getName();
 
@@ -26,6 +29,8 @@ public interface CataMineRegion
     ChoiceManager<CataMineComposition> getCompositionManager();
 
     long getVolume();
+
+    CataMineRegion clone();
 
     enum RegionType {
         SELECTION,

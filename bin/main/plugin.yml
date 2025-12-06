@@ -1,0 +1,105 @@
+name: ${pluginName}
+version: ${version}
+main: me.catalysmrl.catamines.CataMines
+api-version: 1.16
+authors: [ CatalysmRL (C4t4lysm) ]
+description: ${description}
+load: POSTWORLD
+depend: [ WorldEdit ]
+softdepend: [ PlaceholderAPI , MultiverseCore ]
+
+commands:
+  catamines:
+    description: CataMines command
+    usage: /<command>
+    aliases: [ "cm" , "cmine", "cmines" ]
+
+permissions:
+  catamines.*:
+    description: Grants access to every command.
+    default: op
+    children:
+      catamines.help: true
+      catamines.create: true
+      catamines.delete: true
+      catamines.gui: true
+      catamines.list: true
+      catamines.info: true
+      catamines.set: true
+      catamines.unset: true
+      catamines.resetmode: true
+      catamines.setdelay: true
+      catamines.resetpercentage: true
+      catamines.flag: true
+      catamines.reset: true
+      catamines.setteleport: true
+      catamines.teleport: true
+      catamines.start: true
+      catamines.stop: true
+      catamines.starttasks: true
+      catamines.stoptasks: true
+      catamines.reload: true
+      catamines.minefficiency.bypass: true
+  catamines.help:
+    description: Lets you list all mine commands.
+    default: op
+  catamines.create:
+    description: Lets you create a mine.
+    default: op
+  catamines.delete:
+    description: Lets you delete a mine.
+    default: op
+  catamines.gui:
+    description: Lets you open the gui
+    default: op
+  catamines.list:
+    description: Lets you list all mines.
+    default: op
+  catamines.info:
+    description: Lets you display info of a mine.
+    default: op
+  catamines.set:
+    description: Lets you set the blocks of a mine.
+    default: op
+  catamines.unset:
+    description: Lets you unset the blocks of a mine.
+    default: op
+  catamines.resetmode:
+    description: Lets you set the reset mode of a mine.
+    default: op
+  catamines.setdelay:
+    description: Lets you set the reset delay of a mine.
+    default: op
+  catamines.resetpercentage:
+    description: Lets you set the reset percentage of a mine.
+    default: op
+  catamines.flag:
+    description: Lets you configure every flag of a mine.
+    default: op
+  catamines.reset:
+    description: Lets you manually reset a mine
+    default: op
+  catamines.setteleport:
+    description: Lets you set a teleport location of a mine.
+    default: op
+  catamines.teleport:
+    description: Lets you teleport to a mine.
+    default: op
+  catamines.start:
+    description: Lets you start a mine.
+    default: op
+  catamines.stop:
+    description: Lets you stop a mine.
+    default: op
+  catamines.starttasks:
+    description: Starts all mine tasks
+    default: op
+  catamines.stoptasks:
+    description: Stops all mine tasks
+    default: op
+  catamines.reload:
+    description: Lets you reload the plugin.
+    default: op
+  catamines.minefficiency.bypass:
+    description: Lets you bypass min. mine efficiency lvl to break blocks.
+    default: op

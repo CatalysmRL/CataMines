@@ -13,7 +13,7 @@ import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
  *
  * @author CatalysmRL
  */
-public interface CataMine extends SectionSerializable, PropertyHolder, Targetable, Cloneable {
+public interface CataMine extends SectionSerializable, PropertyHolder, Targetable {
 
     CataMines getPlugin();
 
@@ -63,4 +63,6 @@ public interface CataMine extends SectionSerializable, PropertyHolder, Targetabl
     ChoiceManager<CataMineRegion> getRegionManager();
 
     MineFlags getFlags();
+
+    CataMine clone();
 }

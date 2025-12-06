@@ -13,28 +13,30 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CataMineBlock implements Choice, SectionSerializable, Cloneable {
+public class CataMineBlock implements Choice, SectionSerializable {
 
+    private String blockString;
     private BaseBlock baseBlock;
     private double chance;
 
     private DropType dropType;
     private List<CataMineItem> items;
 
-    public CataMineBlock(BaseBlock baseBlock, double chance) {
-        this(baseBlock, chance, DropType.CUSTOM);
+    public CataMineBlock(String blockString, double chance) throws InputParseException {
+        this(blockString, chance, DropType.CUSTOM);
     }
 
-    public CataMineBlock(BaseBlock baseBlock, double chance, DropType dropType) {
-        this(baseBlock, chance, dropType, new ArrayList<>());
+    public CataMineBlock(String blockString, double chance, DropType dropType) throws InputParseException {
+        this(blockString, chance, dropType, new ArrayList<>());
     }
 
-    public CataMineBlock(BaseBlock baseBlock, double chance, DropType dropType, List<CataMineItem> items) {
+    public CataMineBlock(String blockString, double chance, DropType dropType, List<CataMineItem> items) throws InputParseException {
         if (chance < 0 || chance > 100) {
             throw new IllegalArgumentException(Message.SET_INVALID_CHANCE.getKey());
         }
 
-        this.baseBlock = baseBlock;
+        this.blockString = blockString;
+        this.baseBlock = BaseBlockParser.parse(blockString);
         this.chance = Math.round(chance * 100) / 100d;
         this.dropType = dropType;
         this.items = items;
@@ -42,7 +44,7 @@ public class CataMineBlock implements Choice, SectionSerializable, Cloneable {
 
     @Override
     public void serialize(ConfigurationSection section) {
-        section.set("block", baseBlock.toString());
+        section.set("block", blockString);
         section.set("chance", chance);
         section.set("drop-type", dropType.toString());
 
@@ -57,13 +59,6 @@ public class CataMineBlock implements Choice, SectionSerializable, Cloneable {
         String blockString = section.getString("block");
         if (blockString == null)
             throw new DeserializationException("Missing 'block' path");
-
-        BaseBlock baseBlock;
-        try {
-            baseBlock = BaseBlockParser.parseInput(blockString);
-        } catch (InputParseException exception) {
-            throw new DeserializationException("Could not deserialize " + blockString, exception);
-        }
 
         double chance = section.getDouble("chance", 0d);
 
@@ -80,7 +75,11 @@ public class CataMineBlock implements Choice, SectionSerializable, Cloneable {
             }
         }
 
-        return new CataMineBlock(baseBlock, chance, dropType, itemList);
+        try {
+            return new CataMineBlock(blockString, chance, dropType, itemList);
+        } catch (InputParseException e) {
+            throw new DeserializationException("Invalid block input: " + e.getMessage());
+        }
     }
 
     public BaseBlock getBaseBlock() {
@@ -117,23 +116,6 @@ public class CataMineBlock implements Choice, SectionSerializable, Cloneable {
 
     public void setItems(List<CataMineItem> items) {
         this.items = items;
-    }
-
-    @Override
-    public CataMineBlock clone() {
-        try {
-            CataMineBlock clone = (CataMineBlock) super.clone();
-            clone.baseBlock = this.baseBlock.clone();
-            clone.chance = this.chance;
-            clone.dropType = this.dropType;
-            clone.items = new ArrayList<>();
-            for (CataMineItem item : this.items) {
-                clone.items.add(item.clone());
-            }
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
     }
 
     @Override

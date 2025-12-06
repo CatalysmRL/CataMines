@@ -26,6 +26,8 @@ dependencies {
     implementation(platform("com.intellectualsites.bom:bom-newest:1.55")) // Ref: https://github.com/IntellectualSites/bom
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") { isTransitive = false }
+    implementation("net.kyori:adventure-nbt:4.17.0")
+    implementation("net.kyori:adventure-text-serializer-gson:4.17.0")
 
     implementation("org.bstats:bstats-bukkit:3.1.0")
     compileOnly("me.clip:placeholderapi:2.11.6")

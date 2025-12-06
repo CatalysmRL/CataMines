@@ -3,13 +3,18 @@ package me.catalysmrl.catamines.command.abstraction.mine;
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.command.abstraction.AbstractCommand;
+import me.catalysmrl.catamines.command.targetutil.CommandTarget;
+import me.catalysmrl.catamines.command.targetutil.TargetParser;
 import me.catalysmrl.catamines.command.utils.ArgumentException;
 import me.catalysmrl.catamines.command.utils.CommandContext;
 import me.catalysmrl.catamines.command.utils.CommandException;
 import me.catalysmrl.catamines.command.utils.MineTarget;
+import me.catalysmrl.catamines.managers.ConfirmationManager;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.utils.message.Message;
+import me.catalysmrl.catamines.utils.undo.UndoManager;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
@@ -30,148 +35,27 @@ public abstract class AbstractMineCommand extends AbstractCommand {
 
     @Override
     public final void execute(CataMines plugin, CommandSender sender, CommandContext ctx) throws CommandException {
-        String targetPath = ctx.next();
-        if (targetPath == null)
+        String rawTarget = ctx.next();
+        if (rawTarget == null)
             throw new ArgumentException.Usage();
 
-        // === GLOBAL WILDCARDS ===
-        if (targetPath.equals("*")) {
-            if (!sender.hasPermission("catamines.admin")) {
-                Message.NO_PERMISSION.send(sender);
-                return;
-            }
-
-            List<CataMine> mines = new ArrayList<>(plugin.getMineManager().getMines());
-            if (mines.isEmpty()) {
-                Message.NO_MINES.send(sender);
-                return;
-            }
-
-            Message.QUERY_ALL_HEADER.sendList(sender);
-            for (CataMine mine : mines) {
-                Message.QUERY_ALL_ENTRY.send(sender, mine.getName());
-                execute(plugin, sender, ctx.copy(), new MineTarget(mine, null, null));
-            }
-            Message.QUERY_ALL_FOOTER.sendList(sender, mines.size());
+        var targetOpt = TargetParser.parse(plugin, rawTarget);
+        if (targetOpt.isEmpty()) {
+            Message.INVALID_TARGET.send(sender, rawTarget);
             return;
         }
 
-        // === *:* → All mines, all regions (default composition) ===
-        else if (targetPath.equals("*:*")) {
-            if (!sender.hasPermission("catamines.admin")) {
-                Message.NO_PERMISSION.send(sender);
-                return;
-            }
+        CommandTarget target = targetOpt.get();
 
-            List<CataMine> mines = new ArrayList<>(plugin.getMineManager().getMines());
-            if (mines.isEmpty()) {
-                Message.NO_MINES.send(sender);
-                return;
-            }
-
-            int total = 0;
-            Message.QUERY_ALL_HEADER.sendList(sender);
-
-            for (CataMine mine : mines) {
-                for (CataMineRegion region : mine.getRegionManager().getChoices()) {
-                    total++;
-                    execute(plugin, sender, ctx.copy(), new MineTarget(mine, region, null));
-                }
-            }
-
-            Message.QUERY_ALL_FOOTER.sendList(sender, total);
+        // Use Message.
+        if (target.isGlobal()) {
+            ConfirmationManager.request(sender,
+                    estimateAffected(target, plugin),
+                    () -> processCommand(plugin, sender, ctx, target, rawTarget));
             return;
         }
 
-        // === *:*:* → All mines, all regions, all compositions ===
-        else if (targetPath.equals("*:*:*")) {
-            if (!sender.hasPermission("catamines.admin")) {
-                Message.NO_PERMISSION.send(sender);
-                return;
-            }
-
-            List<CataMine> mines = new ArrayList<>(plugin.getMineManager().getMines());
-            if (mines.isEmpty()) {
-                Message.NO_MINES.send(sender);
-                return;
-            }
-
-            int total = 0;
-            Message.QUERY_ALL_HEADER.sendList(sender);
-
-            for (CataMine mine : mines) {
-                for (CataMineRegion region : mine.getRegionManager().getChoices()) {
-                    for (CataMineComposition comp : region.getCompositionManager().getChoices()) {
-                        total++;
-                        execute(plugin, sender, ctx.copy(), new MineTarget(mine, region, comp));
-                    }
-                }
-            }
-
-            Message.QUERY_ALL_FOOTER.sendList(sender, total);
-            return;
-        }
-
-        else {
-
-            // === NORMAL PATH (specific mine, optional region/comp with wildcards) ===
-            String[] parts = targetPath.split(":", 3);
-            String mineName = parts[0];
-            String regionPart = parts.length > 1 ? parts[1] : null;
-            String compPart = parts.length > 2 ? parts[2] : null;
-
-            Optional<CataMine> mineOpt = plugin.getMineManager().getMine(mineName);
-            if (mineOpt.isEmpty()) {
-                Message.MINE_NOT_EXISTS.send(sender, mineName);
-                return;
-            }
-            CataMine mine = mineOpt.get();
-
-            boolean executed = false;
-
-            // mine:*
-            if ("*".equals(regionPart)) {
-                for (CataMineRegion region : mine.getRegionManager().getChoices()) {
-                    execute(plugin, sender, ctx.copy(), new MineTarget(mine, region, null));
-                }
-                executed = true;
-            }
-            // mine:region:*
-            else if (regionPart != null && "*".equals(compPart)) {
-                Optional<CataMineRegion> regionOpt = mine.getRegionManager().get(regionPart);
-                if (regionOpt.isPresent()) {
-                    for (CataMineComposition comp : regionOpt.get().getCompositionManager().getChoices()) {
-                        execute(plugin, sender, ctx.copy(), new MineTarget(mine, regionOpt.get(), comp));
-                    }
-                    executed = true;
-                } else {
-                    Message.REGIONS_NOT_EXISTS.send(sender, regionPart, mine.getName());
-                    return;
-                }
-            }
-            // Normal single target
-            else {
-                String path = regionPart == null ? null : regionPart + (compPart == null ? "" : ":" + compPart);
-                MineTarget target = MineTarget.resolve(mine, path);
-                execute(plugin, sender, ctx, target);
-                executed = true;
-            }
-
-            if (!executed) {
-                Message.INVALID_TARGET.send(sender, targetPath);
-                return;
-            }
-
-            if (needsSave) {
-                try {
-                    plugin.getMineManager().saveMine(mine);
-                    needsSave = false;
-                } catch (IOException e) {
-                    Message.MINE_SAVE_EXCEPTION.send(sender);
-                    e.printStackTrace();
-                }
-            }
-        }
+        processCommand(plugin, sender, ctx, target, rawTarget);
     }
 
     public abstract void execute(CataMines plugin, CommandSender sender, CommandContext ctx, MineTarget target)
@@ -179,33 +63,130 @@ public abstract class AbstractMineCommand extends AbstractCommand {
 
     @Override
     public final List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx) {
-        // Case 1: Still completing the first argument (the target path)
         if (ctx.remaining() > 1) {
             String firstArg = ctx.args().get(0);
 
-            // Global wildcard (admin only)
             if ("*".equals(firstArg) && sender.hasPermission("catamines.admin")) {
                 return Collections.emptyList();
             }
 
             MineTarget target = resolveTargetSafe(plugin, firstArg);
             if (target == null) {
-                return Collections.emptyList(); // invalid path → no suggestions
+                return Collections.emptyList();
             }
 
-            ctx.next(); // consume the target
+            ctx.next();
             return tabComplete(plugin, sender, ctx, target);
         }
 
-        // Case 2: Completing the target path itself
         String input = ctx.peek() != null ? ctx.peek() : "";
         return completeTargetPath(plugin, sender, input);
     }
 
-    /**
-     * Safely resolves a path string → MineTarget.
-     * Returns null if path contains wildcards or is invalid.
-     */
+    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx,
+            MineTarget target) {
+        return Collections.emptyList();
+    }
+
+    private void processCommand(CataMines plugin, CommandSender sender, CommandContext ctx, CommandTarget target,
+            String rawTarget) {
+        List<CataMine> affected = collectAffectedMines(target, plugin);
+        if (!affected.isEmpty()) {
+            UndoManager.record(sender, affected, getName() + " " + rawTarget);
+        }
+
+        if (target instanceof CommandTarget.AllMines) {
+            new ArrayList<>(plugin.getMineManager().getMines())
+                    .forEach(mine -> executeSafe(plugin, sender, ctx.copy(), mine, null, null));
+
+        } else if (target instanceof CommandTarget.AllRegions) {
+            new ArrayList<>(plugin.getMineManager().getMines()).forEach(mine -> new ArrayList<>(mine.getRegionManager().getChoices())
+                    .forEach(region -> executeSafe(plugin, sender, ctx.copy(), mine, region, null)));
+
+        } else if (target instanceof CommandTarget.AllCompositions) {
+            new ArrayList<>(plugin.getMineManager().getMines())
+                    .forEach(mine -> new ArrayList<>(mine.getRegionManager().getChoices())
+                            .forEach(region -> new ArrayList<>(region.getCompositionManager().getChoices())
+                                    .forEach(comp -> executeSafe(plugin, sender, ctx.copy(), mine, region, comp))));
+
+        } else if (target instanceof CommandTarget.Mine m) {
+            executeSafe(plugin, sender, ctx, m.mine(), null, null);
+
+        } else if (target instanceof CommandTarget.MineAllRegions m) {
+            new ArrayList<>(m.mine().getRegionManager().getChoices())
+                    .forEach(r -> executeSafe(plugin, sender, ctx.copy(), m.mine(), r, null));
+
+        } else if (target instanceof CommandTarget.Region r) {
+            executeSafe(plugin, sender, ctx, r.mine(), r.region(), null);
+
+        } else if (target instanceof CommandTarget.RegionAllCompositions r) {
+            new ArrayList<>(r.region().getCompositionManager().getChoices())
+                    .forEach(c -> executeSafe(plugin, sender, ctx.copy(), r.mine(), r.region(), c));
+
+        } else if (target instanceof CommandTarget.Composition c) {
+            executeSafe(plugin, sender, ctx, c.mine(), c.region(), c.composition());
+        }
+
+        if (needsSave) {
+            plugin.getMineManager().getMines().forEach(mine -> {
+                try {
+                    plugin.getMineManager().saveMine(mine);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            needsSave = false;
+        }
+    }
+
+    private void executeSafe(CataMines plugin, CommandSender sender, CommandContext ctx,
+            CataMine mine, CataMineRegion region, CataMineComposition composition) {
+        try {
+            MineTarget target = new MineTarget(mine, region, composition);
+            execute(plugin, sender, ctx, target);
+        } catch (CommandException e) {
+            // Ignore
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+
+    private int estimateAffected(CommandTarget t, CataMines plugin) {
+        return switch (t) {
+            case CommandTarget.AllMines ignored -> plugin.getMineManager().getMines().size();
+            case CommandTarget.AllRegions ignored -> plugin.getMineManager().getMines().stream()
+                    .mapToInt(m -> m.getRegionManager().getChoices().size()).sum();
+            case CommandTarget.AllCompositions ignored -> plugin.getMineManager().getMines().stream()
+                    .flatMap(m -> m.getRegionManager().getChoices().stream())
+                    .mapToInt(r -> r.getCompositionManager().getChoices().size()).sum();
+            case CommandTarget.MineAllRegions m -> m.mine().getRegionManager().getChoices().size();
+            case CommandTarget.RegionAllCompositions r -> r.region().getCompositionManager().getChoices().size();
+            default -> 1;
+        };
+    }
+
+    private List<CataMine> collectAffectedMines(CommandTarget t, CataMines plugin) {
+        List<CataMine> list = new ArrayList<>();
+
+        if (t instanceof CommandTarget.AllMines ||
+                t instanceof CommandTarget.AllRegions ||
+                t instanceof CommandTarget.AllCompositions) {
+            list.addAll(plugin.getMineManager().getMines());
+        } else if (t instanceof CommandTarget.Mine mine) {
+            list.add(mine.mine());
+        } else if (t instanceof CommandTarget.MineAllRegions mineAll) {
+            list.add(mineAll.mine());
+        } else if (t instanceof CommandTarget.Region region) {
+            list.add(region.mine());
+        } else if (t instanceof CommandTarget.RegionAllCompositions regionAll) {
+            list.add(regionAll.mine());
+        } else if (t instanceof CommandTarget.Composition composition) {
+            list.add(composition.mine());
+        }
+
+        return list;
+    }
+
     private MineTarget resolveTargetSafe(CataMines plugin, String input) {
         if ("*".equals(input))
             return null;
@@ -219,16 +200,12 @@ public abstract class AbstractMineCommand extends AbstractCommand {
 
         CataMine mine = mineOpt.get();
 
-        // Build path part safely
         String path = parts.length > 1 ? parts[1] + (parts.length > 2 ? ":" + parts[2] : "") : null;
 
-        // If path is null → mine only → valid
-        // If path contains wildcard → we don't resolve it here
         if (path != null && (path.equals("*") || path.endsWith(":*"))) {
             return null;
         }
 
-        // Empty path after mine: → also valid (means mine only)
         if (path != null && path.isEmpty()) {
             path = null;
         }
@@ -236,15 +213,9 @@ public abstract class AbstractMineCommand extends AbstractCommand {
         return MineTarget.resolve(mine, path);
     }
 
-    public List<String> tabComplete(CataMines plugin, CommandSender sender, CommandContext ctx,
-            MineTarget target) {
-        return Collections.emptyList();
-    }
-
     private List<String> completeTargetPath(CataMines plugin, CommandSender sender, String input) {
         List<String> completions = new ArrayList<>();
 
-        // Global wildcard for admins
         if (sender.hasPermission("catamines.admin") && "*".startsWith(input.toLowerCase())) {
             completions.add("*");
         }
@@ -256,7 +227,6 @@ public abstract class AbstractMineCommand extends AbstractCommand {
                 })
                 .toList();
 
-        // Completing mine name
         if (!input.contains(":")) {
             StringUtil.copyPartialMatches(input, authorizedMines, completions);
             return completions;
@@ -274,7 +244,6 @@ public abstract class AbstractMineCommand extends AbstractCommand {
             return completions;
         CataMine mine = mineOpt.get();
 
-        // Completing region: mine:<partial>
         if (parts.length == 2) {
             String regionInput = parts[1];
             if ("*".startsWith(regionInput)) {
@@ -286,9 +255,7 @@ public abstract class AbstractMineCommand extends AbstractCommand {
                     completions.add(cand);
                 }
             }
-        }
-        // Completing composition: mine:region:<partial>
-        else if (parts.length == 3) {
+        } else if (parts.length == 3) {
             String regionName = parts[1];
             String compInput = parts[2];
 

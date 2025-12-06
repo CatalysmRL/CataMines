@@ -19,12 +19,12 @@ import me.catalysmrl.catamines.api.mine.PropertyHolder;
 import me.catalysmrl.catamines.api.mine.Targetable;
 
 public class CataMineComposition
-        implements Rewardable, Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable {
+        implements Rewardable, Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable, Cloneable {
 
     private CataMineRegion region;
 
     private String name;
-    private double chance;
+    private double chance = 100.0d;
 
     private List<CataMineBlock> blocks = new ArrayList<>();
     private RandomPattern randomPattern = new RandomPattern();
@@ -170,10 +170,14 @@ public class CataMineComposition
         try {
             CataMineComposition clone = (CataMineComposition) super.clone();
             clone.flags = this.flags.clone();
-            clone.blocks = new ArrayList<>();
-            for (CataMineBlock block : this.blocks) {
-                clone.blocks.add(block.clone());
-            }
+            clone.blocks = new ArrayList<>(this.blocks); // shallow copy of list
+            clone.randomPattern = new RandomPattern();
+            // Rebuild pattern from cloned blocks
+            clone.blocks.forEach(b -> {
+                if (b.getChance() > 0) {
+                    clone.randomPattern.add(b.getBaseBlock(), b.getChance());
+                }
+            });
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);

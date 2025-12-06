@@ -17,7 +17,7 @@ public abstract class AbstractCataMineRegion implements CataMineRegion {
     protected CataMine mine;
 
     protected String name;
-    protected double chance;
+    protected double chance = 100.0d;
     protected ChoiceManager<CataMineComposition> compositionManager;
 
     protected MineFlags flags = new MineFlags();

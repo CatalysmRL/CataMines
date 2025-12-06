@@ -23,7 +23,6 @@ import me.catalysmrl.catamines.command.utils.CommandContext;
 import me.catalysmrl.catamines.command.utils.CommandException;
 import me.catalysmrl.catamines.commands.generic.*;
 import me.catalysmrl.catamines.commands.mine.*;
-import me.catalysmrl.catamines.commands.mine.regions.*;
 import me.catalysmrl.catamines.utils.message.Message;
 
 public class CommandManager implements TabExecutor {
@@ -44,7 +43,6 @@ public class CommandManager implements TabExecutor {
                 .put("displayname", new DisplayNameCommand())
                 .put("info", new InfoCommand())
                 .put("redefine", new RedefineCommand())
-                .put("regions", new RegionsCommand())
                 .put("rename", new RenameCommand())
                 .put("reset", new ResetCommand())
                 .put("resetmode", new ResetModeCommand())
@@ -62,6 +60,9 @@ public class CommandManager implements TabExecutor {
                 .put("warn", new WarnCommand())
                 .put("setteleport", new SetTeleportCommand())
                 .put("setresetteleport", new SetResetTeleportCommand())
+                .put("confirm", new ConfirmCommand())
+                .put("undo", new UndoCommand())
+                .put("redo", new RedoCommand())
                 .build();
     }
 

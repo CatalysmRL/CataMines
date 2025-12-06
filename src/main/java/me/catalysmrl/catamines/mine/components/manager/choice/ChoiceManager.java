@@ -70,6 +70,10 @@ public class ChoiceManager<T extends Identifiable & Choice> {
     public List<T> getChoices() {
         return choices;
     }
+    
+    public boolean contains(String name) {
+        return get(name).isPresent();
+    }
 
     @Override
     public String toString() {
