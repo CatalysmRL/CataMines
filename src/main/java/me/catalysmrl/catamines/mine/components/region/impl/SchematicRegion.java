@@ -106,6 +106,13 @@ public class SchematicRegion extends AbstractCataMineRegion {
     }
 
     @Override
+    public SchematicRegion clone() {
+        SchematicRegion clone = (SchematicRegion) super.clone();
+        // clipboard is immutable after load — safe to share
+        return clone;
+    }
+
+    @Override
     public String toString() {
         return "SchematicRegion{" +
                 "schemName='" + schematicName + '\'' +

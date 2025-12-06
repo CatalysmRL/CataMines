@@ -166,6 +166,21 @@ public class CataMineComposition
     }
 
     @Override
+    public CataMineComposition clone() {
+        try {
+            CataMineComposition clone = (CataMineComposition) super.clone();
+            clone.flags = this.flags.clone();
+            clone.blocks = new ArrayList<>();
+            for (CataMineBlock block : this.blocks) {
+                clone.blocks.add(block.clone());
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    @Override
     public String toString() {
         return "CataMineComposition{" +
                 "name='" + name + '\'' +

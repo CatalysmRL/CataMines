@@ -11,7 +11,7 @@ import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
 import me.catalysmrl.catamines.mine.reward.Rewardable;
 
 public interface CataMineRegion
-        extends Rewardable, Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable {
+        extends Rewardable, Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable, Cloneable {
 
     String getName();
 

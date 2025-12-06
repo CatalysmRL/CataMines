@@ -189,6 +189,13 @@ public class SelectionRegion extends AbstractCataMineRegion {
     }
 
     @Override
+    public SelectionRegion clone() {
+        SelectionRegion clone = (SelectionRegion) super.clone();
+        clone.region = this.region.clone(); // WorldEdit Region is Cloneable
+        return clone;
+    }
+
+    @Override
     public String toString() {
         return "SelectionRegion{" +
                 "selectionType=" + selectionType +

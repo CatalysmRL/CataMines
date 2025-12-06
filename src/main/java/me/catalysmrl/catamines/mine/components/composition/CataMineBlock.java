@@ -13,7 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CataMineBlock implements Choice, SectionSerializable {
+public class CataMineBlock implements Choice, SectionSerializable, Cloneable {
 
     private BaseBlock baseBlock;
     private double chance;
@@ -55,7 +55,8 @@ public class CataMineBlock implements Choice, SectionSerializable {
     public static CataMineBlock deserialize(ConfigurationSection section) throws DeserializationException {
 
         String blockString = section.getString("block");
-        if (blockString == null) throw new DeserializationException("Missing 'block' path");
+        if (blockString == null)
+            throw new DeserializationException("Missing 'block' path");
 
         BaseBlock baseBlock;
         try {
@@ -73,7 +74,8 @@ public class CataMineBlock implements Choice, SectionSerializable {
         if (itemsSection != null) {
             for (String key : itemsSection.getKeys(false)) {
                 ConfigurationSection itemSection = itemsSection.getConfigurationSection(key);
-                if (itemSection == null) continue;
+                if (itemSection == null)
+                    continue;
                 itemList.add(CataMineItem.deserialize(itemSection));
             }
         }
@@ -115,6 +117,23 @@ public class CataMineBlock implements Choice, SectionSerializable {
 
     public void setItems(List<CataMineItem> items) {
         this.items = items;
+    }
+
+    @Override
+    public CataMineBlock clone() {
+        try {
+            CataMineBlock clone = (CataMineBlock) super.clone();
+            clone.baseBlock = this.baseBlock.clone();
+            clone.chance = this.chance;
+            clone.dropType = this.dropType;
+            clone.items = new ArrayList<>();
+            for (CataMineItem item : this.items) {
+                clone.items.add(item.clone());
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
     }
 
     @Override

@@ -7,7 +7,7 @@ import me.catalysmrl.catamines.managers.blockmanagers.BlockApplicator;
 import me.catalysmrl.catamines.managers.blockmanagers.BukkitBlockApplicationManager;
 import me.catalysmrl.catamines.managers.blockmanagers.FastAsyncBlockApplicationManager;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
-import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
+import me.catalysmrl.catamines.mine.mines.CataMine;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
 import me.catalysmrl.catamines.utils.message.Message;
 import org.bukkit.Bukkit;
@@ -179,7 +179,7 @@ public class MineManager {
     private Optional<CataMine> deserializeCataMine(ConfigurationSection section) {
         CataMine mine = null;
         try {
-            mine = AdvancedCataMine.deserialize(plugin, section);
+            mine = CataMine.deserialize(plugin, section);
         } catch (DeserializationException e) {
             // ignore
             e.printStackTrace();

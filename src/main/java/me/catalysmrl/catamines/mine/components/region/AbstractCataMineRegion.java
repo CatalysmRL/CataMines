@@ -103,6 +103,21 @@ public abstract class AbstractCataMineRegion implements CataMineRegion {
     }
 
     @Override
+    public AbstractCataMineRegion clone() {
+        try {
+            AbstractCataMineRegion clone = (AbstractCataMineRegion) super.clone();
+            clone.flags = this.flags.clone();
+            clone.compositionManager = new ChoiceManager<>();
+            for (CataMineComposition comp : this.compositionManager.getChoices()) {
+                clone.compositionManager.add(comp.clone());
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    @Override
     public String toString() {
         return "AbstractCataMineRegion{" +
                 "name='" + name + '\'' +

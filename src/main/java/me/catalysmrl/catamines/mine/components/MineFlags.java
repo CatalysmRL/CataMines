@@ -5,7 +5,7 @@ import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class MineFlags implements SectionSerializable {
+public class MineFlags implements SectionSerializable, Cloneable {
 
     private Boolean stopped;
     private Boolean warn;
@@ -183,5 +183,20 @@ public class MineFlags implements SectionSerializable {
 
     public void setTeleportPlayers(Boolean teleportPlayers) {
         this.teleportPlayers = teleportPlayers;
+    }
+
+    @Override
+    public MineFlags clone() {
+        MineFlags clone = new MineFlags();
+        clone.stopped = this.stopped;
+        clone.warn = this.warn;
+        clone.warnHotbar = this.warnHotbar;
+        clone.warnGlobal = this.warnGlobal;
+        clone.warnSeconds = this.warnSeconds;
+        clone.warnDistance = this.warnDistance;
+        clone.teleportPlayers = this.teleportPlayers;
+        clone.teleportLocation = this.teleportLocation != null ? this.teleportLocation.clone() : null;
+        clone.resetTeleportLocation = this.resetTeleportLocation != null ? this.resetTeleportLocation.clone() : null;
+        return clone;
     }
 }

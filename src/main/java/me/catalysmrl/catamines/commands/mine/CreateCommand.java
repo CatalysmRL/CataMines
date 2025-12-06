@@ -9,7 +9,7 @@ import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SchematicRegion;
 import me.catalysmrl.catamines.mine.components.region.impl.SelectionRegion;
-import me.catalysmrl.catamines.mine.mines.AdvancedCataMine;
+import me.catalysmrl.catamines.mine.mines.CataMine;
 import me.catalysmrl.catamines.utils.helper.Predicates;
 import me.catalysmrl.catamines.utils.message.Message;
 import me.catalysmrl.catamines.utils.worldedit.WorldEditUtils;
@@ -42,7 +42,7 @@ public class CreateCommand extends AbstractCommand {
             return;
         }
 
-        CataMine cataMine = new AdvancedCataMine(plugin, name);
+        CataMine cataMine = new CataMine(plugin, name);
 
         if (sender instanceof Player player) {
             RegionSelector regionSelector = WorldEditUtils.getSelector(player);

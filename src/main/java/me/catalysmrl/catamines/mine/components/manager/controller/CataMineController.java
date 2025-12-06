@@ -4,7 +4,7 @@ import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class CataMineController implements SectionSerializable {
+public class CataMineController implements SectionSerializable, Cloneable {
 
     private final CataMine mine;
 
@@ -32,7 +32,8 @@ public class CataMineController implements SectionSerializable {
     }
 
     public boolean tickTime() {
-        if (resetDelay < 0) return true;
+        if (resetDelay < 0)
+            return true;
 
         if (countdown <= 0) {
             countdown = resetDelay;
@@ -117,5 +118,16 @@ public class CataMineController implements SectionSerializable {
         TIME,
         PERCENTAGE,
         TIME_PERCENTAGE
+    }
+
+    @Override
+    public CataMineController clone() {
+        CataMineController clone = new CataMineController(null); // mine will be set later
+        clone.resetMode = this.resetMode;
+        clone.resetDelay = this.resetDelay;
+        clone.resetPercentage = this.resetPercentage;
+        clone.countdown = this.countdown;
+        clone.blockCount = this.blockCount;
+        return clone;
     }
 }
