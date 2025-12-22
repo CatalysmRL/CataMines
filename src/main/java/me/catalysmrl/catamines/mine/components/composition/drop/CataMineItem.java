@@ -2,11 +2,10 @@ package me.catalysmrl.catamines.mine.components.composition.drop;
 
 import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.api.serialization.SectionSerializable;
-import me.catalysmrl.catamines.mine.reward.Rewardable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-public class CataMineItem implements Rewardable, SectionSerializable {
+public class CataMineItem implements SectionSerializable {
 
     private ItemStack item;
     private double chance;

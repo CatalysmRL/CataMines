@@ -1,4 +1,4 @@
-package me.catalysmrl.catamines.mine.placeholders;
+package me.catalysmrl.catamines.utils.placeholders;
 
 import me.catalysmrl.catamines.CataMines;
 import me.catalysmrl.catamines.api.mine.CataMine;

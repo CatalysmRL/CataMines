@@ -5,6 +5,7 @@ import me.catalysmrl.catamines.api.mine.CataMine;
 import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
 import me.catalysmrl.catamines.mine.components.manager.controller.CataMineController;
 import me.catalysmrl.catamines.mine.components.region.CataMineRegion;
+import me.catalysmrl.catamines.mine.reward.RewardContainer;
 import me.catalysmrl.catamines.mine.components.MineFlags;
 
 public abstract class AbstractCataMine implements CataMine, Cloneable {
@@ -106,6 +107,17 @@ public abstract class AbstractCataMine implements CataMine, Cloneable {
     public me.catalysmrl.catamines.api.mine.PropertyHolder getParent() {
         return null;
     }
+
+    @Override
+    public boolean hasRewardsFor(String triggerId) {
+        return false;
+    }
+
+    @Override
+    public RewardContainer getRewardsFor(String triggerId) {
+        return null;
+    }
+
     @Override
     public CataMine clone() {
         try {

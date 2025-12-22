@@ -3,9 +3,10 @@ package me.catalysmrl.catamines;
 import me.catalysmrl.catamines.command.CommandManager;
 import me.catalysmrl.catamines.listeners.BlockListeners;
 import me.catalysmrl.catamines.managers.MineManager;
-import me.catalysmrl.catamines.mine.placeholders.CataMinePlaceHolders;
 import me.catalysmrl.catamines.utils.helper.CompatibilityProvider;
 import me.catalysmrl.catamines.utils.message.LocaleBootstrap;
+import me.catalysmrl.catamines.utils.placeholders.CataMinePlaceHolders;
+
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;

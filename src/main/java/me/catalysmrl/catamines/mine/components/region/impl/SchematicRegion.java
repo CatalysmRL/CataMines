@@ -58,7 +58,7 @@ public class SchematicRegion extends AbstractCataMineRegion implements Cloneable
 
     @Override
     public long getVolume() {
-        return clipboard.getVolume();
+        return clipboard.getRegion().getVolume();
     }
 
     @Override

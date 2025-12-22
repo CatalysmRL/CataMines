@@ -7,6 +7,8 @@ import me.catalysmrl.catamines.api.serialization.DeserializationException;
 import me.catalysmrl.catamines.mine.components.MineFlags;
 import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
+import me.catalysmrl.catamines.mine.reward.RewardContainer;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -100,6 +102,16 @@ public abstract class AbstractCataMineRegion implements CataMineRegion {
     @Override
     public boolean hasFlag(Flag<?> flag) {
         return flags.get(flag) != null;
+    }
+
+    @Override
+    public boolean hasRewardsFor(String triggerId) {
+        return false;
+    }
+
+    @Override
+    public RewardContainer getRewardsFor(String triggerId) {
+        return null;
     }
 
     @Override

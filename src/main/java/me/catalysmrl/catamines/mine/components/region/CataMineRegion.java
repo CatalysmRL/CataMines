@@ -9,10 +9,10 @@ import me.catalysmrl.catamines.mine.components.composition.CataMineComposition;
 import me.catalysmrl.catamines.mine.components.manager.choice.Choice;
 import me.catalysmrl.catamines.mine.components.manager.choice.ChoiceManager;
 import me.catalysmrl.catamines.mine.components.manager.choice.Identifiable;
-import me.catalysmrl.catamines.mine.reward.Rewardable;
+import me.catalysmrl.catamines.mine.reward.RewardHolder;
 
 public interface CataMineRegion
-        extends Rewardable, Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable {
+        extends Identifiable, Choice, SectionSerializable, PropertyHolder, Targetable, RewardHolder {
 
     void setMine(CataMine mine);
 
